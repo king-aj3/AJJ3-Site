@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My_LLM — Your own private AI. On your hardware. One price, no subscription.</title>
+<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint powers your other apps. $0 Demo / $29 Starter / $59 Pro one-time.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+/* ─────────────────────────────────────────────────────────────
+   MY_LLM — LANDING PAGE
+   Aesthetic: a private terminal / home server rack. Deep slate,
+   off-white, an electric "local" green and a warning amber for
+   the cloud. Monospace structure, no cloud, no chrome.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --bg:         #0e1116;
+  --bg-2:       #141a22;
+  --panel:      #1a212b;
+  --ink:        #e8edf2;
+  --ink-soft:   #9aa7b4;
+  --line:       #2a323d;
+  --local:      #38d39f;   /* "runs locally / free" green */
+  --local-dk:   #1f9d76;
+  --cloud:      #f5a623;   /* "cloud / paid / careful" amber */
+  --accent:     #6ea8fe;   /* link / highlight blue */
+  --accent-dk:  #3f74d6;
+  --danger:     #ef5b6b;
+
+  --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgba(56,211,159,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56,211,159,0.025) 1px, transparent 1px);
+  background-size: 44px 44px;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.container { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.08;
+  color: var(--ink);
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--ink); }
+
+code, .mono { font-family: var(--font-mono); }
+
+/* ─── TOP BAR ──────────────────────────────────────────────── */
+.topbar {
+  border-bottom: 1px solid var(--line);
+  background: rgba(14,17,22,0.92);
+  backdrop-filter: blur(8px);
+  padding: 14px 0;
+  position: sticky; top: 0; z-index: 100;
+}
+.topbar-inner { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+.brand {
+  font-family: var(--font-mono);
+  font-size: 20px; font-weight: 800;
+  display: flex; align-items: center; gap: 10px;
+  letter-spacing: -0.02em;
+}
+.brand-mark {
+  display: inline-flex;
+  background: var(--local); color: var(--bg);
+  width: 34px; height: 34px; border-radius: 8px;
+  align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-weight: 800; font-size: 18px;
+}
+.brand-mark::after { content: "_"; animation: blink 1.1s step-end infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.topbar nav { display: flex; gap: 26px; font-family: var(--font-mono); font-size: 13px; }
+.topbar nav a { color: var(--ink-soft); }
+.topbar nav a:hover { color: var(--local); }
+.cta-button-sm {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 800;
+  letter-spacing: 0.04em;
+  background: var(--local); color: var(--bg);
+  padding: 10px 16px; border-radius: 8px; display: inline-block;
+}
+.cta-button-sm:hover { background: var(--ink); color: var(--bg); }
+
+/* ─── HERO ─────────────────────────────────────────────────── */
+.hero { padding: 64px 0 84px; border-bottom: 1px solid var(--line); }
+.hero-grid { display: grid; grid-template-columns: 1.45fr 1fr; gap: 50px; align-items: center; }
+.hero-eyebrow {
+  font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.04em;
+  color: var(--local); margin-bottom: 20px; display: inline-block;
+  border: 1px solid var(--local-dk); border-radius: 999px; padding: 5px 14px;
+}
+.hero h1 { font-size: clamp(46px, 7vw, 84px); margin-bottom: 20px; }
+.hero h1 .accent { color: var(--local); }
+.hero h1 .strike { color: var(--ink-soft); position: relative; display: inline-block; }
+.hero h1 .strike::after {
+  content: ''; position: absolute; left: -4px; right: -4px; top: 52%;
+  height: 5px; background: var(--cloud); transform: rotate(-3deg);
+}
+.hero-sub { font-size: 21px; line-height: 1.5; color: var(--ink-soft); max-width: 560px; margin-bottom: 30px; }
+.hero-sub strong { color: var(--ink); }
+.hero-ctas { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.cta-button {
+  font-family: var(--font-mono); font-size: 15px; font-weight: 800; letter-spacing: 0.02em;
+  background: var(--local); color: var(--bg);
+  padding: 17px 26px; border: 2px solid var(--local); border-radius: 10px;
+  display: inline-block; transition: all 0.15s ease;
+}
+.cta-button:hover { background: transparent; color: var(--local); transform: translateY(-2px); }
+.cta-button.secondary { background: transparent; color: var(--ink); border-color: var(--line); }
+.cta-button.secondary:hover { border-color: var(--local); color: var(--local); }
+.hero-microcopy { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); margin-top: 18px; }
+
+/* TERMINAL CARD (hero visual) */
+.term {
+  background: var(--bg-2); border: 1px solid var(--line); border-radius: 12px;
+  overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.45); font-family: var(--font-mono);
+}
+.term-bar { display: flex; align-items: center; gap: 8px; padding: 12px 14px; background: var(--panel); border-bottom: 1px solid var(--line); }
+.term-bar .dot { width: 11px; height: 11px; border-radius: 50%; background: #3b4654; }
+.term-bar .title { margin-left: 10px; font-size: 12px; color: var(--ink-soft); }
+.term-body { padding: 20px 18px; font-size: 13.5px; line-height: 1.7; }
+.term-body .pr { color: var(--local); }
+.term-body .cm { color: var(--ink-soft); }
+.term-body .ok { color: var(--local); }
+.term-body .am { color: var(--cloud); }
+.term-body .hl { color: var(--ink); }
+
+/* ─── MARQUEE / TRUST ──────────────────────────────────────── */
+.marquee { background: var(--local); color: var(--bg); padding: 14px 0; overflow: hidden; border-bottom: 1px solid var(--line); }
+.marquee-inner { display: flex; gap: 44px; white-space: nowrap; animation: scroll 40s linear infinite; font-family: var(--font-mono); font-weight: 800; font-size: 15px; letter-spacing: 0.02em; }
+.marquee-inner span { display: inline-flex; align-items: center; gap: 12px; }
+.marquee-inner .dot { width: 8px; height: 8px; background: var(--bg); border-radius: 50%; }
+@keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* ─── SECTION SHARED ───────────────────────────────────────── */
+section.block { padding: 88px 0; border-bottom: 1px solid var(--line); }
+.section-eyebrow { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; color: var(--local); margin-bottom: 16px; display: inline-block; }
+.section-title { font-size: clamp(36px, 5vw, 60px); margin-bottom: 22px; }
+.section-lede { font-size: 21px; line-height: 1.55; color: var(--ink-soft); max-width: 760px; margin-bottom: 44px; }
+
+/* ─── PROBLEM / COST ───────────────────────────────────────── */
+.problem { background: var(--bg-2); }
+.cost-callout { margin-top: 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.cost-card { border: 1px solid var(--line); border-radius: 12px; padding: 28px 26px; background: var(--panel); position: relative; }
+.cost-card.good { background: var(--local); color: var(--bg); border-color: var(--local); }
+.cost-card .name { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.04em; margin-bottom: 12px; color: var(--ink-soft); }
+.cost-card.good .name { color: rgba(14,17,22,0.7); }
+.cost-card .amount { font-family: var(--font-display); font-weight: 700; font-size: 52px; line-height: 1; margin-bottom: 4px; }
+.cost-card .period { font-family: var(--font-mono); font-size: 13px; margin-bottom: 14px; }
+.cost-card .yearly { font-size: 16px; font-style: italic; color: var(--ink-soft); }
+.cost-card.good .yearly { color: rgba(14,17,22,0.8); }
+.cost-card.good .stamp-inline { position: absolute; top: 16px; right: 16px; background: var(--bg); color: var(--local); font-family: var(--font-mono); font-size: 11px; font-weight: 800; letter-spacing: 0.06em; padding: 6px 10px; border-radius: 6px; }
+
+.compare-table { width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; font-family: var(--font-mono); font-size: 14px; margin-top: 44px; }
+.compare-table th, .compare-table td { padding: 15px 18px; text-align: left; border-bottom: 1px solid var(--line); }
+.compare-table thead th { background: var(--bg); color: var(--ink-soft); font-weight: 800; letter-spacing: 0.04em; }
+.compare-table thead th.us { background: var(--local); color: var(--bg); }
+.compare-table tbody tr:hover { background: var(--bg-2); }
+.compare-table .feature { font-weight: 600; color: var(--ink); }
+.compare-table .yes { color: var(--local); font-weight: 800; }
+.compare-table .no  { color: var(--danger); font-weight: 800; }
+.compare-table .maybe { color: var(--ink-soft); }
+.compare-table tfoot td { background: var(--bg-2); font-weight: 800; font-size: 15px; border-bottom: none; }
+
+/* ─── HUB / ONE BRAIN MANY APPS ────────────────────────────── */
+.hub { background: var(--bg); }
+.hub-flow { display: grid; grid-template-columns: 1fr auto 1fr; gap: 26px; align-items: center; margin-top: 40px; }
+.hub-side { border: 1px solid var(--line); border-radius: 12px; padding: 28px; background: var(--panel); }
+.hub-side.center { background: var(--local); color: var(--bg); border-color: var(--local); text-align: center; }
+.hub-side h3 { font-size: 24px; margin-bottom: 14px; color: inherit; }
+.hub-side .lst { font-family: var(--font-mono); font-size: 14px; list-style: none; margin-top: 12px; }
+.hub-side .lst li { padding: 9px 0; border-bottom: 1px dashed var(--line); }
+.hub-side.center .lst li { border-bottom-color: rgba(14,17,22,0.2); }
+.hub-arrow { font-family: var(--font-display); font-size: 64px; color: var(--local); line-height: 1; text-align: center; }
+.hub-arrow small { display: block; font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); margin-top: 8px; }
+.hub-apps { margin-top: 56px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 36px; }
+.hub-apps h3 { font-size: 26px; margin-bottom: 18px; }
+.app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 22px; }
+.app-card { border: 1px solid var(--line); border-radius: 10px; padding: 22px; background: var(--bg-2); }
+.app-card .tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--local); }
+.app-card h4 { font-family: var(--font-display); font-size: 19px; margin: 8px 0 8px; }
+.app-card p { font-size: 15px; color: var(--ink-soft); line-height: 1.5; }
+
+/* ─── FEATURES ─────────────────────────────────────────────── */
+.features { background: var(--bg-2); }
+.feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 40px; }
+.feature-card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 28px 26px; transition: transform 0.15s ease, border-color 0.15s ease; }
+.feature-card:hover { transform: translateY(-3px); border-color: var(--local-dk); }
+.feature-icon { font-size: 28px; display: inline-block; margin-bottom: 14px; }
+.feature-card h3 { font-size: 21px; margin-bottom: 10px; line-height: 1.15; }
+.feature-card p { font-size: 16px; line-height: 1.55; color: var(--ink-soft); }
+.feature-card.dark { background: var(--local); color: var(--bg); border-color: var(--local); }
+.feature-card.dark h3 { color: var(--bg); }
+.feature-card.dark p { color: rgba(14,17,22,0.8); }
+
+/* ─── HONESTY ──────────────────────────────────────────────── */
+.honesty { background: var(--bg); padding: 88px 0; border-bottom: 1px solid var(--line); }
+.honesty-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+.honesty-col h3 { font-size: 30px; margin-bottom: 20px; }
+.honesty-col.yes h3 { color: var(--local); }
+.honesty-col.no  h3 { color: var(--cloud); }
+.honesty-list { list-style: none; font-size: 18px; line-height: 1.7; }
+.honesty-list li { padding-left: 30px; position: relative; margin-bottom: 10px; color: var(--ink); }
+.honesty-list.yes li::before { content: '✓'; position: absolute; left: 0; color: var(--local); font-weight: 800; }
+.honesty-list.no li::before { content: '→'; position: absolute; left: 0; color: var(--cloud); font-weight: 800; }
+
+/* ─── PRICING ──────────────────────────────────────────────── */
+.pricing { background: var(--panel); }
+.pricing .section-eyebrow { color: var(--local); }
+.tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 40px; }
+.tier { border: 1px solid var(--line); background: var(--bg-2); border-radius: 14px; padding: 34px 28px; position: relative; }
+.tier.featured { background: var(--bg); border-color: var(--local); transform: scale(1.03); box-shadow: 0 0 0 1px var(--local-dk), 0 18px 50px rgba(0,0,0,0.4); }
+.tier .badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--local); color: var(--bg); font-family: var(--font-mono); font-size: 11px; font-weight: 800; letter-spacing: 0.06em; padding: 6px 14px; border-radius: 999px; }
+.tier-name { font-family: var(--font-display); font-size: 32px; margin-bottom: 6px; }
+.tier-price { font-family: var(--font-display); font-weight: 700; font-size: 68px; line-height: 1; margin: 12px 0 4px; }
+.tier-price .currency { font-size: 30px; vertical-align: super; color: var(--ink-soft); }
+.tier-period { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); margin-bottom: 22px; }
+.tier-features { list-style: none; font-size: 16px; line-height: 1.5; margin-bottom: 28px; }
+.tier-features li { padding: 8px 0; border-bottom: 1px dashed var(--line); color: var(--ink); }
+.tier-cta { display: block; text-align: center; font-family: var(--font-mono); font-size: 14px; font-weight: 800; letter-spacing: 0.04em; padding: 15px 0; border-radius: 10px; background: transparent; color: var(--ink); border: 2px solid var(--line); transition: all 0.15s ease; }
+.tier.featured .tier-cta { background: var(--local); color: var(--bg); border-color: var(--local); }
+.tier-cta:hover { border-color: var(--local); color: var(--local); }
+.tier.featured .tier-cta:hover { background: transparent; color: var(--local); }
+
+.alt-checkouts { margin: 40px auto 0; max-width: 760px; text-align: center; padding: 22px 24px; border: 1px dashed var(--line); border-radius: 12px; background: var(--bg-2); }
+.alt-checkouts-label { display: block; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--ink-soft); margin-bottom: 12px; }
+.alt-checkout { display: inline-block; margin: 4px 12px; padding: 6px 10px; color: var(--ink); border-bottom: 2px solid transparent; font-size: 16px; }
+.alt-checkout strong { font-weight: 700; }
+.alt-checkout:hover { border-bottom-color: var(--local); color: var(--local); }
+.alt-checkout-tag { display: inline-block; margin-left: 6px; padding: 2px 7px; font-family: var(--font-mono); font-size: 9px; font-weight: 600; letter-spacing: 0.04em; background: var(--cloud); color: var(--bg); border-radius: 4px; vertical-align: 2px; }
+
+/* ─── FAQ ──────────────────────────────────────────────────── */
+.faq { background: var(--bg); }
+.faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 56px; margin-top: 40px; }
+.faq-item { border-top: 1px solid var(--line); padding-top: 20px; }
+.faq-item h3 { font-size: 21px; margin-bottom: 10px; line-height: 1.2; }
+.faq-item p { font-size: 17px; line-height: 1.6; color: var(--ink-soft); }
+.faq-item code { color: var(--local); font-size: 14px; }
+
+/* ─── FINAL CTA ────────────────────────────────────────────── */
+.final-cta { background: var(--local); color: var(--bg); padding: 104px 0; text-align: center; border-bottom: 1px solid var(--line); }
+.final-cta h2 { color: var(--bg); font-size: clamp(40px, 7vw, 76px); margin-bottom: 24px; line-height: 1.04; }
+.final-cta p { font-size: 21px; max-width: 660px; margin: 0 auto 34px; line-height: 1.5; color: rgba(14,17,22,0.85); }
+.final-cta .cta-button { background: var(--bg); color: var(--local); border-color: var(--bg); font-size: 16px; padding: 20px 34px; }
+.final-cta .cta-button:hover { background: transparent; color: var(--bg); border-color: var(--bg); }
+.final-cta .cta-button.secondary { background: transparent; color: var(--bg); border-color: var(--bg); }
+.final-cta .cta-button.secondary:hover { background: var(--bg); color: var(--local); }
+
+/* ─── FOOTER ───────────────────────────────────────────────── */
+footer { background: var(--bg); color: var(--ink-soft); padding: 50px 0 30px; font-family: var(--font-mono); font-size: 13px; line-height: 1.6; }
+footer .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 36px; }
+footer h4 { font-family: var(--font-display); font-size: 19px; color: var(--ink); margin-bottom: 16px; }
+footer ul { list-style: none; }
+footer ul li { padding: 4px 0; }
+footer a { color: var(--ink-soft); }
+footer a:hover { color: var(--local); }
+.footer-bottom { border-top: 1px solid var(--line); padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 12px; }
+
+/* ─── RESPONSIVE ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+  body { font-size: 16px; }
+  .topbar nav { display: none; }
+  .hero-grid { grid-template-columns: 1fr; }
+  .cost-callout { grid-template-columns: 1fr; }
+  .hub-flow { grid-template-columns: 1fr; }
+  .hub-arrow { transform: rotate(90deg); margin: 8px auto; }
+  .app-grid { grid-template-columns: 1fr; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .honesty-grid { grid-template-columns: 1fr; gap: 40px; }
+  .tier-grid { grid-template-columns: 1fr; }
+  .tier.featured { transform: none; }
+  .faq-grid { grid-template-columns: 1fr; }
+  footer .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── TOP BAR ──────────────────────────────────────────────── -->
+<div class="topbar">
+  <div class="container topbar-inner">
+    <div class="brand">
+      <span class="brand-mark">M</span>
+      <span>My_LLM</span>
+    </div>
+    <nav>
+      <a href="#why">Why</a>
+      <a href="#hub">Your AI hub</a>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="cta-button-sm" href="#pricing">Get it →</a>
+  </div>
+</div>
+
+<!-- ─── HERO ─────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="hero-eyebrow">Self-hosted local AI · stdlib-only · single binary</span>
+      <h1>
+        <span class="strike">$20/mo, forever</span><br>
+        <span class="accent">$59</span> once.<br>
+        Your hardware.
+      </h1>
+      <p class="hero-sub">
+        <strong>My_LLM</strong> is a privacy-first local LLM runtime, router, and setup console.
+        It probes your hardware, picks the best model, and answers on your own machine —
+        with optional cloud fallback you control and a hard budget cap. One local brain that
+        also powers the AI in <strong>your other apps</strong> over an OpenAI-compatible endpoint.
+      </p>
+      <div class="hero-ctas">
+        <a class="cta-button" data-buy="pro" href="https://ajj3us.gumroad.com/l/REPLACE_PRO" target="_blank" rel="noopener">Get Pro on Gumroad</a>
+        <a class="cta-button secondary" href="#features">See features</a>
+      </div>
+      <p class="hero-microcopy">
+        Windows · macOS · Linux · Free Demo · One-time purchase · No tokens · No telemetry · No monthly bill
+      </p>
+    </div>
+    <div class="term">
+      <div class="term-bar">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="title">My_LLM — local-first router</span>
+      </div>
+      <div class="term-body">
+        <div><span class="pr">$</span> my_llm run</div>
+        <div class="cm"># probe → select → fetch → launch</div>
+        <div><span class="ok">✓</span> hardware: i5 · 16 GB · CPU</div>
+        <div><span class="ok">✓</span> tier 0 → <span class="hl">qwen2.5-coder:7b</span></div>
+        <div><span class="ok">✓</span> context fitted to VRAM: 8K</div>
+        <div>&nbsp;</div>
+        <div><span class="pr">$</span> my_llm route "reverse a string in rust"</div>
+        <div><span class="ok">local</span> answered · <span class="hl">est_cost $0.00</span></div>
+        <div class="cm"># hard task? escalates to cloud —</div>
+        <div class="cm"># only if you set a key + budget</div>
+        <div><span class="am">budget</span> daily cap $1.00 · spend $0.00</div>
+        <div>&nbsp;</div>
+        <div class="cm"># your other apps consume it:</div>
+        <div><span class="hl">POST</span> 127.0.0.1:8765/v1/chat/completions</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MARQUEE TRUST ────────────────────────────────────────── -->
+<div class="marquee">
+  <div class="marquee-inner">
+    <span>RUNS ON YOUR HARDWARE <span class="dot"></span></span>
+    <span>NO SUBSCRIPTION <span class="dot"></span></span>
+    <span>NOTHING LEAVES YOUR NETWORK <span class="dot"></span></span>
+    <span>NO TOKENS · NO USAGE CREDITS <span class="dot"></span></span>
+    <span>NO TELEMETRY <span class="dot"></span></span>
+    <span>STDLIB-ONLY · ZERO DEPS <span class="dot"></span></span>
+    <span>ONE BRAIN · MANY APPS <span class="dot"></span></span>
+    <!-- duplicate for seamless loop -->
+    <span>RUNS ON YOUR HARDWARE <span class="dot"></span></span>
+    <span>NO SUBSCRIPTION <span class="dot"></span></span>
+    <span>NOTHING LEAVES YOUR NETWORK <span class="dot"></span></span>
+    <span>NO TOKENS · NO USAGE CREDITS <span class="dot"></span></span>
+    <span>NO TELEMETRY <span class="dot"></span></span>
+    <span>STDLIB-ONLY · ZERO DEPS <span class="dot"></span></span>
+    <span>ONE BRAIN · MANY APPS <span class="dot"></span></span>
+  </div>
+</div>
+
+<!-- ─── PROBLEM / COST ───────────────────────────────────────── -->
+<section class="block problem" id="why">
+  <div class="container">
+    <span class="section-eyebrow">// The Math</span>
+    <h2 class="section-title">Stop renting a brain<br>you could own.</h2>
+    <p class="section-lede">
+      Every AI subscription meters you: monthly seats, per-token API bills, "credits" that run out
+      mid-task. Your prompts — and whatever you paste into them — go to someone else's servers.
+      My_LLM runs the model on hardware you already have. Local answers cost nothing and never leave
+      the building. Cloud is there only when <em>you</em> flip it on, with a spend cap you set.
+    </p>
+
+    <div class="cost-callout">
+      <div class="cost-card">
+        <div class="name">ChatGPT Plus / Claude Pro</div>
+        <div class="amount">$20</div>
+        <div class="period">per month, per seat</div>
+        <div class="yearly">$240/yr — and your chats live on their servers</div>
+      </div>
+      <div class="cost-card">
+        <div class="name">Per-token API for your apps</div>
+        <div class="amount">$$$</div>
+        <div class="period">metered, unbounded</div>
+        <div class="yearly">Scales with usage. A loop bug = a surprise invoice.</div>
+      </div>
+      <div class="cost-card good">
+        <span class="stamp-inline">Once.</span>
+        <div class="name">My_LLM Pro</div>
+        <div class="amount">$59</div>
+        <div class="period">one-time purchase</div>
+        <div class="yearly">$59 total. Local inference is $0/call, forever.</div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="width: 40%;">What you get</th>
+          <th class="us">My_LLM</th>
+          <th>Cloud AI subscription</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="feature">Price</td><td class="yes">$29 / $59 one-time</td><td class="no">$20+/mo, per seat, forever</td></tr>
+        <tr><td class="feature">Where inference runs</td><td class="yes">Your hardware (CPU or your GPU)</td><td class="no">Their servers</td></tr>
+        <tr><td class="feature">Where your prompts go</td><td class="yes">Nowhere — stays local by default</td><td class="no">Uploaded every call</td></tr>
+        <tr><td class="feature">Per-call cost</td><td class="yes">$0 local · capped cloud fallback</td><td class="no">Per-token / per-credit</td></tr>
+        <tr><td class="feature">Works offline</td><td class="yes">Yes (after first model download)</td><td class="no">No</td></tr>
+        <tr><td class="feature">Telemetry / phone-home</td><td class="yes">None</td><td class="maybe">Varies — usually yes</td></tr>
+        <tr><td class="feature">Powers your other apps</td><td class="yes">OpenAI-compatible /v1 endpoint</td><td class="maybe">Yes, metered per token</td></tr>
+        <tr><td class="feature">Runtime weight</td><td class="yes">Stdlib-only single binary</td><td class="no">N/A (it's a website)</td></tr>
+        <tr><td class="feature">Model choice</td><td class="yes">Curated 2026 catalog, you pick</td><td class="no">Whatever they offer</td></tr>
+        <tr><td class="feature">Top-tier frontier model quality</td><td class="maybe">Via your own cloud key, on demand</td><td class="yes">Built in</td></tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>Year-1 cost</td>
+          <td style="color: var(--local);">$59 total</td>
+          <td style="color: var(--danger);">$240+ per seat, then again next year</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</section>
+
+<!-- ─── HUB: ONE BRAIN, MANY APPS ────────────────────────────── -->
+<section class="block hub" id="hub">
+  <div class="container">
+    <span class="section-eyebrow">// The Big Idea</span>
+    <h2 class="section-title">One private AI hub.<br>All your apps plug in.</h2>
+    <p class="section-lede">
+      My_LLM exposes an OpenAI-compatible <code>/v1/chat/completions</code> endpoint. Point any app at it,
+      hand it an API key, and that app now has AI — served by the model on your hardware, routed
+      local-first with optional cloud fallback, all on one budget and one access log. No per-app
+      cloud accounts. No per-token bills. Nothing leaves your network.
+    </p>
+
+    <div class="hub-flow">
+      <div class="hub-side">
+        <h3>Your apps</h3>
+        <ul class="lst">
+          <li>→ Thrift Reseller Tracker</li>
+          <li>→ WealthBuilder</li>
+          <li>→ Your own scripts &amp; tools</li>
+          <li>→ Anything that speaks OpenAI</li>
+        </ul>
+      </div>
+      <div class="hub-arrow">
+        ⟶
+        <small>/v1 + a key</small>
+      </div>
+      <div class="hub-side center">
+        <h3>My_LLM</h3>
+        <ul class="lst">
+          <li>local model first</li>
+          <li>quality gate</li>
+          <li>budget &amp; spend cap</li>
+          <li>cloud fallback (opt-in)</li>
+          <li>per-key access log</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="hub-apps">
+      <h3>It already powers real apps</h3>
+      <p style="color: var(--ink-soft); margin-bottom: 8px;">
+        These are separate apps that plug into My_LLM. One local brain behind all of them —
+        no per-token cloud bills, nothing shared.
+      </p>
+      <div class="app-grid">
+        <div class="app-card">
+          <span class="tag">VISION · PHOTO → LISTING</span>
+          <h4>Thrift Reseller Tracker</h4>
+          <p>Sends item photos to your local vision model through My_LLM to draft titles, condition notes, and descriptions — no cloud vision bill.</p>
+        </div>
+        <div class="app-card">
+          <span class="tag">REASONING · MARKET ANALYSIS</span>
+          <h4>WealthBuilder</h4>
+          <p>Uses My_LLM for the model reasoning behind its own market analysis. The AI runs on your box, behind a budgeted key.</p>
+        </div>
+        <div class="app-card">
+          <span class="tag">DROP-IN · STDLIB CLIENT</span>
+          <h4>Anything you build</h4>
+          <p>A zero-dependency Python client (or the OpenAI SDK) wires any app to your hub in a few lines. Bring your own app.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FEATURES ─────────────────────────────────────────────── -->
+<section class="block features" id="features">
+  <div class="container">
+    <span class="section-eyebrow">// The Toolkit</span>
+    <h2 class="section-title">A whole AI stack.<br>On one machine.</h2>
+    <p class="section-lede">
+      Hardware-aware model selection, a curated catalog, local-first routing with a budget,
+      RAG, optional fine-tuning, a web console, and secure multi-user access — all stdlib-only.
+    </p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <span class="feature-icon">🧭</span>
+        <h3>Auto Hardware-Scaling</h3>
+        <p>Probes CPU/RAM/GPU/VRAM, maps you to a tier, then picks the best model from your profile and shrinks the context to fit your VRAM. The right model, automatically.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📚</span>
+        <h3>Curated 2026 Catalog</h3>
+        <p>Coding, general, reasoning, vision, fast, and finance model families — capability scores, sizes, context, and license, all in one comparison matrix.</p>
+      </div>
+      <div class="feature-card dark">
+        <span class="feature-icon">🔀</span>
+        <h3>Local-First Routing</h3>
+        <p>Tries your local model first. Escalates to a Claude/OpenAI-compatible gateway only on error, low quality, high complexity, or a manual flag — never silently.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">💰</span>
+        <h3>Budget &amp; Spend Cap</h3>
+        <p>Daily and monthly USD caps on any paid escalation, plus a hard <code>local_only</code> offline switch. Every cent of cloud spend is logged. Local answers are always free.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔌</span>
+        <h3>OpenAI-Compatible /v1</h3>
+        <p>A real <code>/v1/chat/completions</code> endpoint with <code>/v1/models</code>. Most OpenAI client code works by changing the base URL and key. Your apps consume your hub.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🖼️</span>
+        <h3>Vision Pass-Through</h3>
+        <p>Send standard OpenAI image parts; My_LLM routes to a local vision model and forwards the image. Photo → listing, OCR, chart Q&amp;A — on your hardware. (Pro)</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔎</span>
+        <h3>RAG Knowledge Base</h3>
+        <p>The <code>learn</code> pipeline researches a topic on the web, builds a corpus, and indexes it for retrieval. Retrieved chunks can be injected into the local prompt before answering.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎯</span>
+        <h3>Optional QLoRA Fine-Tuning</h3>
+        <p>Turn escalation logs into a training set and QLoRA/LoRA-tune the local model on the tasks it missed. Backend-aware: CUDA, ROCm, Apple MPS, or CPU.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🖥️</span>
+        <h3>Setup Console</h3>
+        <p>A localhost web console: guided wizard (system check, install, model download), dashboard, a Chat tab, and in-app Help docs. Run it as a browser tab or a chromeless app window.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">👥</span>
+        <h3>Secure Remote Multi-User</h3>
+        <p>Serve friends and your other apps: per-user accounts, per-client API keys, RBAC (admin/user/pending), per-key budgets, allow/deny, and an access log — over a VPN or TLS. (Pro)</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🛡️</span>
+        <h3>Locked-Down By Default</h3>
+        <p>Bound to <code>127.0.0.1</code> out of the box. A non-loopback bind <em>refuses to start</em> without accounts. Secrets live only in a host-locked <code>auth.json</code>, never served by the API.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📦</span>
+        <h3>Single Binary, Zero Deps</h3>
+        <p>Pure standard-library Python, compiled with Nuitka into one onefile executable. No Python install, no pip, no virtualenv. Runs from anywhere — even a USB stick.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🌐</span>
+        <h3>Cross-Platform</h3>
+        <p>Windows, macOS, and Linux. Inference acceleration via Ollama auto-detects CPU / NVIDIA CUDA / AMD ROCm / Apple Metal. llama.cpp is wired in as an alternative runtime.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── HONESTY ──────────────────────────────────────────────── -->
+<section class="honesty">
+  <div class="container">
+    <span class="section-eyebrow">// Honest About It</span>
+    <h2 class="section-title">What it is.<br>And what it isn't.</h2>
+
+    <div class="honesty-grid">
+      <div class="honesty-col yes">
+        <h3>What you get</h3>
+        <ul class="honesty-list yes">
+          <li>A local LLM runtime + router + console you own outright</li>
+          <li>Hardware-aware model selection from a curated catalog</li>
+          <li>Local-first routing with an optional, budgeted cloud fallback</li>
+          <li>An OpenAI-compatible /v1 endpoint for all your apps</li>
+          <li>Vision pass-through, RAG, and optional QLoRA fine-tuning</li>
+          <li>Secure remote multi-user access over VPN/TLS (Pro)</li>
+          <li>A single stdlib-only binary for Windows, macOS &amp; Linux</li>
+          <li>Free updates for the life of the app</li>
+        </ul>
+      </div>
+      <div class="honesty-col no">
+        <h3>What you should know</h3>
+        <ul class="honesty-list no">
+          <li>Local model quality is bounded by your hardware — a 7B on a laptop isn't a frontier model</li>
+          <li>For frontier-grade answers you bring your own cloud key; that part is pay-per-use (with a cap)</li>
+          <li>The wizard installs Ollama and pulls models — the first download needs internet and disk space</li>
+          <li>It's a backend + console, not a polished consumer chat app with a mobile client</li>
+          <li>Fine-tuning needs a capable GPU; on a CPU box it's there but slow</li>
+        </ul>
+        <p style="margin-top: 24px; font-style: italic; color: var(--ink-soft);">
+          If you want a managed cloud chatbot, keep your subscription. If you want to <em>own</em> your AI,
+          run it on your hardware, and stop metering every call — this is built for you.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PRICING ──────────────────────────────────────────────── -->
+<section class="block pricing" id="pricing">
+  <div class="container">
+    <span class="section-eyebrow">// Pricing</span>
+    <h2 class="section-title">One-time. Machine-locked. Never expires.</h2>
+    <p class="section-lede">
+      Buy once. Use forever. All updates included. Licenses never expire and are machine-locked.
+      The Demo is free — run the local LLM on <code>127.0.0.1</code> at no cost.
+    </p>
+
+    <div class="tier-grid">
+      <div class="tier">
+        <div class="tier-name">Demo</div>
+        <div class="tier-price"><span class="currency">$</span>0</div>
+        <div class="tier-period">Free · single user · 127.0.0.1</div>
+        <ul class="tier-features">
+          <li>Local console + Chat</li>
+          <li>Local-first routing on 127.0.0.1</li>
+          <li>Run the local LLM, free</li>
+          <li>Optional cloud fallback (your key)</li>
+          <li>See if it fits before you buy</li>
+        </ul>
+        <a class="tier-cta" data-buy="demo" href="https://ajj3us.gumroad.com/l/REPLACE_DEMO" target="_blank" rel="noopener">Download Demo</a>
+      </div>
+
+      <div class="tier">
+        <div class="tier-name">Starter</div>
+        <div class="tier-price"><span class="currency">$</span>29</div>
+        <div class="tier-period">One-time · 1 machine</div>
+        <ul class="tier-features">
+          <li>Everything in Demo</li>
+          <li>Hardware ADVISOR unlocked</li>
+          <li>Full curated model catalog</li>
+          <li>GPU optimization &amp; VRAM-aware fitting</li>
+          <li>"Get the most out of your hardware"</li>
+          <li>Free updates for life</li>
+        </ul>
+        <a class="tier-cta" data-buy="starter" href="https://ajj3us.gumroad.com/l/REPLACE_STARTER" target="_blank" rel="noopener">Get Starter →</a>
+      </div>
+
+      <div class="tier featured">
+        <div class="badge">Most Popular</div>
+        <div class="tier-name">Pro</div>
+        <div class="tier-price"><span class="currency">$</span>59</div>
+        <div class="tier-period">One-time · 2 machines</div>
+        <ul class="tier-features">
+          <li>Everything in Starter</li>
+          <li>Secure remote multi-user</li>
+          <li>Accounts + per-client API keys</li>
+          <li>RBAC, per-key budgets, allow/deny</li>
+          <li>VPN / TLS access + access log</li>
+          <li>/v1 image &amp; vision pass-through</li>
+          <li>Serve friends &amp; your other apps</li>
+        </ul>
+        <a class="tier-cta" data-buy="pro" href="https://ajj3us.gumroad.com/l/REPLACE_PRO" target="_blank" rel="noopener">Get Pro →</a>
+      </div>
+    </div>
+
+    <!-- Also-available-on row — secondary checkouts.
+         Uncomment once the Payhip / Lemon Squeezy stores exist. -->
+    <!--
+    <div class="alt-checkouts">
+      <span class="alt-checkouts-label">// Prefer a different checkout?</span>
+      <a class="alt-checkout" href="https://payhip.com/PAYHIP_STORE_PLACEHOLDER" target="_blank" rel="noopener">
+        Also on <strong>Payhip</strong>
+        <span class="alt-checkout-tag">PayPal-friendly</span>
+      </a>
+      <a class="alt-checkout" href="https://LEMONSQUEEZY_STORE_PLACEHOLDER.lemonsqueezy.com/" target="_blank" rel="noopener">
+        Also on <strong>Lemon Squeezy</strong>
+        <span class="alt-checkout-tag">EU / UK · tax included</span>
+      </a>
+    </div>
+    -->
+  </div>
+</section>
+
+<!-- ─── FAQ ──────────────────────────────────────────────────── -->
+<section class="block faq" id="faq">
+  <div class="container">
+    <span class="section-eyebrow">// Common Questions</span>
+    <h2 class="section-title">FAQ</h2>
+
+    <div class="faq-grid">
+      <div class="faq-item">
+        <h3>Do I need a GPU?</h3>
+        <p>No. The app runs on CPU and auto-scales the model to fit. A 16 GB CPU box runs a 7B model out of the box. If you have an NVIDIA, AMD, Intel, or Apple GPU, Ollama uses it automatically for faster inference.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Is it really free to run?</h3>
+        <p>Local inference costs nothing per call — you already own the hardware. The only paid path is the optional cloud fallback, which uses <em>your own</em> API key and stays inside the daily/monthly USD cap you set.</p>
+      </div>
+      <div class="faq-item">
+        <h3>What does "stdlib-only" mean for me?</h3>
+        <p>The app itself has zero third-party Python dependencies. It compiles to one binary with no pip, no virtualenv, no DLL hell. Inference is handled by Ollama, which the wizard installs for you.</p>
+      </div>
+      <div class="faq-item">
+        <h3>How do my other apps use it?</h3>
+        <p>Create an API key in the console, point the app's base URL at <code>http://&lt;host&gt;:8765/v1</code>, and send the key. Most OpenAI client code works unchanged. A zero-dependency Python client is included.</p>
+      </div>
+      <div class="faq-item">
+        <h3>One-time purchase — what about updates?</h3>
+        <p>All updates are free for the life of the app. No maintenance fee, no renewal. Licenses never expire and are machine-locked (Starter = 1 machine, Pro = 2).</p>
+      </div>
+      <div class="faq-item">
+        <h3>Is anything sent to you or the cloud?</h3>
+        <p>No telemetry, no phone-home. Local prompts stay on your machine. The cloud fallback only fires when you've configured a key and a hard task crosses your threshold — and you can switch it off entirely with <code>local_only</code>.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Can friends and apps reach it safely?</h3>
+        <p>Pro unlocks secure remote multi-user. The recommended setup is a VPN (Tailscale/WireGuard/OpenVPN) with My_LLM bound to the VPN interface — nothing is port-forwarded to the open internet. A TLS port-forward path is documented as an alternative.</p>
+      </div>
+      <div class="faq-item">
+        <h3>I see multiple checkouts — does it matter which I use?</h3>
+        <p>All checkouts deliver the same software and the same license. Gumroad is the default. Lemon Squeezy is the best fit for EU/UK/AU buyers (tax-inclusive pricing). Payhip is great if you prefer PayPal or arrived via an affiliate link.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FINAL CTA ────────────────────────────────────────────── -->
+<section class="final-cta">
+  <div class="container">
+    <h2>Own your AI.<br>Run it at home.</h2>
+    <p>
+      One-time purchase. Local-first, cloud only when you say so. No tokens, no telemetry, no monthly bill.
+      Try the free Demo or get Pro and turn your machine into the AI hub for every app you build.
+    </p>
+    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+      <a class="cta-button" data-buy="pro" href="https://ajj3us.gumroad.com/l/REPLACE_PRO" target="_blank" rel="noopener">Get Pro on Gumroad — $59</a>
+      <a class="cta-button secondary" data-buy="demo" href="https://ajj3us.gumroad.com/l/REPLACE_DEMO" target="_blank" rel="noopener">Download Free Demo</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ───────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>My_LLM</h4>
+        <p style="line-height: 1.7; max-width: 340px;">
+          Your own private AI. A self-hosted local LLM runtime, router, and console — the local brain
+          for all your apps. Sold on Gumroad. Your hardware, your data, your rules.
+        </p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#hub">Your AI hub</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Buy</h4>
+        <ul>
+          <li><a data-buy="starter" href="https://ajj3us.gumroad.com/l/REPLACE_STARTER" target="_blank" rel="noopener">Gumroad Starter ($29)</a></li>
+          <li><a data-buy="pro" href="https://ajj3us.gumroad.com/l/REPLACE_PRO" target="_blank" rel="noopener">Gumroad Pro ($59)</a></li>
+          <li><a data-buy="demo" href="https://ajj3us.gumroad.com/l/REPLACE_DEMO" target="_blank" rel="noopener">Free Demo</a></li>
+<!--
+          <li><a href="https://payhip.com/PAYHIP_STORE_PLACEHOLDER" target="_blank" rel="noopener">Also on Payhip</a></li>
+          <li><a href="https://LEMONSQUEEZY_STORE_PLACEHOLDER.lemonsqueezy.com/" target="_blank" rel="noopener">Also on Lemon Squeezy</a></li>
+-->
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">EULA</a></li>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="https://gumroad.com/refunds">Refund Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 AJJ3 · My_LLM · Local-first, cloud only when you say so.</span>
+      <span>Windows + macOS + Linux · Self-hosted · No subscription · No telemetry</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ─────────────────────────────────────────────────────────────
+     CHECKOUT LINKS — SINGLE SOURCE OF TRUTH
+     TODO: replace these placeholders after creating the Gumroad
+     products. Edit a URL ONCE here and every Demo / Starter / Pro
+     link on the page updates automatically (each link is tagged
+     data-buy="…"). Product permalinks do not exist yet.
+     ───────────────────────────────────────────────────────────── -->
+<script>
+  const CHECKOUT_URLS = {
+    // TODO: replace after creating the products on ajj3us.gumroad.com
+    demo:    "https://ajj3us.gumroad.com/l/REPLACE_DEMO",
+    starter: "https://ajj3us.gumroad.com/l/REPLACE_STARTER",
+    pro:     "https://ajj3us.gumroad.com/l/REPLACE_PRO",
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("a[data-buy]").forEach(function (a) {
+      var url = CHECKOUT_URLS[a.getAttribute("data-buy")];
+      if (url) a.setAttribute("href", url);
+    });
+  });
+</script>
+
+</body>
+</html>

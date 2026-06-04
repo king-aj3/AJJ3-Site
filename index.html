@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AJJ³ — Three disciplines, cubed.</title>
+  <meta name="description" content="RF, systems, and software engineering from one mind. Founded by Arthur J. Jenkins III." />
+  <meta property="og:title" content="AJJ³ — Three disciplines, cubed." />
+  <meta property="og:description" content="RF, systems, and software engineering from one mind. Founded by Arthur J. Jenkins III." />
+  <meta property="og:image" content="images/AJJ3_logo_square_1024.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ajj3.us/" />
+  <link rel="icon" type="image/png" sizes="256x256" href="images/AJJ3_cube_icon_256.png" />
+  <link rel="icon" type="image/png" sizes="64x64"  href="images/AJJ3_cube_icon_64.png" />
+  <link rel="icon" type="image/png" sizes="32x32"  href="images/AJJ3_cube_icon_32.png" />
+  <link rel="icon" type="image/png" sizes="16x16"  href="images/AJJ3_cube_icon_16.png" />
+  <link rel="stylesheet" href="styles.css" />
+
+<style>
+    @keyframes ajj3-spin {
+      from { transform: rotateX(-15deg) rotateY(0deg); }
+      to   { transform: rotateX(-15deg) rotateY(360deg); }
+    }
+    .ajj3-stage {
+      perspective: 900px;
+      width: 180px;
+      height: 180px;
+      position: relative;        /* ← fixes faces escaping */
+    }
+    .ajj3-cube {
+      transform-style: preserve-3d;
+      animation: ajj3-spin 18s linear infinite;
+      position: absolute;        /* ← was relative, caused overflow */
+      width: 180px;
+      height: 180px;
+      top: 0;
+      left: 0;
+    }
+    .ajj3-face {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 72px;
+      font-weight: 500;
+      color: #FFFFFF;
+    }
+    .hero__visual {
+      display: flex;
+      flex-direction: row;       /* ← force row, don't let it wrap */
+      align-items: center;
+      gap: 64px;
+    }
+    .hero__text {
+      flex: 1;
+      min-width: 0;              /* ← prevents text from pushing cube out */
+    }
+    .hero__cube-block {
+      flex: 0 0 auto;            /* ← never grow or shrink */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 36px;
+      background: #0A2540;
+      border-radius: 12px;
+      padding: 48px 56px;
+    }
+    .hero__cube-wordmark { text-align: center; }
+    .hero__cube-wordmark .wm-name {
+      color: #FFFFFF;
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 36px;
+      letter-spacing: 4px;
+      font-weight: 500;
+      line-height: 1;
+    }
+    .hero__cube-wordmark .wm-name sup {
+      color: #4DA8FF;
+      font-size: 22px;
+      vertical-align: super;
+    }
+    .hero__cube-wordmark .wm-tagline {
+      color: #94B3D6;
+      margin-top: 8px;
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 12px;
+      font-style: italic;
+      letter-spacing: 1px;
+    }
+    @media (max-width: 860px) {
+      .hero__visual {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .hero__cube-block {
+        padding: 40px;
+        align-self: center;
+      }
+    }
+  </style>
+  </head>
+<body>
+
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="site-nav__inner">
+      <a class="site-nav__logo" href="index.html" aria-label="AJJ³ home">
+        <img src="images/AJJ3_logo_horizontal_1600x560.png" alt="AJJ³" />
+      </a>
+      <ul class="site-nav__links" role="list">
+        <li><a href="index.html" aria-current="page">Home</a></li>
+        <li><a href="antenna.html">Antenna</a></li>
+        <li><a href="junction.html">Junction</a></li>
+        <li><a href="joinery.html">Joinery</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+
+    <section class="hero">
+      <div class="container">
+        <div class="hero__visual">
+
+          <div class="hero__text">
+            <span class="hero__eyebrow">RF · SYSTEMS · SOFTWARE</span>
+            <h1 class="hero__headline">Three disciplines. One engineer.</h1>
+            <p class="hero__subhead">Hire one mind that understands the physics, draws the architecture, and ships the code — instead of three vendors who can only talk about their own slice.</p>
+            <div class="hero__ctas">
+              <a class="btn btn--primary" href="contact.html">START A PROJECT →</a>
+              <a class="btn btn--outline" href="#services">SEE THE WORK</a>
+            </div>
+          </div>
+
+          <div class="hero__cube-block">
+            <div class="ajj3-stage">
+              <div class="ajj3-cube">
+                <div class="ajj3-face" style="background:#2D8CFF; transform:rotateY(0deg) translateZ(90px);">A</div>
+                <div class="ajj3-face" style="background:#1F5894; transform:rotateY(90deg) translateZ(90px);">J</div>
+                <div class="ajj3-face" style="background:#0A2540; transform:rotateY(180deg) translateZ(90px); border:1px solid #1F5894;">J</div>
+                <div class="ajj3-face" style="background:#1F5894; transform:rotateY(-90deg) translateZ(90px);">3</div>
+                <div class="ajj3-face" style="background:#4DA8FF; transform:rotateX(90deg) translateZ(90px);"></div>
+                <div class="ajj3-face" style="background:#0A2540; transform:rotateX(-90deg) translateZ(90px); border:1px solid #1F5894;"></div>
+              </div>
+            </div>
+            <div class="hero__cube-wordmark">
+              <div class="wm-name">AJJ<sup>3</sup></div>
+              <div class="wm-tagline">Three disciplines, cubed.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt" id="services" aria-label="Services">
+      <div class="container">
+        <div class="cards">
+
+          <a class="card" href="antenna.html" style="text-decoration:none;">
+            <p class="card__eyebrow">A · ANTENNA</p>
+            <h2 class="card__headline">From physics to signal.</h2>
+            <p class="card__subhead">RF engineering grounded in physics-level understanding.</p>
+            <span class="card__link">Explore Antenna →</span>
+          </a>
+
+          <a class="card" href="junction.html" style="text-decoration:none;">
+            <p class="card__eyebrow">J · JUNCTION</p>
+            <h2 class="card__headline">Where systems meet.</h2>
+            <p class="card__subhead">Architecture and integration across the hardware/software boundary.</p>
+            <span class="card__link">Explore Junction →</span>
+          </a>
+
+          <a class="card" href="joinery.html" style="text-decoration:none;">
+            <p class="card__eyebrow">J · JOINERY</p>
+            <h2 class="card__headline">Software, crafted.</h2>
+            <p class="card__subhead">Software engineered with the same precision as the physics it serves.</p>
+            <span class="card__link">Explore Joinery →</span>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div>
+        <div class="site-footer__brand">AJJ³</div>
+        <div class="site-footer__tagline">Three disciplines, cubed.</div>
+      </div>
+      <nav class="site-footer__nav" aria-label="Footer navigation">
+        <a href="index.html">Home</a>
+        <a href="antenna.html">Antenna</a>
+        <a href="junction.html">Junction</a>
+        <a href="joinery.html">Joinery</a>
+        <a href="contact.html">Contact</a>
+        <a href="mailto:support@ajj3.us">support@ajj3.us</a>
+      </nav>
+      <div class="site-footer__meta">
+        <span>© 2026 AJJ³ · Arthur J. Jenkins III</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WealthBuilder — Your market analysis. On your machine. One price.</title>
+<meta name="description" content="Desktop stock & portfolio analysis app. RSI/MACD/ML signals, BUY/HOLD/SELL ratings, and a private AI Assistant — one-time purchase, runs offline, your data stays local. NOT financial advice. $29 Starter / $59 Pro one-time.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+/* ─────────────────────────────────────────────────────────────
+   WEALTHBUILDER — LANDING PAGE
+   Aesthetic: trading-terminal — charcoal panels, terminal green,
+   amber ticker, monospace data readouts. Dark, quant, precise.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --bg:         #0d1117;
+  --bg-2:       #161b22;
+  --panel:      #1c2230;
+  --ink:        #e6edf3;
+  --ink-soft:   #8b97a7;
+  --green:      #26d07c;
+  --green-dk:   #149e5b;
+  --red:        #f0506e;
+  --amber:      #f5b941;
+  --blue:       #4d9fff;
+  --rule:       #2a313c;
+
+  --font-display: 'Anton', 'Impact', sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgba(38,208,124,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(38,208,124,0.025) 1px, transparent 1px);
+  background-size: 44px 44px;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+a { color: var(--green); text-decoration: none; }
+a:hover { color: var(--green-dk); }
+
+/* ─── TOP BAR ──────────────────────────────────────────────── */
+
+.topbar {
+  border-bottom: 1px solid var(--rule);
+  background: rgba(13,17,23,0.92);
+  backdrop-filter: blur(6px);
+  padding: 14px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.topbar-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+.brand {
+  font-family: var(--font-display);
+  font-size: 26px;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand-mark {
+  display: inline-flex;
+  background: var(--green);
+  color: var(--bg);
+  width: 36px; height: 36px;
+  border-radius: 6px;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 18px;
+}
+.topbar nav {
+  display: flex;
+  gap: 26px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.topbar nav a {
+  color: var(--ink-soft);
+}
+.topbar nav a:hover { color: var(--green); }
+.cta-button-sm {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: var(--green);
+  color: var(--bg);
+  padding: 10px 16px;
+  border: none;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 5px;
+}
+.cta-button-sm:hover { background: var(--ink); color: var(--bg); }
+
+/* ─── ALT-CHECKOUTS (secondary purchase options) ─────────────── */
+
+.alt-checkouts {
+  margin: 36px auto 0;
+  max-width: 720px;
+  text-align: center;
+  padding: 22px 24px;
+  border: 1px dashed var(--rule);
+  background: var(--bg-2);
+  border-radius: 8px;
+}
+.alt-checkouts-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+}
+.alt-checkout {
+  display: inline-block;
+  margin: 4px 12px;
+  padding: 6px 10px;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  font-size: 17px;
+}
+.alt-checkout strong { font-weight: 700; }
+.alt-checkout:hover {
+  border-bottom-color: var(--green);
+  color: var(--green);
+}
+.alt-checkout-tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 7px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--amber);
+  color: var(--bg);
+  vertical-align: 2px;
+  border-radius: 3px;
+}
+
+/* ─── HERO ─────────────────────────────────────────────────── */
+
+.hero {
+  padding: 60px 0 80px;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 50px;
+  align-items: center;
+}
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--green);
+  margin-bottom: 18px;
+  display: inline-block;
+  border-top: 2px solid var(--green);
+  border-bottom: 2px solid var(--green);
+  padding: 4px 0;
+}
+.hero h1 {
+  font-size: clamp(52px, 8.5vw, 104px);
+  margin-bottom: 18px;
+  letter-spacing: 0.005em;
+}
+.hero h1 .strike {
+  position: relative;
+  display: inline-block;
+  color: var(--ink-soft);
+}
+.hero h1 .strike::after {
+  content: '';
+  position: absolute;
+  left: -4px; right: -4px; top: 50%;
+  height: 6px;
+  background: var(--red);
+  transform: rotate(-3deg);
+}
+.hero h1 .accent { color: var(--green); }
+.hero-sub {
+  font-family: var(--font-body);
+  font-size: 21px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 560px;
+  margin-bottom: 30px;
+}
+.hero-sub strong { color: var(--ink); }
+.hero-ctas {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.cta-button {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--green);
+  color: var(--bg);
+  padding: 18px 28px;
+  border: 2px solid var(--green);
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+.cta-button:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--green);
+}
+.cta-button.secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 2px solid var(--rule);
+}
+.cta-button.secondary:hover {
+  background: var(--panel);
+  color: var(--ink);
+  box-shadow: 4px 4px 0 var(--green);
+  border-color: var(--green);
+}
+.hero-microcopy {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  margin-top: 18px;
+  text-transform: uppercase;
+}
+
+/* TERMINAL TICKET (hero visual) */
+.ticket-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 460px;
+}
+.ticket {
+  position: relative;
+  background: var(--panel);
+  width: 320px;
+  padding: 0 0 22px;
+  transform: rotate(2deg);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.5);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  margin-top: 50px;
+  font-family: var(--font-mono);
+  overflow: hidden;
+}
+.ticket-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--rule);
+  padding: 10px 16px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.ticket-head .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green); display: inline-block; margin-right: 6px; }
+.ticket-rows { padding: 14px 18px 4px; }
+.ticket-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 0;
+  font-size: 14px;
+  border-bottom: 1px dashed var(--rule);
+}
+.ticket-row .k { color: var(--ink-soft); }
+.ticket-row .v { font-weight: 600; color: var(--ink); }
+.ticket-row .v.buy  { color: var(--green); }
+.ticket-row .v.up   { color: var(--green); }
+.ticket-row .v.warn { color: var(--amber); }
+.ticket-rec {
+  margin: 14px 18px 0;
+  background: rgba(38,208,124,0.12);
+  border: 1px solid var(--green);
+  border-radius: 6px;
+  text-align: center;
+  padding: 12px;
+}
+.ticket-rec .label { font-size: 10px; letter-spacing: 0.2em; color: var(--ink-soft); text-transform: uppercase; }
+.ticket-rec .action {
+  font-family: var(--font-display);
+  font-size: 44px;
+  line-height: 1;
+  color: var(--green);
+  margin-top: 4px;
+}
+.ticket-price {
+  position: absolute;
+  top: 26px; right: -16px;
+  background: var(--amber);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  padding: 10px 14px;
+  text-transform: uppercase;
+  transform: rotate(8deg);
+  border-radius: 4px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}
+
+/* ─── MARQUEE / TRUST ROW ──────────────────────────────────── */
+
+.marquee {
+  background: var(--bg-2);
+  color: var(--ink);
+  padding: 16px 0;
+  overflow: hidden;
+  border-bottom: 1px solid var(--rule);
+}
+.marquee-inner {
+  display: flex;
+  gap: 52px;
+  white-space: nowrap;
+  animation: scroll 40s linear infinite;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.marquee-inner span {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink-soft);
+}
+.marquee-inner .tick { color: var(--green); }
+.marquee-inner .tick.dn { color: var(--red); }
+@keyframes scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ─── SECTION SHARED ───────────────────────────────────────── */
+
+section.block {
+  padding: 90px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--green);
+  margin-bottom: 16px;
+  display: inline-block;
+}
+.section-title {
+  font-size: clamp(40px, 6vw, 72px);
+  margin-bottom: 24px;
+  letter-spacing: 0.005em;
+}
+.section-lede {
+  font-family: var(--font-body);
+  font-size: 21px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 740px;
+  margin-bottom: 48px;
+}
+
+/* ─── PROBLEM / COMPARISON ─────────────────────────────────── */
+
+.problem { background: var(--bg-2); }
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  margin-top: 30px;
+}
+.compare-table th,
+.compare-table td {
+  padding: 16px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+}
+.compare-table thead th {
+  background: var(--bg);
+  color: var(--ink);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-bottom: 2px solid var(--rule);
+}
+.compare-table thead th.us { background: var(--green-dk); color: var(--bg); }
+.compare-table tbody tr:hover { background: var(--bg-2); }
+.compare-table .feature { font-weight: 600; }
+.compare-table .yes { color: var(--green); font-weight: 800; }
+.compare-table .no  { color: var(--red); font-weight: 800; }
+.compare-table .maybe { color: var(--ink-soft); }
+.compare-table tfoot td {
+  background: var(--bg-2);
+  font-weight: 800;
+  font-size: 16px;
+  border-bottom: none;
+}
+
+.cost-callout {
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.cost-card {
+  border: 1px solid var(--rule);
+  padding: 30px 28px;
+  background: var(--panel);
+  border-radius: 8px;
+  position: relative;
+}
+.cost-card.good {
+  background: var(--green-dk);
+  color: var(--bg);
+  border-color: var(--green);
+}
+.cost-card .name {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 12px;
+  opacity: 0.8;
+}
+.cost-card .amount {
+  font-family: var(--font-display);
+  font-size: 56px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.cost-card .period {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 14px;
+  color: var(--ink-soft);
+}
+.cost-card.good .period { color: rgba(13,17,23,0.7); }
+.cost-card .yearly {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-style: italic;
+}
+.cost-card.good .stamp-inline {
+  position: absolute;
+  top: 18px; right: 18px;
+  background: var(--amber);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 6px 10px;
+  text-transform: uppercase;
+  transform: rotate(8deg);
+  border-radius: 3px;
+}
+
+/* ─── HOW IT WORKS (flow) ──────────────────────────────────── */
+
+.flow { background: var(--bg); }
+.flow-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  gap: 22px;
+  align-items: center;
+  margin-top: 50px;
+}
+.flow-step {
+  border: 1px solid var(--rule);
+  padding: 30px;
+  background: var(--panel);
+  border-radius: 8px;
+  height: 100%;
+}
+.flow-step .n {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: var(--green);
+  text-transform: uppercase;
+}
+.flow-step h3 { font-size: 24px; margin: 8px 0 12px; }
+.flow-step p { font-size: 16px; color: var(--ink-soft); line-height: 1.55; }
+.flow-arrow {
+  font-family: var(--font-display);
+  font-size: 48px;
+  color: var(--green);
+  line-height: 1;
+  text-align: center;
+}
+.flow-ai {
+  margin-top: 50px;
+  background: var(--panel);
+  border: 1px solid var(--green);
+  border-radius: 10px;
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 36px;
+  align-items: center;
+}
+.flow-ai h3 { font-size: 30px; margin-bottom: 14px; }
+.flow-ai p { color: var(--ink-soft); font-size: 17px; line-height: 1.6; margin-bottom: 12px; }
+.flow-ai .providers {
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+.flow-ai .providers li { padding: 9px 0; border-bottom: 1px dashed var(--rule); color: var(--ink); }
+.flow-ai .providers li b { color: var(--green); }
+.ai-quote {
+  background: var(--bg);
+  border-left: 3px solid var(--green);
+  border-radius: 4px;
+  padding: 18px 20px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+.ai-quote b { color: var(--ink); }
+
+/* ─── FEATURES ─────────────────────────────────────────────── */
+
+.features { background: var(--bg-2); }
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+}
+.feature-card {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  padding: 30px 28px;
+  border-radius: 8px;
+  position: relative;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.feature-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0 var(--green);
+  border-color: var(--green);
+}
+.feature-icon { font-size: 30px; display: inline-block; margin-bottom: 14px; }
+.feature-card h3 { font-size: 22px; margin-bottom: 10px; line-height: 1.15; }
+.feature-card p { font-size: 16px; line-height: 1.55; color: var(--ink-soft); }
+.feature-card.dark {
+  background: var(--green-dk);
+  border-color: var(--green);
+}
+.feature-card.dark h3 { color: var(--bg); }
+.feature-card.dark p  { color: rgba(13,17,23,0.82); }
+.feature-card .pro-tag {
+  position: absolute;
+  top: 16px; right: 16px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  background: var(--amber);
+  color: var(--bg);
+  padding: 3px 7px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+/* ─── HONESTY ──────────────────────────────────────────────── */
+
+.honesty {
+  background: var(--bg);
+  padding: 90px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.honesty-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+.honesty-col h3 { font-size: 30px; margin-bottom: 20px; }
+.honesty-col.yes h3 { color: var(--green); }
+.honesty-col.no  h3 { color: var(--red); }
+.honesty-list {
+  list-style: none;
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.7;
+}
+.honesty-list li { padding-left: 32px; position: relative; margin-bottom: 10px; color: var(--ink); }
+.honesty-list.yes li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 800; }
+.honesty-list.no li::before  { content: '✗'; position: absolute; left: 0; color: var(--red); font-weight: 800; }
+
+/* ─── PRICING ──────────────────────────────────────────────── */
+
+.pricing {
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--rule);
+}
+.pricing .section-eyebrow { color: var(--amber); }
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+}
+.tier {
+  border: 1px solid var(--rule);
+  background: var(--panel);
+  color: var(--ink);
+  padding: 36px 30px;
+  border-radius: 10px;
+  position: relative;
+}
+.tier.featured {
+  background: var(--panel);
+  border: 2px solid var(--green);
+  transform: scale(1.04);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+}
+.tier .badge {
+  position: absolute;
+  top: -14px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--green);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  padding: 6px 14px;
+  text-transform: uppercase;
+  border-radius: 4px;
+}
+.tier-name {
+  font-family: var(--font-display);
+  font-size: 36px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.tier.featured .tier-name { color: var(--green); }
+.tier-price {
+  font-family: var(--font-display);
+  font-size: 76px;
+  line-height: 1;
+  margin: 14px 0 4px;
+}
+.tier-price .currency { font-size: 30px; vertical-align: super; }
+.tier-period {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--ink-soft);
+  margin-bottom: 24px;
+}
+.tier-features {
+  list-style: none;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  margin-bottom: 30px;
+}
+.tier-features li { padding: 8px 0; border-bottom: 1px dashed var(--rule); color: var(--ink); }
+.tier-cta {
+  display: block;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 16px 0;
+  background: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+.tier.featured .tier-cta {
+  background: var(--green);
+  color: var(--bg);
+  border-color: var(--green);
+}
+.tier-cta:hover { background: var(--green); color: var(--bg); border-color: var(--green); }
+.tier.featured .tier-cta:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* ─── FAQ ──────────────────────────────────────────────────── */
+
+.faq { background: var(--bg); }
+.faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px 60px;
+  margin-top: 40px;
+}
+.faq-item { border-top: 2px solid var(--rule); padding-top: 20px; }
+.faq-item h3 { font-size: 22px; margin-bottom: 10px; line-height: 1.2; }
+.faq-item p { font-size: 17px; line-height: 1.6; color: var(--ink-soft); }
+
+/* ─── FINAL CTA ────────────────────────────────────────────── */
+
+.final-cta {
+  background: var(--green-dk);
+  color: var(--bg);
+  padding: 110px 0;
+  text-align: center;
+  border-bottom: 1px solid var(--rule);
+}
+.final-cta h2 {
+  color: var(--bg);
+  font-size: clamp(46px, 8vw, 88px);
+  margin-bottom: 28px;
+  line-height: 1.02;
+}
+.final-cta p {
+  font-size: 21px;
+  max-width: 660px;
+  margin: 0 auto 36px;
+  line-height: 1.5;
+  color: rgba(13,17,23,0.85);
+}
+.final-cta .cta-button {
+  background: var(--bg);
+  color: var(--green);
+  border-color: var(--bg);
+  font-size: 17px;
+  padding: 22px 36px;
+}
+.final-cta .cta-button:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+  box-shadow: 4px 4px 0 var(--bg);
+}
+.final-cta .cta-button.secondary {
+  background: transparent;
+  color: var(--bg);
+  border: 2px solid var(--bg);
+}
+.final-cta .cta-button.secondary:hover { background: var(--bg); color: var(--green); }
+
+/* ─── FOOTER ───────────────────────────────────────────────── */
+
+footer {
+  background: var(--bg);
+  color: var(--ink-soft);
+  padding: 50px 0 30px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+}
+footer .footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 36px;
+}
+footer h4 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+footer ul { list-style: none; }
+footer ul li { padding: 4px 0; }
+footer a { color: var(--ink-soft); }
+footer a:hover { color: var(--green); }
+.footer-disclaimer {
+  border: 1px solid var(--rule);
+  background: var(--bg-2);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.footer-disclaimer b { color: var(--amber); }
+.footer-bottom {
+  border-top: 1px solid var(--rule);
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 12px;
+}
+
+/* ─── RESPONSIVE ───────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  body { font-size: 16px; }
+  .topbar nav { display: none; }
+  .hero-grid { grid-template-columns: 1fr; }
+  .ticket-container { height: auto; padding: 50px 0 20px; }
+  .cost-callout { grid-template-columns: 1fr; }
+  .flow-grid { grid-template-columns: 1fr; }
+  .flow-arrow { transform: rotate(90deg); margin: 6px auto; }
+  .flow-ai { grid-template-columns: 1fr; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .honesty-grid { grid-template-columns: 1fr; gap: 40px; }
+  .tier-grid { grid-template-columns: 1fr; }
+  .tier.featured { transform: none; }
+  .faq-grid { grid-template-columns: 1fr; }
+  footer .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ─── TOP BAR ──────────────────────────────────────────────── -->
+<div class="topbar">
+  <div class="container topbar-inner">
+    <div class="brand">
+      <span class="brand-mark">W</span>
+      <span>WealthBuilder</span>
+    </div>
+    <nav>
+      <a href="#problem">Why</a>
+      <a href="#how">How</a>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="cta-button-sm" href="#pricing">Buy Now →</a>
+  </div>
+</div>
+
+<!-- ─── HERO ─────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="hero-eyebrow">Desktop market analysis · runs offline · NOT financial advice</span>
+      <h1>
+        <span class="strike">$30 a month</span><br>
+        <span class="accent">$59</span> once.<br>
+        Yours.
+      </h1>
+      <p class="hero-sub">
+        <strong>WealthBuilder</strong> screens stocks with RSI, MACD, moving averages, ML
+        prediction, sentiment and risk scoring — then a private <strong>AI Assistant</strong>
+        reads your results in plain language. Bloomberg-terminal-style insight without the
+        subscription. Your watchlists and data stay on your machine.
+      </p>
+      <div class="hero-ctas">
+        <a class="cta-button" data-buy="pro" href="https://ajj3us.gumroad.com/l/REPLACE_PRO" target="_blank" rel="noopener">Buy Pro on Gumroad</a>
+        <a class="cta-button secondary" href="#features">See features</a>
+      </div>
+      <p class="hero-microcopy">
+        Windows · Mac · Linux · One-time purchase · Free demo · Your data never leaves your desk
+      </p>
+    </div>
+    <div class="ticket-container">
+      <div class="ticket">
+        <div class="ticket-price">$59 ONCE</div>
+        <div class="ticket-head">
+          <span><span class="dot"></span>WEALTHBUILDER · ANALYSIS</span>
+          <span>NVDA</span>
+        </div>
+        <div class="ticket-rows">
+          <div class="ticket-row"><span class="k">RSI (14)</span><span class="v warn">31.2</span></div>
+          <div class="ticket-row"><span class="k">MACD</span><span class="v up">▲ bull cross</span></div>
+          <div class="ticket-row"><span class="k">MA 50/200</span><span class="v up">golden</span></div>
+          <div class="ticket-row"><span class="k">ML score</span><span class="v">78 / 100</span></div>
+          <div class="ticket-row"><span class="k">Sentiment</span><span class="v up">+0.42</span></div>
+          <div class="ticket-row"><span class="k">Risk</span><span class="v warn">moderate</span></div>
+        </div>
+        <div class="ticket-rec">
+          <div class="label">Recommendation</div>
+          <div class="action">BUY</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MARQUEE TRUST ────────────────────────────────────────── -->
+<div class="marquee">
+  <div class="marquee-inner">
+    <span><span class="tick">▲</span> NO SUBSCRIPTION</span>
+    <span><span class="tick">▲</span> RUNS OFFLINE</span>
+    <span><span class="tick">▲</span> YOUR DATA STAYS LOCAL</span>
+    <span><span class="tick">▲</span> PRIVATE AI ANALYSIS</span>
+    <span><span class="tick">▲</span> NO PER-TOKEN FEES</span>
+    <span><span class="tick">▲</span> NOT A BROKERAGE</span>
+    <span><span class="tick">▲</span> ONE PRICE</span>
+    <!-- duplicate for seamless loop -->
+    <span><span class="tick">▲</span> NO SUBSCRIPTION</span>
+    <span><span class="tick">▲</span> RUNS OFFLINE</span>
+    <span><span class="tick">▲</span> YOUR DATA STAYS LOCAL</span>
+    <span><span class="tick">▲</span> PRIVATE AI ANALYSIS</span>
+    <span><span class="tick">▲</span> NO PER-TOKEN FEES</span>
+    <span><span class="tick">▲</span> NOT A BROKERAGE</span>
+    <span><span class="tick">▲</span> ONE PRICE</span>
+  </div>
+</div>
+
+<!-- ─── PROBLEM / COMPARISON ─────────────────────────────────── -->
+<section class="block problem" id="problem">
+  <div class="container">
+    <span class="section-eyebrow">// The Math</span>
+    <h2 class="section-title">You don't need a monthly<br>terminal subscription.</h2>
+    <p class="section-lede">
+      Stock-screener and "AI analysis" services bill you every month, run in their cloud,
+      keep your watchlists on their servers, and meter the AI behind per-token fees or
+      usage credits. WealthBuilder does the analysis locally, lets you bring your own AI
+      brain, and charges once. Here's what the recurring option actually costs.
+    </p>
+
+    <div class="cost-callout">
+      <div class="cost-card">
+        <div class="name">Typical screener + AI add-on</div>
+        <div class="amount">$30</div>
+        <div class="period">per month</div>
+        <div class="yearly">$360 per year, every year</div>
+      </div>
+      <div class="cost-card">
+        <div class="name">Premium "terminal-lite" tier</div>
+        <div class="amount">$50</div>
+        <div class="period">per month</div>
+        <div class="yearly">$600 per year, every year</div>
+      </div>
+      <div class="cost-card good">
+        <span class="stamp-inline">Once.</span>
+        <div class="name">WealthBuilder Pro</div>
+        <div class="amount">$59</div>
+        <div class="period">one-time purchase</div>
+        <div class="yearly">$59 total. Then never again.</div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="width: 38%;">Feature</th>
+          <th class="us">WealthBuilder</th>
+          <th>Subscription screeners</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="feature">Cost</td>
+          <td class="yes">$29 or $59 one-time</td>
+          <td class="no">$15–$50+ per month, forever</td>
+        </tr>
+        <tr>
+          <td class="feature">Where your watchlists live</td>
+          <td class="yes">On your computer</td>
+          <td class="no">In their cloud</td>
+        </tr>
+        <tr>
+          <td class="feature">AI analysis cost</td>
+          <td class="yes">Your own My_LLM, or BYO key — no per-token markup</td>
+          <td class="no">Per-token fees or capped "credits"</td>
+        </tr>
+        <tr>
+          <td class="feature">Where the AI runs</td>
+          <td class="yes">Your machine / your network (My_LLM or Ollama)</td>
+          <td class="no">Their servers (your data leaves your desk)</td>
+        </tr>
+        <tr>
+          <td class="feature">Works offline</td>
+          <td class="maybe">Analysis UI yes; live quotes need internet</td>
+          <td class="no">No (web-only)</td>
+        </tr>
+        <tr>
+          <td class="feature">Technical signals (RSI/MACD/MA/golden-cross)</td>
+          <td class="yes">Built in</td>
+          <td class="maybe">Varies by plan tier</td>
+        </tr>
+        <tr>
+          <td class="feature">Congress insider-trading tracker</td>
+          <td class="yes">Built in (Pro)</td>
+          <td class="no">Usually a separate paid product</td>
+        </tr>
+        <tr>
+          <td class="feature">Broker integrations (Alpaca, Schwab…)</td>
+          <td class="yes">Built in</td>
+          <td class="maybe">Varies</td>
+        </tr>
+        <tr>
+          <td class="feature">Is it a brokerage?</td>
+          <td class="maybe">No — analysis only, informational</td>
+          <td class="maybe">No — analysis only, informational</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>Year 1 cost</td>
+          <td style="color: var(--green);">$59 total</td>
+          <td style="color: var(--red);">$180 — $600+</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</section>
+
+<!-- ─── HOW IT WORKS ─────────────────────────────────────────── -->
+<section class="block flow" id="how">
+  <div class="container">
+    <span class="section-eyebrow">// The Workflow</span>
+    <h2 class="section-title">Screen. Score.<br>Then ask the AI.</h2>
+    <p class="section-lede">
+      Build a watchlist, run the enhanced analysis, and get a ranked table with a
+      BUY / HOLD / SELL recommendation and rationale on every name. Then let the AI
+      Assistant read the whole table back to you in plain English.
+    </p>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="n">Step 01</div>
+        <h3>Build a watchlist</h3>
+        <p>Add symbols to one of your portfolios or watchlists. Unlimited lists on Starter and Pro.</p>
+      </div>
+      <div class="flow-arrow">⟶</div>
+      <div class="flow-step">
+        <div class="n">Step 02</div>
+        <h3>Run the analysis</h3>
+        <p>RSI, MACD, moving averages (20/50/200), golden-cross, an ML prediction, sentiment and risk scoring — combined into a ranked results table.</p>
+      </div>
+      <div class="flow-arrow">⟶</div>
+      <div class="flow-step">
+        <div class="n">Step 03</div>
+        <h3>Read the rating</h3>
+        <p>Each row shows a BUY / HOLD / SELL recommendation with a short rationale and a risk level. Click through to 8 analytics charts.</p>
+      </div>
+    </div>
+
+    <div class="flow-ai">
+      <div>
+        <span class="section-eyebrow" style="margin-bottom:8px;">// Headline feature</span>
+        <h3>🤖 Analyze with AI</h3>
+        <p>
+          One click sends your screened candidates — the RSI/MACD/ML/sentiment/risk
+          signals you just computed — to an AI that explains, in plain language, which
+          names look strongest, what risks stand out, and what to investigate next. It
+          respects the risk tolerance you set.
+        </p>
+        <p>
+          <strong>Private by design.</strong> Point it at <b>My_LLM</b> — your own
+          local-first AI server — and the reasoning happens on your network with no
+          per-token cloud fees and your data never leaving your desk. Or bring your own
+          OpenAI / Anthropic key, or run a local Ollama model. The API key is stored in
+          your OS keyring, never in a plaintext file.
+        </p>
+        <div class="ai-quote">
+          <b>WealthBuilder AI:</b> "Of your screened names, the strongest setups pair an
+          oversold RSI with a fresh MACD bull cross above the 200-day MA. Watch elevated
+          risk scores on the two high-beta names — size accordingly and confirm with
+          volume. Informational only; not advice."
+        </div>
+      </div>
+      <div>
+        <ul class="providers">
+          <li><b>My_LLM</b> — your home-network server (local-first + optional cloud fallback)</li>
+          <li><b>Ollama</b> — fully offline, free, on your own GPU</li>
+          <li><b>OpenAI</b> — bring your own key</li>
+          <li><b>Anthropic (Claude)</b> — bring your own key</li>
+          <li style="border-bottom:none; color: var(--ink-soft);">No subscription. No usage credits. No phone-home from WealthBuilder itself.</li>
+        </ul>
+        <p style="margin-top:18px; font-family: var(--font-mono); font-size: 13px;">
+          Pairs with the separate <b>My_LLM</b> app —
+          <a href="#faq">bring your own AI brain.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FEATURES ─────────────────────────────────────────────── -->
+<section class="block features" id="features">
+  <div class="container">
+    <span class="section-eyebrow">// The Toolkit</span>
+    <h2 class="section-title">Everything a self-directed<br>investor wants on one screen.</h2>
+    <p class="section-lede">
+      Portfolios, watchlists, technical + ML analysis, a private AI read, alerts,
+      auto-scan, a Congress tracker, broker hookups, and options tools — all local.
+    </p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <span class="feature-icon">📁</span>
+        <h3>Portfolios &amp; Watchlists</h3>
+        <p>Multiple portfolios, each with its own watchlist. Track positions, P&amp;L, and allocation. Import/export as CSV or JSON.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📐</span>
+        <h3>Technical Analysis</h3>
+        <p>RSI, MACD, moving averages (20/50/200) and golden-cross / death-cross detection on every symbol you screen.</p>
+      </div>
+      <div class="feature-card dark">
+        <span class="feature-icon">🤖</span>
+        <h3>AI Assistant</h3>
+        <p>"Analyze with AI" reads your screened candidates in plain language. Powered by your own My_LLM, or your OpenAI / Anthropic / local Ollama key. Private, no subscription.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎯</span>
+        <h3>BUY / HOLD / SELL Ratings</h3>
+        <p>ML prediction, sentiment and risk scoring combine into a recommendation with a written rationale and risk level on each name.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📊</span>
+        <span class="pro-tag">Pro</span>
+        <h3>8-Chart Analytics</h3>
+        <p>A full analytics view per symbol — price, indicators and signal context across eight charts you can click into from the results table.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔔</span>
+        <span class="pro-tag">Pro</span>
+        <h3>Price &amp; Signal Alerts</h3>
+        <p>Price above/below, % move, RSI overbought/oversold, MACD bull/bear cross, and Congress buy/sell — delivered by email (optional SMS via Twilio).</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">⏱</span>
+        <span class="pro-tag">Pro</span>
+        <h3>Scheduled Auto-Scan</h3>
+        <p>Run your analysis automatically on a timer and surface fresh ideas without lifting a finger. Cancellable mid-run.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🏛</span>
+        <span class="pro-tag">Pro</span>
+        <h3>Congress Tracker</h3>
+        <p>Monitor congressional stock trades from House &amp; Senate disclosures and tie buy/sell alerts to your watched symbols.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🧠</span>
+        <span class="pro-tag">Pro</span>
+        <h3>ML Suggestions</h3>
+        <p>AI-generated buy ideas that aren't already in your portfolio — a starting point for your own research, not a directive.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🏦</span>
+        <h3>Broker Integrations</h3>
+        <p>Connect Alpaca and Schwab (plus IBKR, Robinhood, tastytrade, Tradier) for accounts and quick orders. Credentials live in your OS keyring, never plaintext.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">⚙️</span>
+        <h3>Options Analysis</h3>
+        <p>Covered calls, cash-secured puts, and an unusual-flow detector with Black-Scholes pricing built in — no extra install.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📈</span>
+        <h3>Live Ticker Tape</h3>
+        <p>A scrolling ticker of your symbols plus a live price worker keeps quotes moving while you work. (Live quotes need internet.)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── HONESTY ──────────────────────────────────────────────── -->
+<section class="honesty">
+  <div class="container">
+    <span class="section-eyebrow">// Honest About It</span>
+    <h2 class="section-title">What it is.<br>And what it isn't.</h2>
+
+    <div class="honesty-grid">
+      <div class="honesty-col yes">
+        <h3>What you get</h3>
+        <ul class="honesty-list yes">
+          <li>A desktop analysis cockpit — portfolios, watchlists, ranked screening</li>
+          <li>RSI / MACD / moving averages / golden-cross signals</li>
+          <li>ML prediction + sentiment + risk scoring → BUY/HOLD/SELL with rationale</li>
+          <li>A private AI Assistant (My_LLM, or your OpenAI/Anthropic/Ollama key)</li>
+          <li>Alerts, scheduled auto-scan, Congress tracker, ML picks (Pro)</li>
+          <li>Broker integrations and options tools</li>
+          <li>Your data on your machine — one-time purchase, free updates for v3.x</li>
+        </ul>
+      </div>
+      <div class="honesty-col no">
+        <h3>What it isn't</h3>
+        <ul class="honesty-list no">
+          <li>NOT a brokerage — it doesn't hold money or place trades on your behalf</li>
+          <li>NOT financial advice — every output is informational only</li>
+          <li>NOT a guarantee — signals and ML scores can be wrong; markets are uncertain</li>
+          <li>NOT a cloud service — no sync between devices, no web app</li>
+          <li>NOT a magic-money button — it's a research tool for self-directed investors</li>
+        </ul>
+        <p style="margin-top: 24px; font-style: italic; color: var(--ink-soft);">
+          Use it to <em>do your own research faster</em>. Trade decisions, and their
+          consequences, are yours. Consult a licensed professional before investing.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PRICING ──────────────────────────────────────────────── -->
+<section class="block pricing" id="pricing">
+  <div class="container">
+    <span class="section-eyebrow">// Pricing</span>
+    <h2 class="section-title">One-time. Never expires.</h2>
+    <p class="section-lede">
+      Buy once. Use forever. All v3.x updates included. Machine-locked license. Try the
+      free Demo first, or buy on Gumroad.
+    </p>
+
+    <div class="tier-grid">
+      <div class="tier">
+        <div class="tier-name">Demo</div>
+        <div class="tier-price"><span class="currency">$</span>0</div>
+        <div class="tier-period">1 portfolio · honor-system</div>
+        <ul class="tier-features">
+          <li>Try the full UI for free</li>
+          <li>1 portfolio</li>
+          <li>Basic analysis</li>
+          <li>No AI Assistant</li>
+          <li>See if it fits before you buy</li>
+        </ul>
+        <a class="tier-cta" data-buy="demo" href="https://ajj3us.gumroad.com/l/REPLACE_DEMO" target="_blank" rel="noopener">Download Demo</a>
+      </div>
+
+      <div class="tier">
+        <div class="tier-name">Starter</div>
+        <div class="tier-price"><span class="currency">$</span>29</div>
+        <div class="tier-period">One-time · 1 machine</div>
+        <ul class="tier-features">
+          <li>Unlimited portfolios</li>
+          <li>Full technical analysis (RSI/MACD/MA/golden-cross)</li>
+          <li>Full watchlist</li>
+          <li>BUY/HOLD/SELL ratings with rationale</li>
+          <li>CSV / JSON export &amp; import</li>
+          <li>Broker integrations + options tools</li>
+        </ul>
+        <a class="tier-cta" data-buy="starter" href="https://ajj3us.gumroad.com/l/REPLACE_STARTER" target="_blank" rel="noopener">Buy Starter →</a>
+      </div>
+
+      <div class="tier featured">
+        <div class="badge">Most Popular</div>
+        <div class="tier-name">Pro</div>
+        <div class="tier-price"><span class="currency">$</span>59</div>
+        <div class="tier-period">One-time · 2 machines</div>
+        <ul class="tier-features">
+          <li>Everything in Starter</li>
+          <li>🤖 AI Assistant (My_LLM / BYO key)</li>
+          <li>Full 8-chart analytics</li>
+          <li>Price &amp; signal alerts (email/SMS)</li>
+          <li>Scheduled auto-scan</li>
+          <li>Congress insider-trading tracker</li>
+          <li>ML buy-idea suggestions</li>
+        </ul>
+        <a class="tier-cta" data-buy="pro" href="https://ajj3us.gumroad.com/l/REPLACE_PRO" target="_blank" rel="noopener">Buy Pro →</a>
+      </div>
+    </div>
+
+    <!-- Also-available-on row — secondary checkouts (enable once live) -->
+    <!--
+    <div class="alt-checkouts">
+      <span class="alt-checkouts-label">// Prefer a different checkout?</span>
+      <a class="alt-checkout" href="https://payhip.com/PAYHIP_STORE_PLACEHOLDER" target="_blank" rel="noopener">
+        Also on <strong>Payhip</strong>
+        <span class="alt-checkout-tag">PayPal-friendly</span>
+      </a>
+      <a class="alt-checkout" href="https://LEMONSQUEEZY_STORE_PLACEHOLDER.lemonsqueezy.com/" target="_blank" rel="noopener">
+        Also on <strong>Lemon Squeezy</strong>
+        <span class="alt-checkout-tag">EU / UK · tax included</span>
+      </a>
+    </div>
+    -->
+  </div>
+</section>
+
+<!-- ─── FAQ ──────────────────────────────────────────────────── -->
+<section class="block faq" id="faq">
+  <div class="container">
+    <span class="section-eyebrow">// Common Questions</span>
+    <h2 class="section-title">FAQ</h2>
+
+    <div class="faq-grid">
+      <div class="faq-item">
+        <h3>Is this financial advice?</h3>
+        <p>No. WealthBuilder is an informational research tool for self-directed investors. Every signal, score, and AI read is for education and your own research — not a recommendation to buy or sell. It is not a brokerage and does not place trades for you. Consult a licensed professional before investing.</p>
+      </div>
+      <div class="faq-item">
+        <h3>How does the AI Assistant work without sending my data away?</h3>
+        <p>Point it at My_LLM — your own local-first AI server — and the reasoning runs on your own network, with no per-token cloud fees and your data staying home. You can also bring your own OpenAI/Anthropic key or run a local Ollama model. Your API key is stored in your OS keyring, never in a plaintext config file.</p>
+      </div>
+      <div class="faq-item">
+        <h3>What is My_LLM, and do I need it?</h3>
+        <p>My_LLM is a separate app — a private, local-first AI server you run yourself. It's the recommended "AI brain" for WealthBuilder's Pro AI Assistant because it keeps everything on your network with no subscription. You don't need it: an OpenAI/Anthropic key or local Ollama works too. But if privacy and no per-token fees matter to you, bring your own AI brain with My_LLM.</p>
+      </div>
+      <div class="faq-item">
+        <h3>One-time purchase — what about updates?</h3>
+        <p>All v3.x updates are free for the life of the app. No maintenance fee, no renewal. A future major version with a big new feature set may be a separate paid release, but your v3 license keeps working.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Does it work offline?</h3>
+        <p>The app, your portfolios, your watchlists, and the analysis UI all run locally. Pulling fresh quotes and news needs an internet connection, as does any cloud AI provider. Use the free Demo and a local Ollama / My_LLM to keep things fully on your own hardware.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Where is my data stored?</h3>
+        <p>Locally, in your home folder (e.g. <code>~/InvestmentAnalyzer/</code>). Broker and alert secrets live in your operating system's credential manager (Windows Credential Manager / macOS Keychain / Linux Secret Service) — never in plaintext.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Can I run it on my desktop and laptop?</h3>
+        <p>Pro includes 2 machine activations (e.g. desktop + laptop). Starter is 1. The Demo is free and honor-system with no machine binding.</p>
+      </div>
+      <div class="faq-item">
+        <h3>I see multiple checkouts — does it matter which I use?</h3>
+        <p>All checkouts deliver the same software and the same license. Gumroad is the default and fits most buyers. Lemon Squeezy is best for EU / UK / AU buyers (tax-inclusive pricing). Payhip is great if you prefer PayPal or arrived via an affiliate link.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FINAL CTA ────────────────────────────────────────────── -->
+<section class="final-cta">
+  <div class="container">
+    <h2>Your market analysis.<br>On your machine. One price.</h2>
+    <p>
+      One-time purchase. Runs offline. Private AI analysis — your data never leaves your
+      desk. Try the free Demo or buy Pro today. Informational only — not financial advice.
+    </p>
+    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+      <a class="cta-button" data-buy="pro" href="https://ajj3us.gumroad.com/l/REPLACE_PRO" target="_blank" rel="noopener">Buy Pro on Gumroad — $59</a>
+      <a class="cta-button secondary" data-buy="demo" href="https://ajj3us.gumroad.com/l/REPLACE_DEMO" target="_blank" rel="noopener">Download Free Demo</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ───────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-disclaimer">
+      <b>⚠️ Disclaimer:</b> WealthBuilder is for educational and personal research purposes
+      only and is <b>NOT financial advice</b>. It is not a brokerage, broker-dealer, or
+      investment adviser, and it does not execute trades on your behalf. Signals, ML scores,
+      sentiment, and AI output may be inaccurate and do not guarantee future results.
+      Investing involves risk, including loss of principal. Do your own research and consult
+      a licensed financial professional before making any investment decision.
+    </div>
+    <div class="footer-grid">
+      <div>
+        <h4>WealthBuilder</h4>
+        <p style="line-height: 1.7; max-width: 320px;">
+          Desktop stock &amp; portfolio analysis for self-directed investors. Private AI,
+          local data, one-time purchase. Sold on Gumroad. Your data stays yours.
+        </p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Buy</h4>
+        <ul>
+          <li><a data-buy="starter" href="https://ajj3us.gumroad.com/l/REPLACE_STARTER" target="_blank" rel="noopener">Gumroad Starter ($29)</a></li>
+          <li><a data-buy="pro" href="https://ajj3us.gumroad.com/l/REPLACE_PRO" target="_blank" rel="noopener">Gumroad Pro ($59)</a></li>
+          <li><a data-buy="demo" href="https://ajj3us.gumroad.com/l/REPLACE_DEMO" target="_blank" rel="noopener">Free Demo</a></li>
+<!--
+          <li><a href="https://payhip.com/PAYHIP_STORE_PLACEHOLDER" target="_blank" rel="noopener">Also on Payhip</a></li>
+          <li><a href="https://LEMONSQUEEZY_STORE_PLACEHOLDER.lemonsqueezy.com/" target="_blank" rel="noopener">Also on Lemon Squeezy</a></li>
+-->
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">EULA</a></li>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="https://gumroad.com/refunds">Refund Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 AJJ3 · WealthBuilder v3.x · Built for self-directed investors.</span>
+      <span>Windows + Mac + Linux · Local data · No subscription · Not financial advice</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ─────────────────────────────────────────────────────────────
+     CHECKOUT LINKS — SINGLE SOURCE OF TRUTH
+     The Gumroad products DO NOT EXIST YET. Each href below uses a
+     placeholder permalink. Create the three Gumroad products, then
+     edit the URLs ONCE in CHECKOUT_URLS and every Demo / Starter /
+     Pro link on the page updates automatically (links are tagged
+     data-buy="…").
+       TODO: replace REPLACE_STARTER / REPLACE_PRO / REPLACE_DEMO
+       after creating the Gumroad products.
+     ───────────────────────────────────────────────────────────── -->
+<script>
+  const CHECKOUT_URLS = {
+    demo:    "https://ajj3us.gumroad.com/l/REPLACE_DEMO",     // TODO: real demo permalink
+    starter: "https://ajj3us.gumroad.com/l/REPLACE_STARTER",  // TODO: real starter permalink
+    pro:     "https://ajj3us.gumroad.com/l/REPLACE_PRO",      // TODO: real pro permalink
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("a[data-buy]").forEach(function (a) {
+      var url = CHECKOUT_URLS[a.getAttribute("data-buy")];
+      if (url) a.setAttribute("href", url);
+    });
+  });
+</script>
+
+</body>
+</html>

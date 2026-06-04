@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joinery — AJJ³</title>
+  <meta name="description" content="Software products from AJJ³. Engineered with the same precision as the physics it serves.">
+  <meta property="og:title" content="Joinery — AJJ³">
+  <meta property="og:description" content="Software products from AJJ³.">
+  <meta property="og:image" content="/images/AJJ3_logo_square_1024.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/AJJ3_cube_icon_32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/AJJ3_cube_icon_16.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+
+  <style>
+    /* ── Joinery page styles ── */
+    .page-hero {
+      padding: 72px 0 56px;
+      border-bottom: 1px solid #E2E8F0;
+    }
+    .page-hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      font-weight: 500;
+      color: #0A2540;
+      margin: 10px 0 18px;
+    }
+    .page-hero__sub {
+      max-width: 600px;
+      font-size: 1.0625rem;
+      color: #5A6B82;
+      line-height: 1.7;
+    }
+
+    /* ── Products section ── */
+    .products { padding: 64px 0 80px; }
+    .products__heading {
+      font-size: 1.625rem;
+      font-weight: 500;
+      color: #0A2540;
+      margin: 10px 0 40px;
+    }
+
+    /* ── App card ── */
+    .app-card {
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 32px;
+      background: #fff;
+    }
+
+    .app-card__header {
+      background: #F8FAFC;
+      border-bottom: 1px solid #E2E8F0;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .app-card__platform {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #5A6B82;
+    }
+
+    .app-card__pricing-summary {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .price-pill {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      border: 1.5px solid #E2E8F0;
+      color: #0A2540;
+      background: #fff;
+    }
+
+    .price-pill--pro {
+      background: #2D8CFF;
+      color: #fff;
+      border-color: #2D8CFF;
+    }
+
+    .price-pill__note {
+      font-size: 0.75rem;
+      color: #5A6B82;
+    }
+
+    /* ── Card body ── */
+    .app-card__body {
+      padding: 32px 32px 28px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .app-card__name {
+      font-size: 1.625rem;
+      font-weight: 600;
+      color: #0A2540;
+      margin-bottom: 4px;
+    }
+
+    .app-card__tagline {
+      font-size: 0.9375rem;
+      color: #2D8CFF;
+      font-weight: 500;
+      margin-bottom: 14px;
+    }
+
+    .app-card__desc {
+      font-size: 0.9375rem;
+      color: #5A6B82;
+      line-height: 1.7;
+      max-width: 580px;
+      margin-bottom: 20px;
+    }
+
+    .app-card__features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 28px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 24px;
+    }
+
+    .app-card__features li {
+      font-size: 0.875rem;
+      color: #5A6B82;
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .app-card__features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #2D8CFF;
+      font-weight: 600;
+    }
+
+    /* ── Primary CTA ── */
+    .app-card__primary-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #2D8CFF;
+      color: #fff;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      transition: background 0.15s;
+    }
+
+    .app-card__primary-cta:hover { background: #1F5894; }
+
+    .app-card__primary-cta .arrow {
+      font-size: 1.1rem;
+      transition: transform 0.15s;
+    }
+
+    .app-card__primary-cta:hover .arrow { transform: translateX(3px); }
+
+    /* ── Secondary links ── */
+    .app-card__secondary {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .app-card__secondary-label {
+      font-size: 0.8125rem;
+      color: #5A6B82;
+      margin-right: 4px;
+    }
+
+    .sec-link {
+      font-size: 0.8125rem;
+      color: #2D8CFF;
+      text-decoration: none;
+      padding: 5px 12px;
+      border: 1px solid #E2E8F0;
+      border-radius: 4px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .sec-link:hover {
+      border-color: #2D8CFF;
+      color: #1F5894;
+    }
+
+    /* ── Visual side ── */
+    .app-card__visual {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding-top: 4px;
+    }
+
+    .app-badge {
+      background: #0A2540;
+      color: #fff;
+      border-radius: 8px;
+      padding: 22px 28px;
+      text-align: center;
+      width: 160px;
+    }
+
+    .app-badge__label {
+      font-size: 0.6875rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-bottom: 6px;
+    }
+
+    .app-badge__price {
+      font-size: 2.75rem;
+      font-weight: 600;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .app-badge__price sup {
+      font-size: 1.25rem;
+      font-weight: 400;
+      vertical-align: super;
+    }
+
+    .app-badge__tier {
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(255,255,255,0.25);
+      margin-top: 4px;
+    }
+
+    .app-badge__note {
+      font-size: 0.6875rem;
+      color: #5A6B82;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* ── Coming soon ── */
+    .products__coming {
+      margin-top: 16px;
+      padding: 28px 32px;
+      border: 1px dashed #E2E8F0;
+      border-radius: 8px;
+      color: #5A6B82;
+      font-size: 0.9375rem;
+    }
+
+    .products__coming .eyebrow { margin-bottom: 6px; }
+    .products__coming a { color: #2D8CFF; }
+
+    @media (max-width: 760px) {
+      .app-card__body { grid-template-columns: 1fr; }
+      .app-card__visual { display: none; }
+      .app-card__header { padding: 16px 20px; }
+      .app-card__body { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo-link">
+        <img src="/images/AJJ3_cube_icon_32.png" alt="AJJ³ cube icon" width="28" height="28">
+        <span class="logo-wordmark">AJJ<sup>3</sup></span>
+      </a>
+      <nav class="site-nav">
+        <a href="/">Home</a>
+        <a href="/antenna.html">Antenna</a>
+        <a href="/junction.html">Junction</a>
+        <a href="/joinery.html" class="active">Joinery</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">J · JOINERY</p>
+      <h1>Software products</h1>
+      <p class="page-hero__sub">
+        Each app is a standalone tool — built to solve one problem well,
+        priced as a one-time purchase, and runs entirely on your machine.
+        No subscriptions. No cloud. Your data stays yours.
+      </p>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="products">
+    <div class="container">
+      <p class="eyebrow">WHAT'S SHIPPING</p>
+      <h2 class="products__heading">Available now</h2>
+
+      <!-- ═══════════════════════════════════════════════════
+           APP CARD — THRIFT RESELLER TRACKER
+           Primary CTA → /apps/thrift/  (full landing page)
+           ═══════════════════════════════════════════════════ -->
+      <div class="app-card">
+
+        <!-- Header bar: platform tags + pricing pills -->
+        <div class="app-card__header">
+          <span class="app-card__platform">Desktop app &nbsp;·&nbsp; Windows &nbsp;·&nbsp; Mac &nbsp;·&nbsp; Linux</span>
+          <div class="app-card__pricing-summary">
+            <span class="price-pill">$19 Starter</span>
+            <span class="price-pill price-pill--pro">$39 Pro</span>
+            <span class="price-pill__note">— one-time purchase, no subscription</span>
+          </div>
+        </div>
+
+        <!-- Body: info left, price badge right -->
+        <div class="app-card__body">
+          <div>
+            <h3 class="app-card__name">Thrift Reseller Tracker</h3>
+            <p class="app-card__tagline">One-time. Offline. Yours.</p>
+            <p class="app-card__desc">
+              Full business back-office for thrift resellers — inventory, sales, taxes,
+              receipt OCR, AI listing generation, and 8-platform CSV export.
+              Everything runs on your computer. No monthly fee, no cloud, no data sharing.
+              Imports directly from Nifty, Vendoo, and List Perfectly.
+            </p>
+            <ul class="app-card__features">
+              <li>Schedule C &amp; quarterly tax reports</li>
+              <li>Receipt OCR scanning</li>
+              <li>AI listing generation (your API key)</li>
+              <li>8-platform CSV exporter</li>
+              <li>Smart import from Nifty / Vendoo / List Perfectly</li>
+              <li>14-day refund &nbsp;·&nbsp; Free 15-item demo</li>
+            </ul>
+
+            <!-- PRIMARY: takes user to the full dedicated landing page -->
+            <a class="app-card__primary-cta" href="/apps/thrift/">
+              View full app page <span class="arrow">→</span>
+            </a>
+
+            <!-- SECONDARY: direct purchase / demo links -->
+            <div class="app-card__secondary">
+              <span class="app-card__secondary-label">Buy direct:</span>
+              <a class="sec-link" href="https://ajj3us.gumroad.com/l/tnylbw" target="_blank" rel="noopener">Starter — $19</a>
+              <a class="sec-link" href="https://ajj3us.gumroad.com/l/vmirq" target="_blank" rel="noopener">Pro — $39</a>
+              <a class="sec-link" href="https://ajj3us.gumroad.com/l/gvdshl" target="_blank" rel="noopener">Free demo</a>
+            </div>
+          </div>
+
+          <!-- Visual: price badge -->
+          <div class="app-card__visual">
+            <div class="app-badge">
+              <div class="app-badge__label">Pro license</div>
+              <div class="app-badge__price"><sup>$</sup>39</div>
+              <div class="app-badge__tier">One-time · Forever</div>
+            </div>
+            <div class="app-badge__note">Starter also available<br>at $19</div>
+          </div>
+        </div>
+
+      </div>
+      <!-- ═══ END APP CARD — THRIFT RESELLER TRACKER ═══ -->
+
+
+      <!-- ═══════════════════════════════════════════════════
+           APP CARD — WEALTHBUILDER
+           Primary CTA → /apps/WealthBuilder/  (full landing page)
+           ═══════════════════════════════════════════════════ -->
+      <div class="app-card">
+
+        <!-- Header bar: platform tags + pricing pills -->
+        <div class="app-card__header">
+          <span class="app-card__platform">Desktop app &nbsp;·&nbsp; Windows &nbsp;·&nbsp; Mac &nbsp;·&nbsp; Linux</span>
+          <div class="app-card__pricing-summary">
+            <span class="price-pill">$29 Starter</span>
+            <span class="price-pill price-pill--pro">$59 Pro</span>
+            <span class="price-pill__note">— one-time purchase, no subscription</span>
+          </div>
+        </div>
+
+        <!-- Body: info left, price badge right -->
+        <div class="app-card__body">
+          <div>
+            <h3 class="app-card__name">WealthBuilder</h3>
+            <p class="app-card__tagline">Your market analysis. On your machine. One price.</p>
+            <p class="app-card__desc">
+              Desktop stock &amp; portfolio analysis with RSI/MACD/ML signals,
+              BUY/HOLD/SELL ratings, and a private AI Assistant that runs on
+              your own My_LLM or your BYO key. Watchlists, charts, and analysis
+              stay on your computer — no monthly subscription, no per-token markup.
+              <em>Informational only — not financial advice.</em>
+            </p>
+            <ul class="app-card__features">
+              <li>Technical signals (RSI / MACD / golden-cross)</li>
+              <li>BUY / HOLD / SELL ratings</li>
+              <li>Private AI Assistant (BYO key or My_LLM)</li>
+              <li>8-chart analytics + portfolio tracking</li>
+              <li>Congress insider-trading tracker (Pro)</li>
+              <li>14-day refund &nbsp;·&nbsp; Free demo</li>
+            </ul>
+
+            <!-- PRIMARY: takes user to the full dedicated landing page -->
+            <a class="app-card__primary-cta" href="/apps/WealthBuilder/">
+              View full app page <span class="arrow">→</span>
+            </a>
+
+            <!-- SECONDARY: direct purchase / demo links -->
+            <div class="app-card__secondary">
+              <span class="app-card__secondary-label">Buy direct:</span>
+              <a class="sec-link" href="https://ajj3us.gumroad.com/l/REPLACE_STARTER" target="_blank" rel="noopener">Starter — $29</a>
+              <a class="sec-link" href="https://ajj3us.gumroad.com/l/REPLACE_PRO" target="_blank" rel="noopener">Pro — $59</a>
+              <a class="sec-link" href="https://ajj3us.gumroad.com/l/REPLACE_DEMO" target="_blank" rel="noopener">Free demo</a>
+            </div>
+          </div>
+
+          <!-- Visual: price badge -->
+          <div class="app-card__visual">
+            <div class="app-badge">
+              <div class="app-badge__label">Pro license</div>
+              <div class="app-badge__price"><sup>$</sup>59</div>
+              <div class="app-badge__tier">One-time · Forever</div>
+            </div>
+            <div class="app-badge__note">Starter also available<br>at $29</div>
+          </div>
+        </div>
+
+      </div>
+      <!-- ═══ END APP CARD — WEALTHBUILDER ═══ -->
+
+
+      <!-- ═══════════════════════════════════════════════════
+           APP CARD — MY_LLM
+           Primary CTA → /apps/my_llm/  (full landing page)
+           ═══════════════════════════════════════════════════ -->
+      <div class="app-card">
+
+        <!-- Header bar: platform tags + pricing pills -->
+        <div class="app-card__header">
+          <span class="app-card__platform">Self-hosted runtime &nbsp;·&nbsp; Windows &nbsp;·&nbsp; Mac &nbsp;·&nbsp; Linux &nbsp;·&nbsp; Single binary</span>
+          <div class="app-card__pricing-summary">
+            <span class="price-pill">$29 Starter</span>
+            <span class="price-pill price-pill--pro">$59 Pro</span>
+            <span class="price-pill__note">— one-time purchase, no subscription</span>
+          </div>
+        </div>
+
+        <!-- Body: info left, price badge right -->
+        <div class="app-card__body">
+          <div>
+            <h3 class="app-card__name">My_LLM</h3>
+            <p class="app-card__tagline">Your own private AI. On your hardware.</p>
+            <p class="app-card__desc">
+              Self-hosted local LLM runtime, router, and console — stdlib-only,
+              single binary, runs on your hardware. Local-first with optional
+              cloud fallback and a hard budget cap. Exposes an OpenAI-compatible
+              <code>/v1</code> endpoint so your other apps (including WealthBuilder)
+              can plug straight in — without paying per token to anyone.
+            </p>
+            <ul class="app-card__features">
+              <li>OpenAI-compatible /v1 endpoint</li>
+              <li>Local-first routing, optional cloud fallback</li>
+              <li>Hard budget &amp; spend cap</li>
+              <li>Auto hardware-scaling (CPU / GPU)</li>
+              <li>Stdlib-only · single binary · zero deps</li>
+              <li>14-day refund &nbsp;·&nbsp; Free demo</li>
+            </ul>
+
+            <!-- PRIMARY: takes user to the full dedicated landing page -->
+            <a class="app-card__primary-cta" href="/apps/my_llm/">
+              View full app page <span class="arrow">→</span>
+            </a>
+
+            <!-- SECONDARY: direct purchase / demo links -->
+            <div class="app-card__secondary">
+              <span class="app-card__secondary-label">Buy direct:</span>
+              <a class="sec-link" href="https://ajj3us.gumroad.com/l/REPLACE_STARTER" target="_blank" rel="noopener">Starter — $29</a>
+              <a class="sec-link" href="https://ajj3us.gumroad.com/l/REPLACE_PRO" target="_blank" rel="noopener">Pro — $59</a>
+              <a class="sec-link" href="https://ajj3us.gumroad.com/l/REPLACE_DEMO" target="_blank" rel="noopener">Free demo</a>
+            </div>
+          </div>
+
+          <!-- Visual: price badge -->
+          <div class="app-card__visual">
+            <div class="app-badge">
+              <div class="app-badge__label">Pro license</div>
+              <div class="app-badge__price"><sup>$</sup>59</div>
+              <div class="app-badge__tier">One-time · Forever</div>
+            </div>
+            <div class="app-badge__note">Starter also available<br>at $29</div>
+          </div>
+        </div>
+
+      </div>
+      <!-- ═══ END APP CARD — MY_LLM ═══ -->
+
+
+      <!-- Coming soon placeholder -->
+      <div class="products__coming">
+        <p class="eyebrow">IN DEVELOPMENT</p>
+        <p>More tools in the pipeline. <a href="/contact.html">Get notified →</a></p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo-wordmark">AJJ<sup>3</sup></span>
+        <p>Three disciplines, cubed.</p>
+      </div>
+      <nav class="footer-nav">
+        <a href="/">Home</a>
+        <a href="/antenna.html">Antenna</a>
+        <a href="/junction.html">Junction</a>
+        <a href="/joinery.html">Joinery</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+      <p class="footer-copy">© 2026 AJJ³ · <a href="mailto:support@ajj3.us">support@ajj3.us</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>
