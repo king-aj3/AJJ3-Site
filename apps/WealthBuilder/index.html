@@ -922,7 +922,7 @@ footer a:hover { color: var(--green); }
         subscription. Your watchlists and data stay on your machine.
       </p>
       <div class="hero-ctas">
-        <a class="cta-button" data-buy="pro" href="https://ajj3us.gumroad.com/l/REPLACE_PRO" target="_blank" rel="noopener">Buy Pro on Gumroad</a>
+        <a class="cta-button" data-buy="pro" href="https://ajj3us.gumroad.com/l/jsrlcs" target="_blank" rel="noopener">Buy Pro on Gumroad</a>
         <a class="cta-button secondary" href="#features">See features</a>
       </div>
       <p class="hero-microcopy">
@@ -1285,7 +1285,7 @@ footer a:hover { color: var(--green); }
           <li>No AI Assistant</li>
           <li>See if it fits before you buy</li>
         </ul>
-        <a class="tier-cta" data-buy="demo" href="https://ajj3us.gumroad.com/l/REPLACE_DEMO" target="_blank" rel="noopener">Download Demo</a>
+        <a class="tier-cta" data-buy="demo" href="https://ajj3us.gumroad.com/l/jsrlcs" target="_blank" rel="noopener">Download Demo</a>
       </div>
 
       <div class="tier">
@@ -1300,7 +1300,7 @@ footer a:hover { color: var(--green); }
           <li>CSV / JSON export &amp; import</li>
           <li>Broker integrations + options tools</li>
         </ul>
-        <a class="tier-cta" data-buy="starter" href="https://ajj3us.gumroad.com/l/REPLACE_STARTER" target="_blank" rel="noopener">Buy Starter →</a>
+        <a class="tier-cta" data-buy="starter" href="https://ajj3us.gumroad.com/l/jsrlcs" target="_blank" rel="noopener">Buy Starter →</a>
       </div>
 
       <div class="tier featured">
@@ -1317,7 +1317,7 @@ footer a:hover { color: var(--green); }
           <li>Congress insider-trading tracker</li>
           <li>ML buy-idea suggestions</li>
         </ul>
-        <a class="tier-cta" data-buy="pro" href="https://ajj3us.gumroad.com/l/REPLACE_PRO" target="_blank" rel="noopener">Buy Pro →</a>
+        <a class="tier-cta" data-buy="pro" href="https://ajj3us.gumroad.com/l/jsrlcs" target="_blank" rel="noopener">Buy Pro →</a>
       </div>
     </div>
 
@@ -1390,8 +1390,8 @@ footer a:hover { color: var(--green); }
       desk. Try the free Demo or buy Pro today. Informational only — not financial advice.
     </p>
     <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-      <a class="cta-button" data-buy="pro" href="https://ajj3us.gumroad.com/l/REPLACE_PRO" target="_blank" rel="noopener">Buy Pro on Gumroad — $59</a>
-      <a class="cta-button secondary" data-buy="demo" href="https://ajj3us.gumroad.com/l/REPLACE_DEMO" target="_blank" rel="noopener">Download Free Demo</a>
+      <a class="cta-button" data-buy="pro" href="https://ajj3us.gumroad.com/l/jsrlcs" target="_blank" rel="noopener">Buy Pro on Gumroad — $59</a>
+      <a class="cta-button secondary" data-buy="demo" href="https://ajj3us.gumroad.com/l/jsrlcs" target="_blank" rel="noopener">Download Free Demo</a>
     </div>
   </div>
 </section>
@@ -1427,9 +1427,9 @@ footer a:hover { color: var(--green); }
       <div>
         <h4>Buy</h4>
         <ul>
-          <li><a data-buy="starter" href="https://ajj3us.gumroad.com/l/REPLACE_STARTER" target="_blank" rel="noopener">Gumroad Starter ($29)</a></li>
-          <li><a data-buy="pro" href="https://ajj3us.gumroad.com/l/REPLACE_PRO" target="_blank" rel="noopener">Gumroad Pro ($59)</a></li>
-          <li><a data-buy="demo" href="https://ajj3us.gumroad.com/l/REPLACE_DEMO" target="_blank" rel="noopener">Free Demo</a></li>
+          <li><a data-buy="starter" href="https://ajj3us.gumroad.com/l/jsrlcs" target="_blank" rel="noopener">Gumroad Starter ($29)</a></li>
+          <li><a data-buy="pro" href="https://ajj3us.gumroad.com/l/jsrlcs" target="_blank" rel="noopener">Gumroad Pro ($59)</a></li>
+          <li><a data-buy="demo" href="https://ajj3us.gumroad.com/l/jsrlcs" target="_blank" rel="noopener">Free Demo</a></li>
 <!--
           <li><a href="https://payhip.com/PAYHIP_STORE_PLACEHOLDER" target="_blank" rel="noopener">Also on Payhip</a></li>
           <li><a href="https://LEMONSQUEEZY_STORE_PLACEHOLDER.lemonsqueezy.com/" target="_blank" rel="noopener">Also on Lemon Squeezy</a></li>
@@ -1454,20 +1454,11 @@ footer a:hover { color: var(--green); }
 
 <!-- ─────────────────────────────────────────────────────────────
      CHECKOUT LINKS — SINGLE SOURCE OF TRUTH
-     The Gumroad products DO NOT EXIST YET. Each href below uses a
-     placeholder permalink. Create the three Gumroad products, then
-     edit the URLs ONCE in CHECKOUT_URLS and every Demo / Starter /
-     Pro link on the page updates automatically (links are tagged
-     data-buy="…").
-       TODO: replace REPLACE_STARTER / REPLACE_PRO / REPLACE_DEMO
-       after creating the Gumroad products.
+     Change GUMROAD_URL once and every Buy link on the page updates.
      ───────────────────────────────────────────────────────────── -->
 <script>
-  const CHECKOUT_URLS = {
-    demo:    "https://ajj3us.gumroad.com/l/REPLACE_DEMO",     // TODO: real demo permalink
-    starter: "https://ajj3us.gumroad.com/l/REPLACE_STARTER",  // TODO: real starter permalink
-    pro:     "https://ajj3us.gumroad.com/l/REPLACE_PRO",      // TODO: real pro permalink
-  };
+  const GUMROAD_URL   = "https://ajj3us.gumroad.com/l/jsrlcs";
+  const CHECKOUT_URLS = { demo: GUMROAD_URL, starter: GUMROAD_URL, pro: GUMROAD_URL };
   document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll("a[data-buy]").forEach(function (a) {
       var url = CHECKOUT_URLS[a.getAttribute("data-buy")];
