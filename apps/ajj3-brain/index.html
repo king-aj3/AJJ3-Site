@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AJJ³ Brain — Your own private AI. On your hardware. One price, no subscription.</title>
-<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint powers your other apps. $0 Demo / $29 Starter / $59 Pro one-time.">
+<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Smart hardware-aware model selection (MoE-savvy, even on CPU). Scheduled tasks &amp; automation (Pro) run recurring prompts on a timer to power your other apps. Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint. $0 Demo / $29 Starter / $59 Pro one-time.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -328,9 +328,10 @@ footer a:hover { color: var(--local); }
       </h1>
       <p class="hero-sub">
         <strong>AJJ³ Brain</strong> is a privacy-first local LLM runtime, router, and setup console.
-        It probes your hardware, picks the best model, and answers on your own machine —
-        with optional cloud fallback you control and a hard budget cap. One local brain that
-        also powers the AI in <strong>your other apps</strong> over an OpenAI-compatible endpoint.
+        It reads your hardware and picks a model that actually fits — a capable, CPU-friendly one
+        even without a GPU — then answers on your own machine, with optional cloud fallback you
+        control and a hard budget cap. It can run <strong>scheduled prompts on a timer</strong> and
+        powers the AI in <strong>your other apps</strong> over an OpenAI-compatible endpoint.
       </p>
       <div class="hero-ctas">
         <a class="cta-button" data-buy="pro" href="https://ajj3us.gumroad.com/l/gkfdyx" target="_blank" rel="noopener">Get Pro on Gumroad</a>
@@ -347,10 +348,10 @@ footer a:hover { color: var(--local); }
       </div>
       <div class="term-body">
         <div><span class="pr">$</span> ajj3-brain run</div>
-        <div class="cm"># probe → select → fetch → launch</div>
-        <div><span class="ok">✓</span> hardware: i5 · 16 GB · CPU</div>
-        <div><span class="ok">✓</span> tier 0 → <span class="hl">qwen2.5-coder:7b</span></div>
-        <div><span class="ok">✓</span> context fitted to VRAM: 8K</div>
+        <div class="cm"># probe → smart-select → fetch → launch</div>
+        <div><span class="ok">✓</span> hardware: i5 · 32 GB · CPU-only</div>
+        <div><span class="ok">✓</span> picked <span class="hl">gemma4:26b</span> <span class="cm">(MoE ~4B active)</span></div>
+        <div><span class="ok">✓</span> fits RAM · stays responsive on CPU</div>
         <div>&nbsp;</div>
         <div><span class="pr">$</span> ajj3-brain route "reverse a string in rust"</div>
         <div><span class="ok">local</span> answered · <span class="hl">est_cost $0.00</span></div>
@@ -358,8 +359,8 @@ footer a:hover { color: var(--local); }
         <div class="cm"># only if you set a key + budget</div>
         <div><span class="am">budget</span> daily cap $1.00 · spend $0.00</div>
         <div>&nbsp;</div>
-        <div class="cm"># your other apps consume it:</div>
-        <div><span class="hl">POST</span> 127.0.0.1:8765/v1/chat/completions</div>
+        <div class="cm"># scheduled · powers your other apps:</div>
+        <div><span class="ok">daily 07:00</span> market-brief → <span class="hl">data/scheduled/sp1.txt</span></div>
       </div>
     </div>
   </div>
@@ -378,6 +379,9 @@ footer a:hover { color: var(--local); }
     <span>MCP TOOLS <span class="dot"></span></span>
     <span>EMBEDDABLE WIDGET <span class="dot"></span></span>
     <span>ONE-CLICK SETUP <span class="dot"></span></span>
+    <span>SCHEDULED TASKS &amp; AUTOMATION <span class="dot"></span></span>
+    <span>SMART MODEL SELECTION <span class="dot"></span></span>
+    <span>RUNS WELL ON CPU <span class="dot"></span></span>
     <!-- duplicate for seamless loop -->
     <span>RUNS ON YOUR HARDWARE <span class="dot"></span></span>
     <span>NO SUBSCRIPTION <span class="dot"></span></span>
@@ -389,6 +393,9 @@ footer a:hover { color: var(--local); }
     <span>MCP TOOLS <span class="dot"></span></span>
     <span>EMBEDDABLE WIDGET <span class="dot"></span></span>
     <span>ONE-CLICK SETUP <span class="dot"></span></span>
+    <span>SCHEDULED TASKS &amp; AUTOMATION <span class="dot"></span></span>
+    <span>SMART MODEL SELECTION <span class="dot"></span></span>
+    <span>RUNS WELL ON CPU <span class="dot"></span></span>
   </div>
 </div>
 
@@ -510,7 +517,7 @@ footer a:hover { color: var(--local); }
         <div class="app-card">
           <span class="tag">REASONING · MARKET ANALYSIS</span>
           <h4>WealthBuilder</h4>
-          <p>Uses AJJ³ Brain for the model reasoning behind its own market analysis. The AI runs on your box, behind a budgeted key.</p>
+          <p>Uses AJJ³ Brain for the model reasoning behind its own market analysis. The AI runs on your box, behind a budgeted key — and a scheduled daily market brief can be waiting before you open it.</p>
         </div>
         <div class="app-card">
           <span class="tag">DROP-IN · STDLIB CLIENT</span>
@@ -528,22 +535,23 @@ footer a:hover { color: var(--local); }
     <span class="section-eyebrow">// The Toolkit</span>
     <h2 class="section-title">A whole AI stack.<br>On one machine.</h2>
     <p class="section-lede">
-      Hardware-aware model selection, a curated catalog, local-first routing with a budget,
-      RAG, optional fine-tuning, a web console, and secure multi-user access — all stdlib-only.
+      Smart hardware-aware model selection, a curated catalog, local-first routing with a budget,
+      scheduled tasks &amp; automation, RAG, optional fine-tuning, a web console, and secure
+      multi-user access — all stdlib-only.
     </p>
 
     <div class="feature-grid">
-      <div class="feature-card">
+      <div class="feature-card dark">
         <span class="feature-icon">🧭</span>
-        <h3>Auto Hardware-Scaling</h3>
-        <p>Probes CPU/RAM/GPU/VRAM, maps you to a tier, then picks the best model from your profile and shrinks the context to fit your VRAM. The right model, automatically.</p>
+        <h3>Smart Model Selection</h3>
+        <p>Reads your CPU/RAM/GPU/VRAM and picks the <strong>best model that actually fits</strong> — then shrinks the context to your VRAM. On a CPU-only or low-VRAM box it doesn't just grab the smallest model: it chooses a capable <strong>Mixture-of-Experts</strong> model whose <em>active</em> params are small (≤6B/token) and whose weights fit your RAM, so you get real quality and it stays responsive.</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">📚</span>
         <h3>Catalog + Model Manager</h3>
         <p>A curated 2026 catalog — coding, general, reasoning, vision, fast, finance — with capability scores, sizes, and context. Browse your installed models, the full Ollama library, or <strong>Hugging Face</strong> — including the <strong>LM Studio, Jan/Cortex, Unsloth and Bartowski</strong> libraries (all just curated Hugging Face orgs) and the uncensored / “heretic” fine-tunes. Search by name, filter by capability and what your hardware runs, then add / edit / reorder in a click. No JSON.</p>
       </div>
-      <div class="feature-card dark">
+      <div class="feature-card">
         <span class="feature-icon">🔀</span>
         <h3>Local-First Routing</h3>
         <p>Tries your local model first. Escalates to a Claude/OpenAI-compatible gateway only on error, low quality, high complexity, or a manual flag — never silently.</p>
@@ -572,6 +580,11 @@ footer a:hover { color: var(--local); }
         <span class="feature-icon">🎯</span>
         <h3>Optional QLoRA Fine-Tuning</h3>
         <p>Turn escalation logs into a training set and QLoRA/LoRA-tune the local model on the tasks it missed. Backend-aware: CUDA, ROCm, Apple MPS, or CPU.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔁</span>
+        <h3>Scheduled Self-Improvement (Pro)</h3>
+        <p>Set the Fine-tune panel to a schedule — <strong>daily</strong> or <strong>weekly</strong> — and AJJ³ Brain quietly refreshes its training set from your logged cloud escalations and auto-trains where supported (CUDA + source present), or preps the dataset otherwise. It defers while another job is running. Your local model gets better at <em>your</em> work, on its own.</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🖥️</span>
@@ -606,7 +619,17 @@ footer a:hover { color: var(--local); }
       <div class="feature-card">
         <span class="feature-icon">⚙️</span>
         <h3>One-Click Guided Setup</h3>
-        <p>The setup screen reads your hardware and offers one choice — <strong>Fast</strong>, <strong>Balanced</strong>, or <strong>Best</strong> — then installs Ollama, downloads the right model with a live progress bar, and verifies it. No settings to touch.</p>
+        <p>First launch lands on Setup, reads your hardware, and offers one choice — <strong>Fast</strong>, <strong>Balanced</strong>, or <strong>Best</strong>. Click <strong>Set up my AI</strong> and it installs Ollama (quietly, via winget on Windows), downloads the right model with a rolling per-layer progress %, verifies it responds, and hands you to Chat. A <strong>Cancel</strong> button aborts a running setup.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🪟</span>
+        <h3>Basic / Advanced View</h3>
+        <p>A layout switch on the Setup screen. <strong>Basic</strong> gives newcomers a clean view — just the essentials — by hiding the Wizard, Models, Dashboard, and Admin tabs. <strong>Advanced</strong> shows everything for power users. Your choice persists. A <strong>Quit</strong> button cleanly closes the local app window.</p>
+      </div>
+      <div class="feature-card dark">
+        <span class="feature-icon">⏰</span>
+        <h3>Scheduled Tasks &amp; Automation (Pro)</h3>
+        <p>Let your private AI work on a timer. Add a named task with a prompt and a schedule — <strong>hourly, daily, or weekly</strong> at a time you pick — then enable it. The console runs the prompt on your local model and saves each result to <code>data/scheduled/&lt;id&gt;.txt</code> (and <code>.json</code>) where your other apps can read it: a daily market brief for <strong>WealthBuilder</strong>, a “what’s selling” summary for <strong>Thrift</strong>, anything you script. Run now, Edit, Enable/Disable, Delete — all from the Dashboard.</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">⚡</span>
@@ -638,9 +661,10 @@ footer a:hover { color: var(--local); }
         <h3>What you get</h3>
         <ul class="honesty-list yes">
           <li>A local LLM runtime + router + console you own outright</li>
-          <li>Hardware-aware model selection from a curated catalog</li>
+          <li>Smart, hardware-aware model selection — MoE-savvy, even on CPU</li>
           <li>Local-first routing with an optional, budgeted cloud fallback</li>
           <li>An OpenAI-compatible /v1 endpoint for all your apps</li>
+          <li>Scheduled tasks &amp; automation that quietly power your other apps (Pro)</li>
           <li>Vision pass-through, RAG, and optional QLoRA fine-tuning</li>
           <li>Tools via MCP — let the model use your files, the web, and your own servers</li>
           <li>An embeddable chat widget for your own sites</li>
@@ -721,6 +745,8 @@ footer a:hover { color: var(--local); }
           <li>RBAC, per-key budgets, allow/deny</li>
           <li>VPN / TLS access + access log</li>
           <li>/v1 image &amp; vision pass-through</li>
+          <li>Scheduled tasks &amp; automation</li>
+          <li>Scheduled auto fine-tune</li>
           <li>Serve friends &amp; your other apps</li>
         </ul>
         <a class="tier-cta" data-buy="pro" href="https://ajj3us.gumroad.com/l/gkfdyx" target="_blank" rel="noopener">Get Pro →</a>
@@ -754,7 +780,11 @@ footer a:hover { color: var(--local); }
     <div class="faq-grid">
       <div class="faq-item">
         <h3>Do I need a GPU?</h3>
-        <p>No. The app runs on CPU and auto-scales the model to fit. A 16 GB CPU box runs a 7B model out of the box. If you have an NVIDIA, AMD, Intel, or Apple GPU, Ollama uses it automatically for faster inference.</p>
+        <p>No. Smart model selection reads your hardware and picks the best model that fits. Even on a CPU-only or low-VRAM box it doesn't just grab the smallest model — it chooses a capable Mixture-of-Experts model whose <em>active</em> params are small (≤6B/token) so it stays responsive, sized to fit your RAM. If you have an NVIDIA, AMD, Intel, or Apple GPU, Ollama uses it automatically for faster inference.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Can it run prompts automatically on a timer?</h3>
+        <p>Yes — Pro adds <strong>scheduled tasks</strong>. Add a named prompt with an hourly/daily/weekly schedule and a time of day, and the console runs it on your local model. Each result is written to <code>data/scheduled/&lt;id&gt;.txt</code> (and <code>.json</code>) so your other apps — like a WealthBuilder market brief or a Thrift “what’s selling” summary — can read it. You can Run now, Edit, Enable/Disable, or Delete any task. The same scheduler can also auto-refresh and (where supported) auto-train your fine-tune on a daily/weekly cadence.</p>
       </div>
       <div class="faq-item">
         <h3>Is it really free to run?</h3>
