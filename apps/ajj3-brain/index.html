@@ -330,8 +330,11 @@ footer a:hover { color: var(--local); }
         <strong>AJJ³ Brain</strong> is a privacy-first local LLM runtime, router, and setup console.
         It reads your hardware and picks a model that actually fits — a capable, CPU-friendly one
         even without a GPU — then answers on your own machine, with optional cloud fallback you
-        control and a hard budget cap. It can run <strong>scheduled prompts on a timer</strong> and
-        powers the AI in <strong>your other apps</strong> over an OpenAI-compatible endpoint.
+        control and a hard budget cap. Organize work into <strong>Projects</strong> with their own
+        instructions and files, and every chat is <strong>saved on your machine</strong> — leave it
+        idle or restart and your history is right where you left off. It can run
+        <strong>scheduled prompts on a timer</strong> and powers the AI in <strong>your other
+        apps</strong> over an OpenAI-compatible endpoint.
       </p>
       <div class="hero-ctas">
         <a class="cta-button" data-buy="pro" href="https://ajj3us.gumroad.com/l/gkfdyx" target="_blank" rel="noopener">Get Pro on Gumroad</a>
@@ -380,6 +383,7 @@ footer a:hover { color: var(--local); }
     <span>EMBEDDABLE WIDGET <span class="dot"></span></span>
     <span>ONE-CLICK SETUP <span class="dot"></span></span>
     <span>SCHEDULED TASKS &amp; AUTOMATION <span class="dot"></span></span>
+    <span>PROJECTS &amp; SAVED CHATS <span class="dot"></span></span>
     <span>SMART MODEL SELECTION <span class="dot"></span></span>
     <span>RUNS WELL ON CPU <span class="dot"></span></span>
     <!-- duplicate for seamless loop -->
@@ -394,6 +398,7 @@ footer a:hover { color: var(--local); }
     <span>EMBEDDABLE WIDGET <span class="dot"></span></span>
     <span>ONE-CLICK SETUP <span class="dot"></span></span>
     <span>SCHEDULED TASKS &amp; AUTOMATION <span class="dot"></span></span>
+    <span>PROJECTS &amp; SAVED CHATS <span class="dot"></span></span>
     <span>SMART MODEL SELECTION <span class="dot"></span></span>
     <span>RUNS WELL ON CPU <span class="dot"></span></span>
   </div>
@@ -535,9 +540,9 @@ footer a:hover { color: var(--local); }
     <span class="section-eyebrow">// The Toolkit</span>
     <h2 class="section-title">A whole AI stack.<br>On one machine.</h2>
     <p class="section-lede">
-      Smart hardware-aware model selection, a curated catalog, local-first routing with a budget,
-      scheduled tasks &amp; automation, RAG, optional fine-tuning, a web console, and secure
-      multi-user access — all stdlib-only.
+      Projects with saved chats, smart hardware-aware model selection, a curated catalog,
+      local-first routing with a budget, scheduled tasks &amp; automation, RAG, optional
+      fine-tuning, a web console, and secure multi-user access — all stdlib-only.
     </p>
 
     <div class="feature-grid">
@@ -545,6 +550,11 @@ footer a:hover { color: var(--local); }
         <span class="feature-icon">🧭</span>
         <h3>Smart Model Selection</h3>
         <p>Reads your CPU/RAM/GPU/VRAM and picks the <strong>best model that actually fits</strong> — then shrinks the context to your VRAM. On a CPU-only or low-VRAM box it doesn't just grab the smallest model: it chooses a capable <strong>Mixture-of-Experts</strong> model whose <em>active</em> params are small (≤6B/token) and whose weights fit your RAM, so you get real quality and it stays responsive.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🗂️</span>
+        <h3>Projects &amp; Saved Chats</h3>
+        <p>Organize your work like the big cloud assistants — but fully local. Create <strong>Projects</strong> with a description, custom <strong>Instructions</strong> (a system prompt every chat in the project follows), and uploaded <strong>Files</strong> (chunked, embedded, answered with citations). Every conversation is <strong>saved automatically on your machine</strong> and reloads instantly — leave it idle, refresh, or restart and your history is right where you left off. Reopen any past chat and keep going; add, rename, delete and reorder from the sidebar. Your chats live on your disk, never the cloud.</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">📚</span>
