@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AJJ³ Brain — Your own private AI. On your hardware. One price, no subscription.</title>
-<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Smart hardware-aware model selection (MoE-savvy, even on CPU). Smart context &amp; compaction: the context window auto-sizes to fit your GPU and long chats compress instead of silently forgetting. Scheduled tasks &amp; automation (Pro) run recurring prompts on a timer to power your other apps. Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint. $0 Demo / $29 Starter / $59 Pro one-time.">
+<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Smart hardware-aware model selection (MoE-savvy, even on CPU). Smart context &amp; compaction: the context window auto-sizes to fit your GPU and long chats compress instead of silently forgetting. FLEET multi-machine dispatch (Pro): your other computers become workers — each request runs where that model is already warm, with automatic local fallback. Scheduled tasks &amp; automation (Pro) run recurring prompts on a timer to power your other apps. Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint. $0 Demo / $29 Starter / $59 Pro one-time.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -335,7 +335,9 @@ footer a:hover { color: var(--local); }
         idle or restart and your history is right where you left off. <strong>Long chats don’t
         fall apart</strong>: the context window auto-sizes to fit your GPU, and older messages
         compress into a summary (code kept verbatim) instead of silently vanishing. It can run
-        <strong>scheduled prompts on a timer</strong> and powers the AI in <strong>your other
+        <strong>scheduled prompts on a timer</strong>, can turn <strong>your other computers
+        into workers</strong> (FLEET — each request runs where that model is already warm,
+        falling back to this box if a node dies), and powers the AI in <strong>your other
         apps</strong> over an OpenAI-compatible endpoint.
       </p>
       <div class="hero-ctas">
@@ -388,6 +390,7 @@ footer a:hover { color: var(--local); }
     <span>PROJECTS &amp; SAVED CHATS <span class="dot"></span></span>
     <span>SMART MODEL SELECTION <span class="dot"></span></span>
     <span>SMART CONTEXT &amp; COMPACTION <span class="dot"></span></span>
+    <span>FLEET MULTI-MACHINE DISPATCH <span class="dot"></span></span>
     <span>RUNS WELL ON CPU <span class="dot"></span></span>
     <!-- duplicate for seamless loop -->
     <span>RUNS ON YOUR HARDWARE <span class="dot"></span></span>
@@ -404,6 +407,7 @@ footer a:hover { color: var(--local); }
     <span>PROJECTS &amp; SAVED CHATS <span class="dot"></span></span>
     <span>SMART MODEL SELECTION <span class="dot"></span></span>
     <span>SMART CONTEXT &amp; COMPACTION <span class="dot"></span></span>
+    <span>FLEET MULTI-MACHINE DISPATCH <span class="dot"></span></span>
     <span>RUNS WELL ON CPU <span class="dot"></span></span>
   </div>
 </div>
@@ -457,6 +461,7 @@ footer a:hover { color: var(--local); }
         <tr><td class="feature">Per-call cost</td><td class="yes">$0 local · capped cloud fallback</td><td class="no">Per-token / per-credit</td></tr>
         <tr><td class="feature">Works offline</td><td class="yes">Yes (after first model download)</td><td class="no">No</td></tr>
         <tr><td class="feature">Long conversations</td><td class="yes">Auto-compressed, never silently cut</td><td class="maybe">Capped; old turns silently dropped</td></tr>
+        <tr><td class="feature">Use several of your machines</td><td class="yes">FLEET: warm-model routing + background offload (Pro)</td><td class="no">N/A — it's their datacenter</td></tr>
         <tr><td class="feature">Telemetry / phone-home</td><td class="yes">None</td><td class="maybe">Varies — usually yes</td></tr>
         <tr><td class="feature">Powers your other apps</td><td class="yes">OpenAI-compatible /v1 endpoint</td><td class="maybe">Yes, metered per token</td></tr>
         <tr><td class="feature">Runtime weight</td><td class="yes">Stdlib-only single binary</td><td class="no">N/A (it's a website)</td></tr>
@@ -560,6 +565,11 @@ footer a:hover { color: var(--local); }
         <span class="feature-icon">🧠</span>
         <h3>Smart Context &amp; Compaction</h3>
         <p>The context window <strong>auto-sizes per request</strong> so the model and its memory always fit your GPU — no silent CPU-spill slowdowns from an oversized window. When a long chat nears the limit, older turns are <strong>compressed into a rolling summary</strong> (your code blocks stay verbatim) instead of silently dropped — a badge shows how full the context is, and a conversation can keep going for weeks.</p>
+      </div>
+      <div class="feature-card dark">
+        <span class="feature-icon">🛰️</span>
+        <h3>FLEET Multi-Machine Dispatch <small>(Pro)</small></h3>
+        <p>Point the hub at your other computers — plain Ollama workers on your VPN — and each request runs on the node where that model is <strong>already warm</strong>, then the least-busy one, with this box as automatic fallback: <strong>a dead node never fails a request</strong>. Tag an old PC <code>background</code> and it quietly takes compaction, scheduled prompts, and document embeddings. Whole requests to whole models — deliberately <strong>no model splitting</strong>, which gets slower on mixed home machines. Off by default; the dashboard grows a per-node Fleet panel and the chat footer shows which machine answered.</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🗂️</span>
@@ -686,6 +696,7 @@ footer a:hover { color: var(--local); }
           <li>Local-first routing with an optional, budgeted cloud fallback</li>
           <li>An OpenAI-compatible /v1 endpoint for all your apps</li>
           <li>Scheduled tasks &amp; automation that quietly power your other apps (Pro)</li>
+          <li>FLEET multi-machine dispatch — your other PCs become warm-model workers with automatic local fallback (Pro)</li>
           <li>Vision pass-through, RAG, and optional QLoRA fine-tuning</li>
           <li>Tools via MCP — let the model use your files, the web, and your own servers</li>
           <li>An embeddable chat widget for your own sites</li>
@@ -810,6 +821,10 @@ footer a:hover { color: var(--local); }
       <div class="faq-item">
         <h3>Can it run prompts automatically on a timer?</h3>
         <p>Yes — Pro adds <strong>scheduled tasks</strong>. Add a named prompt with an hourly/daily/weekly schedule and a time of day, and the console runs it on your local model. Each result is written to <code>data/scheduled/&lt;id&gt;.txt</code> (and <code>.json</code>) so your other apps — like a WealthBuilder market brief or a Thrift “what’s selling” summary — can read it. You can Run now, Edit, Enable/Disable, or Delete any task. The same scheduler can also auto-refresh and (where supported) auto-train your fine-tune on a daily/weekly cadence.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Can it use more than one computer?</h3>
+        <p>Yes — Pro adds <strong>FLEET</strong>. Each extra machine runs a plain Ollama daemon on your VPN; the hub routes every request to the node where that model is already loaded (no model-swap stalls), old boxes take the background work — compaction, scheduled prompts, document embeddings — and if a node dies, the request just runs on the hub. It routes whole requests to whole models and deliberately never splits one model across machines (on home networks that makes every token wait on the slowest box). Workers must bind to the VPN interface only — Ollama itself has no login.</p>
       </div>
       <div class="faq-item">
         <h3>Is it really free to run?</h3>
