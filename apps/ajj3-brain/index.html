@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AJJ³ Brain — Your own private AI. On your hardware. One price, no subscription.</title>
-<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Smart hardware-aware model selection (MoE-savvy, even on CPU). Scheduled tasks &amp; automation (Pro) run recurring prompts on a timer to power your other apps. Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint. $0 Demo / $29 Starter / $59 Pro one-time.">
+<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Smart hardware-aware model selection (MoE-savvy, even on CPU). Smart context &amp; compaction: the context window auto-sizes to fit your GPU and long chats compress instead of silently forgetting. Scheduled tasks &amp; automation (Pro) run recurring prompts on a timer to power your other apps. Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint. $0 Demo / $29 Starter / $59 Pro one-time.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -332,7 +332,9 @@ footer a:hover { color: var(--local); }
         even without a GPU — then answers on your own machine, with optional cloud fallback you
         control and a hard budget cap. Organize work into <strong>Projects</strong> with their own
         instructions and files, and every chat is <strong>saved on your machine</strong> — leave it
-        idle or restart and your history is right where you left off. It can run
+        idle or restart and your history is right where you left off. <strong>Long chats don’t
+        fall apart</strong>: the context window auto-sizes to fit your GPU, and older messages
+        compress into a summary (code kept verbatim) instead of silently vanishing. It can run
         <strong>scheduled prompts on a timer</strong> and powers the AI in <strong>your other
         apps</strong> over an OpenAI-compatible endpoint.
       </p>
@@ -385,6 +387,7 @@ footer a:hover { color: var(--local); }
     <span>SCHEDULED TASKS &amp; AUTOMATION <span class="dot"></span></span>
     <span>PROJECTS &amp; SAVED CHATS <span class="dot"></span></span>
     <span>SMART MODEL SELECTION <span class="dot"></span></span>
+    <span>SMART CONTEXT &amp; COMPACTION <span class="dot"></span></span>
     <span>RUNS WELL ON CPU <span class="dot"></span></span>
     <!-- duplicate for seamless loop -->
     <span>RUNS ON YOUR HARDWARE <span class="dot"></span></span>
@@ -400,6 +403,7 @@ footer a:hover { color: var(--local); }
     <span>SCHEDULED TASKS &amp; AUTOMATION <span class="dot"></span></span>
     <span>PROJECTS &amp; SAVED CHATS <span class="dot"></span></span>
     <span>SMART MODEL SELECTION <span class="dot"></span></span>
+    <span>SMART CONTEXT &amp; COMPACTION <span class="dot"></span></span>
     <span>RUNS WELL ON CPU <span class="dot"></span></span>
   </div>
 </div>
@@ -452,6 +456,7 @@ footer a:hover { color: var(--local); }
         <tr><td class="feature">Where your prompts go</td><td class="yes">Nowhere — stays local by default</td><td class="no">Uploaded every call</td></tr>
         <tr><td class="feature">Per-call cost</td><td class="yes">$0 local · capped cloud fallback</td><td class="no">Per-token / per-credit</td></tr>
         <tr><td class="feature">Works offline</td><td class="yes">Yes (after first model download)</td><td class="no">No</td></tr>
+        <tr><td class="feature">Long conversations</td><td class="yes">Auto-compressed, never silently cut</td><td class="maybe">Capped; old turns silently dropped</td></tr>
         <tr><td class="feature">Telemetry / phone-home</td><td class="yes">None</td><td class="maybe">Varies — usually yes</td></tr>
         <tr><td class="feature">Powers your other apps</td><td class="yes">OpenAI-compatible /v1 endpoint</td><td class="maybe">Yes, metered per token</td></tr>
         <tr><td class="feature">Runtime weight</td><td class="yes">Stdlib-only single binary</td><td class="no">N/A (it's a website)</td></tr>
@@ -549,7 +554,12 @@ footer a:hover { color: var(--local); }
       <div class="feature-card dark">
         <span class="feature-icon">🧭</span>
         <h3>Smart Model Selection</h3>
-        <p>Reads your CPU/RAM/GPU/VRAM and picks the <strong>best model that actually fits</strong> — then shrinks the context to your VRAM. On a CPU-only or low-VRAM box it doesn't just grab the smallest model: it chooses a capable <strong>Mixture-of-Experts</strong> model whose <em>active</em> params are small (≤6B/token) and whose weights fit your RAM, so you get real quality and it stays responsive.</p>
+        <p>Reads your CPU/RAM/GPU/VRAM and picks the <strong>best model that actually fits</strong> — and the context window adapts per request to fit your VRAM. On a CPU-only or low-VRAM box it doesn't just grab the smallest model: it chooses a capable <strong>Mixture-of-Experts</strong> model whose <em>active</em> params are small (≤6B/token) and whose weights fit your RAM, so you get real quality and it stays responsive.</p>
+      </div>
+      <div class="feature-card dark">
+        <span class="feature-icon">🧠</span>
+        <h3>Smart Context &amp; Compaction</h3>
+        <p>The context window <strong>auto-sizes per request</strong> so the model and its memory always fit your GPU — no silent CPU-spill slowdowns from an oversized window. When a long chat nears the limit, older turns are <strong>compressed into a rolling summary</strong> (your code blocks stay verbatim) instead of silently dropped — a badge shows how full the context is, and a conversation can keep going for weeks.</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🗂️</span>
@@ -672,6 +682,7 @@ footer a:hover { color: var(--local); }
         <ul class="honesty-list yes">
           <li>A local LLM runtime + router + console you own outright</li>
           <li>Smart, hardware-aware model selection — MoE-savvy, even on CPU</li>
+          <li>Smart context &amp; compaction — long chats compress instead of silently forgetting</li>
           <li>Local-first routing with an optional, budgeted cloud fallback</li>
           <li>An OpenAI-compatible /v1 endpoint for all your apps</li>
           <li>Scheduled tasks &amp; automation that quietly power your other apps (Pro)</li>
@@ -791,6 +802,10 @@ footer a:hover { color: var(--local); }
       <div class="faq-item">
         <h3>Do I need a GPU?</h3>
         <p>No. Smart model selection reads your hardware and picks the best model that fits. Even on a CPU-only or low-VRAM box it doesn't just grab the smallest model — it chooses a capable Mixture-of-Experts model whose <em>active</em> params are small (≤6B/token) so it stays responsive, sized to fit your RAM. If you have an NVIDIA, AMD, Intel, or Apple GPU, Ollama uses it automatically for faster inference.</p>
+      </div>
+      <div class="faq-item">
+        <h3>What happens when a chat gets really long?</h3>
+        <p>It doesn’t fall apart. The context window auto-sizes per request to fit your GPU (a fixed window either wastes VRAM or silently forgets), and near the limit older turns are compressed into a rolling summary by your local model — code blocks are kept verbatim — instead of being silently dropped. A badge shows how full the context is, and you can choose “stay fast” vs “expand” per conversation.</p>
       </div>
       <div class="faq-item">
         <h3>Can it run prompts automatically on a timer?</h3>
