@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AJJ³ Brain — Your own private AI. On your hardware. One price, no subscription.</title>
-<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Smart hardware-aware model selection (MoE-savvy, even on CPU). Smart context &amp; compaction: the context window auto-sizes to fit your GPU and long chats compress instead of silently forgetting. FLEET multi-machine dispatch (Pro): your other computers become workers — each request runs where that model is already warm, with automatic local fallback; setting a worker up is one wizard (VPN included) with live per-machine health and tok/s on the hub. Scheduled tasks &amp; automation (Pro) run recurring prompts on a timer to power your other apps. Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint. $0 Demo / $29 Starter / $59 Pro one-time.">
+<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Smart hardware-aware model selection (MoE-savvy, even on CPU). Smart context &amp; compaction: the context window auto-sizes to fit your GPU and long chats compress instead of silently forgetting. FLEET multi-machine dispatch (Pro): your other computers become workers — each request runs where that model is already warm, with automatic local fallback; setting a worker up is one wizard (VPN included) with live per-machine health and tok/s on the hub. Batch fan-out (every tier): one /api/batch call runs a list of independent jobs concurrently across the fleet — in-order results, one failed item never kills the rest, budgets per item. Scheduled tasks &amp; automation (Pro) run recurring prompts on a timer to power your other apps. Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint. $0 Demo / $29 Starter / $59 Pro one-time.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -338,7 +338,9 @@ footer a:hover { color: var(--local); }
         <strong>scheduled prompts on a timer</strong>, can turn <strong>your other computers
         into workers</strong> (FLEET — one wizard sets a worker up, VPN included; each
         request runs where that model is already warm, falling back to this box if a
-        node dies, with live per-machine health and tok/s on the dashboard), and powers the AI in <strong>your other
+        node dies, with live per-machine health and tok/s on the dashboard), can fan <strong>a list of
+        independent jobs</strong> across the whole fleet in one batch call (results in
+        order, one bad item never kills the rest, budgets per item), and powers the AI in <strong>your other
         apps</strong> over an OpenAI-compatible endpoint.
       </p>
       <div class="hero-ctas">
@@ -393,6 +395,7 @@ footer a:hover { color: var(--local); }
     <span>SMART CONTEXT &amp; COMPACTION <span class="dot"></span></span>
     <span>FLEET MULTI-MACHINE DISPATCH <span class="dot"></span></span>
     <span>ONE-WIZARD WORKER SETUP <span class="dot"></span></span>
+    <span>BATCH FAN-OUT · 20 JOBS, ONE CALL <span class="dot"></span></span>
     <span>RUNS WELL ON CPU <span class="dot"></span></span>
     <!-- duplicate for seamless loop -->
     <span>RUNS ON YOUR HARDWARE <span class="dot"></span></span>
@@ -411,6 +414,7 @@ footer a:hover { color: var(--local); }
     <span>SMART CONTEXT &amp; COMPACTION <span class="dot"></span></span>
     <span>FLEET MULTI-MACHINE DISPATCH <span class="dot"></span></span>
     <span>ONE-WIZARD WORKER SETUP <span class="dot"></span></span>
+    <span>BATCH FAN-OUT · 20 JOBS, ONE CALL <span class="dot"></span></span>
     <span>RUNS WELL ON CPU <span class="dot"></span></span>
   </div>
 </div>
@@ -466,6 +470,7 @@ footer a:hover { color: var(--local); }
         <tr><td class="feature">Long conversations</td><td class="yes">Auto-compressed, never silently cut</td><td class="maybe">Capped; old turns silently dropped</td></tr>
         <tr><td class="feature">Use several of your machines</td><td class="yes">FLEET: warm-model routing + background offload (Pro)</td><td class="no">N/A — it's their datacenter</td></tr>
         <tr><td class="feature">Setting a second machine up</td><td class="yes">One wizard — VPN install included; live health + tok/s per node</td><td class="no">N/A</td></tr>
+        <tr><td class="feature">Many independent jobs at once</td><td class="yes">One /api/batch call — concurrent, in-order results, budgets per item</td><td class="maybe">One message at a time; batch is API-only, queued, per-token</td></tr>
         <tr><td class="feature">Telemetry / phone-home</td><td class="yes">None</td><td class="maybe">Varies — usually yes</td></tr>
         <tr><td class="feature">Powers your other apps</td><td class="yes">OpenAI-compatible /v1 endpoint</td><td class="maybe">Yes, metered per token</td></tr>
         <tr><td class="feature">Runtime weight</td><td class="yes">Stdlib-only single binary</td><td class="no">N/A (it's a website)</td></tr>
@@ -574,6 +579,11 @@ footer a:hover { color: var(--local); }
         <span class="feature-icon">🛰️</span>
         <h3>FLEET Multi-Machine Dispatch <small>(Pro)</small></h3>
         <p>Point the hub at your other computers — plain Ollama workers on your VPN — and each request runs on the node where that model is <strong>already warm</strong>, then the least-busy one, with this box as automatic fallback: <strong>a dead node never fails a request</strong>. Tag an old PC <code>background</code> and it quietly takes compaction, scheduled prompts, and document embeddings. Whole requests to whole models — deliberately <strong>no model splitting</strong>, which gets slower on mixed home machines. Off by default; the dashboard grows a per-node Fleet panel and the chat footer shows which machine answered. <strong>New in v0.5:</strong> a worker is <strong>one wizard</strong> to set up — it installs Ollama, the models, and even Tailscale (you sign in once) — the hub finds it with <strong>scan-and-approve</strong>, and the panel monitors every node live: requests, <strong>tok/s average + peak</strong>, uptime, CPU, RAM. The recommended agent mode keeps each worker's Ollama <strong>loopback-only</strong> behind an HMAC-signed proxy, and workers need <strong>no license</strong>.</p>
+      </div>
+      <div class="feature-card dark">
+        <span class="feature-icon">⚡</span>
+        <h3>Batch Fan-Out</h3>
+        <p>Hand the server a <strong>list of independent jobs</strong> in one <code>POST /api/batch</code> call — 20 product photos become 20 listings <strong>at once</strong>, not one by one. Each item is a full routed request (its own images, RAG collection, model, sampling), results return <strong>in input order</strong>, one failed item never kills the rest, and cloud escalations stay <strong>budget-capped per item</strong>. Works on every tier; with a Pro FLEET the batch spreads across <strong>every machine you own</strong> — a mixed text+vision batch hits each specialist node simultaneously. Honest numbers: N <em>warm</em> nodes ≈ N× on independent items; a single box overlaps only as far as Ollama allows.</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🗂️</span>
@@ -702,6 +712,7 @@ footer a:hover { color: var(--local); }
           <li>Scheduled tasks &amp; automation that quietly power your other apps (Pro)</li>
           <li>FLEET multi-machine dispatch — your other PCs become warm-model workers with automatic local fallback (Pro)</li>
           <li>One-wizard worker setup (VPN included) with live per-node health and tok/s monitoring (Pro)</li>
+          <li>Batch fan-out — one /api/batch call runs a list of independent jobs concurrently, in-order results, budgets per item (every tier; multiplies across FLEET nodes)</li>
           <li>Vision pass-through, RAG, and optional QLoRA fine-tuning</li>
           <li>Tools via MCP — let the model use your files, the web, and your own servers</li>
           <li>An embeddable chat widget for your own sites</li>
@@ -830,6 +841,10 @@ footer a:hover { color: var(--local); }
       <div class="faq-item">
         <h3>Can it use more than one computer?</h3>
         <p>Yes — Pro adds <strong>FLEET</strong>. Each extra machine runs a plain Ollama daemon on your VPN; the hub routes every request to the node where that model is already loaded (no model-swap stalls), old boxes take the background work — compaction, scheduled prompts, document embeddings — and if a node dies, the request just runs on the hub. It routes whole requests to whole models and deliberately never splits one model across machines (on home networks that makes every token wait on the slowest box). Since v0.5, setting a worker up is <strong>one wizard</strong> — it installs Ollama, the models, and even Tailscale (you sign in once) — the hub finds it with scan-and-approve, the Fleet panel shows live health and tok/s per machine, and the recommended agent mode keeps the worker's no-login Ollama loopback-only behind a signed proxy. Workers need no license of their own.</p>
+      </div>
+      <div class="faq-item">
+        <h3>My app has 20 jobs — one call or twenty?</h3>
+        <p>One. <code>POST /api/batch</code> takes a list of independent items — each with its own prompt, images, RAG collection, even its own model — and runs them concurrently, spreading across every reachable FLEET node when you have one (a mixed text+vision batch hits each specialist machine simultaneously). You poll one id; results come back in input order, a failed item never kills the rest, and cloud escalations stay budget-capped per item. On a single box the overlap is modest (Ollama's parallel slots) — the endpoint works on every tier, and the fleet is what multiplies it.</p>
       </div>
       <div class="faq-item">
         <h3>Is it really free to run?</h3>
