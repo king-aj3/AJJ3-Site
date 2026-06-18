@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AJJ³ Brain — Your own private AI. On your hardware. One price, no subscription.</title>
-<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Smart hardware-aware model selection (MoE-savvy, even on CPU). Smart context &amp; compaction: the context window auto-sizes to fit your GPU and long chats compress instead of silently forgetting. FLEET multi-machine dispatch (Pro): your other computers become workers — each request runs where that model is already warm, with automatic local fallback; setting a worker up is one wizard (VPN included) with live per-machine health and tok/s on the hub. Batch fan-out (every tier): one /api/batch call runs a list of independent jobs concurrently across the fleet — in-order results, one failed item never kills the rest, budgets per item. Drop a whole project in (every tier): zip or drag a codebase into chat and it ingests with its folder structure intact — path-true citations and a layout map, RAG retrieval over the project (not whole-repo-in-context). Scheduled tasks &amp; automation (Pro) run recurring prompts on a timer to power your other apps. Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint. $0 Demo / $29 Starter / $59 Pro one-time.">
+<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Smart hardware-aware model selection (MoE-savvy, even on CPU). Smart context &amp; compaction: the context window auto-sizes to fit your GPU and long chats compress instead of silently forgetting. FLEET multi-machine dispatch (Pro): your other computers become workers — each request runs where that model is already warm, with automatic local fallback; setting a worker up is one wizard (VPN included) with live per-machine health and tok/s on the hub. Batch fan-out (every tier): one /api/batch call runs a list of independent jobs concurrently across the fleet — in-order results, one failed item never kills the rest, budgets per item. Drop a whole project in (every tier): zip or drag a codebase into chat and it ingests with its folder structure intact — path-true citations and a layout map, RAG retrieval over the project (not whole-repo-in-context). MCP tools &amp; one-click setup: your local model can use tools — files, web search, git, fetch — through MCP servers the console installs and wires up for you in one click (no terminal), every tool call gated by your confirmation; a detect → recommend → install → verify registry sets up the free runtimes it needs (Ollama, SearXNG, Node, uv) from one Set up button (tool use is Starter-tier; installing the free runtimes stays free). Scheduled tasks &amp; automation (Pro) run recurring prompts on a timer to power your other apps. Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint. $0 Demo / $29 Starter / $59 Pro one-time.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -340,7 +340,10 @@ footer a:hover { color: var(--local); }
         request runs where that model is already warm, falling back to this box if a
         node dies, with live per-machine health and tok/s on the dashboard), can fan <strong>a list of
         independent jobs</strong> across the whole fleet in one batch call (results in
-        order, one bad item never kills the rest, budgets per item), and powers the AI in <strong>your other
+        order, one bad item never kills the rest, budgets per item), can let the local model
+        <strong>use tools</strong> — files, web search, git, fetch — through <strong>MCP servers the
+        console installs and wires up in one click</strong> (no terminal, every call gated by your
+        confirmation), and powers the AI in <strong>your other
         apps</strong> over an OpenAI-compatible endpoint.
       </p>
       <div class="hero-ctas">
@@ -386,7 +389,7 @@ footer a:hover { color: var(--local); }
     <span>NO TELEMETRY <span class="dot"></span></span>
     <span>STDLIB-ONLY · ZERO DEPS <span class="dot"></span></span>
     <span>ONE BRAIN · MANY APPS <span class="dot"></span></span>
-    <span>MCP TOOLS <span class="dot"></span></span>
+    <span>MCP TOOLS · ONE-CLICK SETUP <span class="dot"></span></span>
     <span>EMBEDDABLE WIDGET <span class="dot"></span></span>
     <span>ONE-CLICK SETUP <span class="dot"></span></span>
     <span>SCHEDULED TASKS &amp; AUTOMATION <span class="dot"></span></span>
@@ -406,7 +409,7 @@ footer a:hover { color: var(--local); }
     <span>NO TELEMETRY <span class="dot"></span></span>
     <span>STDLIB-ONLY · ZERO DEPS <span class="dot"></span></span>
     <span>ONE BRAIN · MANY APPS <span class="dot"></span></span>
-    <span>MCP TOOLS <span class="dot"></span></span>
+    <span>MCP TOOLS · ONE-CLICK SETUP <span class="dot"></span></span>
     <span>EMBEDDABLE WIDGET <span class="dot"></span></span>
     <span>ONE-CLICK SETUP <span class="dot"></span></span>
     <span>SCHEDULED TASKS &amp; AUTOMATION <span class="dot"></span></span>
@@ -474,6 +477,7 @@ footer a:hover { color: var(--local); }
         <tr><td class="feature">Setting a second machine up</td><td class="yes">One wizard — VPN install included; live health + tok/s per node</td><td class="no">N/A</td></tr>
         <tr><td class="feature">Many independent jobs at once</td><td class="yes">One /api/batch call — concurrent, in-order results, budgets per item</td><td class="maybe">One message at a time; batch is API-only, queued, per-token</td></tr>
         <tr><td class="feature">Feed it a whole codebase</td><td class="yes">Drop a .zip/folder — structure kept, real-path citations, RAG over the project</td><td class="maybe">Paste files into a big context, per-token, by hand</td></tr>
+        <tr><td class="feature">Let the model use tools (files, web, git)</td><td class="yes">MCP servers the console installs in one click — every call you confirm (Starter)</td><td class="maybe">Built-in tools, but on their servers, their rules</td></tr>
         <tr><td class="feature">Telemetry / phone-home</td><td class="yes">None</td><td class="maybe">Varies — usually yes</td></tr>
         <tr><td class="feature">Powers your other apps</td><td class="yes">OpenAI-compatible /v1 endpoint</td><td class="maybe">Yes, metered per token</td></tr>
         <tr><td class="feature">Runtime weight</td><td class="yes">Stdlib-only single binary</td><td class="no">N/A (it's a website)</td></tr>
@@ -660,8 +664,8 @@ footer a:hover { color: var(--local); }
       </div>
       <div class="feature-card dark">
         <span class="feature-icon">🧰</span>
-        <h3>Tools via MCP</h3>
-        <p>Connect Model Context Protocol servers — files, web, databases, or your own — and the local model can call them mid-answer, with a Continue/Cancel confirm. Local <code>stdio</code> servers by default; remote <code>http</code> servers opt-in. Tools work over <code>/v1</code> too.</p>
+        <h3>MCP Tools &amp; One-Click Setup</h3>
+        <p>Your local model can now <strong>use tools</strong> — files, web search, git, fetch — through Model Context Protocol servers the console <strong>installs and wires up for you in one click</strong>, no terminal. A stdlib MCP host runs each server (<code>stdio</code> by default, remote Streamable <code>http</code> opt-in) and feeds the tools to the model through an Ollama tool-call loop with <strong>per-step Continue/Cancel confirmation</strong> and RAG grounding; tools work over <code>/v1</code> too. A <em>detect → recommend → install → verify</em> registry adds the free runtimes a server needs — <strong>Ollama, SearXNG, Node, uv</strong> — from <strong>Set up</strong> buttons in the dashboard, the first-run wizard, and the setup screen (never sudo). Tool <em>use</em> is a Starter-tier feature; installing the free runtimes stays free.</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">💬</span>
@@ -671,7 +675,7 @@ footer a:hover { color: var(--local); }
       <div class="feature-card">
         <span class="feature-icon">⚙️</span>
         <h3>One-Click Guided Setup</h3>
-        <p>First launch lands on Setup, reads your hardware, and offers one choice — <strong>Fast</strong>, <strong>Balanced</strong>, or <strong>Best</strong>. Click <strong>Set up my AI</strong> and it installs Ollama (quietly, via winget on Windows), downloads the right model with a rolling per-layer progress %, verifies it responds, and hands you to Chat. A <strong>Cancel</strong> button aborts a running setup.</p>
+        <p>First launch lands on Setup, reads your hardware, and offers one choice — <strong>Fast</strong>, <strong>Balanced</strong>, or <strong>Best</strong>. Click <strong>Set up my AI</strong> and it installs Ollama (quietly, via winget on Windows), downloads the right model with a rolling per-layer progress %, verifies it responds, and hands you to Chat. The same <strong>Auto-setup</strong> step can install the optional add-ons — web search (SearXNG), MCP runtimes (Node, uv), and your cloud key — each a one-click <strong>Set up</strong> button, offered not forced. A <strong>Cancel</strong> button aborts a running setup.</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🪟</span>
@@ -723,7 +727,7 @@ footer a:hover { color: var(--local); }
           <li>Batch fan-out — one /api/batch call runs a list of independent jobs concurrently, in-order results, budgets per item (every tier; multiplies across FLEET nodes)</li>
           <li>Drop a whole project in — zip/drag a codebase; folder structure kept, real-path citations + a layout map; RAG over the project (every tier)</li>
           <li>Vision pass-through, RAG, and optional QLoRA fine-tuning</li>
-          <li>Tools via MCP — let the model use your files, the web, and your own servers</li>
+          <li>MCP tools &amp; one-click setup — the model uses files, web search, git and fetch through servers the console installs and wires up for you, every call you confirm (tool use is Starter; installing the free runtimes stays free)</li>
           <li>An embeddable chat widget for your own sites</li>
           <li>One-click guided setup and one-click backup &amp; restore</li>
           <li>Secure remote multi-user access over VPN/TLS (Pro)</li>
@@ -872,8 +876,8 @@ footer a:hover { color: var(--local); }
         <p>Create an API key in the console, point the app's base URL at <code>http://&lt;host&gt;:8765/v1</code>, and send the key. Most OpenAI client code works unchanged. A zero-dependency Python client is included.</p>
       </div>
       <div class="faq-item">
-        <h3>Can it use my files, the web, or other tools?</h3>
-        <p>Yes — connect Model Context Protocol (MCP) servers and the local model can call them while it answers. Local <code>stdio</code> servers keep everything on your machine; remote <code>http</code> servers are opt-in. In the built-in Chat each tool call asks you to confirm; over <code>/v1</code> your apps can opt in to tool use.</p>
+        <h3>Can it use my files, the web, or other tools — without the terminal?</h3>
+        <p>Yes. Your local model can call tools — files, web search, git, fetch — through Model Context Protocol servers, and the console <strong>installs and wires them up for you in one click</strong>; no terminal. A <em>detect → recommend → install → verify</em> registry sets up the free runtimes a server needs (Ollama, SearXNG, Node, uv) from a <strong>Set up</strong> button — user-level installs, never sudo. Local <code>stdio</code> servers keep everything on your machine; remote Streamable <code>http</code> servers are opt-in. Every tool call asks you to <strong>Continue or Cancel</strong> first, and over <code>/v1</code> your apps opt in to tool use. Tool <em>use</em> unlocks at Starter; the config UI shows on every tier and installing the free runtimes is always free.</p>
       </div>
       <div class="faq-item">
         <h3>Can I put a chat box on my own website?</h3>
