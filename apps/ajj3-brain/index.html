@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AJJ³ Brain — Your own private AI. On your hardware. One price, no subscription.</title>
-<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Smart hardware-aware model selection (MoE-savvy, even on CPU). Smart context &amp; compaction: the context window auto-sizes to fit your GPU and long chats compress instead of silently forgetting. FLEET multi-machine dispatch (Pro): your other computers become workers — each request runs where that model is already warm, with automatic local fallback; setting a worker up is one wizard (VPN included) with live per-machine health and tok/s on the hub. Batch fan-out (every tier): one /api/batch call runs a list of independent jobs concurrently across the fleet — in-order results, one failed item never kills the rest, budgets per item. Drop a whole project in (every tier): zip or drag a codebase into chat and it ingests with its folder structure intact — path-true citations and a layout map, RAG retrieval over the project (not whole-repo-in-context). MCP tools &amp; one-click setup: your local model can use tools — files, web search, git, fetch — through MCP servers the console installs and wires up for you in one click (no terminal), every tool call gated by your confirmation; a detect → recommend → install → verify registry sets up the free runtimes it needs (Ollama, SearXNG, Node, uv) from one Set up button (tool use is Starter-tier; installing the free runtimes stays free). Scheduled tasks &amp; automation (Pro) run recurring prompts on a timer to power your other apps. Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint. $0 Demo / $29 Starter / $59 Pro one-time.">
+<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Smart hardware-aware model selection (MoE-savvy, even on CPU). Smart context &amp; compaction: the context window auto-sizes to fit your GPU and long chats compress instead of silently forgetting. FLEET multi-machine dispatch (Pro): your other computers become workers — each request runs where that model is already warm, with automatic local fallback; setting a worker up is one wizard (VPN included) with live per-machine health and tok/s on the hub. Batch fan-out (every tier): one /api/batch call runs a list of independent jobs concurrently across the fleet — in-order results, one failed item never kills the rest, budgets per item. Drop a whole project in (every tier): zip or drag a codebase into chat and it ingests with its folder structure intact — path-true citations and a layout map, RAG retrieval over the project (not whole-repo-in-context). MCP tools &amp; one-click setup: your local model can use tools — files, web search, git, fetch — through MCP servers the console installs and wires up for you in one click (no terminal), every tool call gated by your confirmation; a detect → recommend → install → verify registry sets up the free runtimes it needs (Ollama, SearXNG, Node, uv) from one Set up button (tool use is Starter-tier; installing the free runtimes stays free). Scheduled tasks &amp; automation (Pro) run recurring prompts on a timer to power your other apps. One-click local fine-tuning: a guided Set up provisions a QLoRA training venv that reuses your existing torch (never downgrades a working ROCm/CUDA build), turns logged cloud-escalations into a dataset, runs 4-bit QLoRA via bitsandbytes on CUDA AND ROCm, then merges the LoRA into a standalone model ready for GGUF + Ollama (Set up + Merge adapter buttons; Starter) — proven end-to-end on a Radeon RX 7900 XTX, with scheduled auto-retrain now on ROCm too (Pro). Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint. $0 Demo / $29 Starter / $59 Pro one-time.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -343,7 +343,10 @@ footer a:hover { color: var(--local); }
         order, one bad item never kills the rest, budgets per item), can let the local model
         <strong>use tools</strong> — files, web search, git, fetch — through <strong>MCP servers the
         console installs and wires up in one click</strong> (no terminal, every call gated by your
-        confirmation), and powers the AI in <strong>your other
+        confirmation), can <strong>teach itself from its own misses</strong> — one click
+        turns the answers it had to escalate to the cloud into a QLoRA training set and
+        <strong>merges the result into a ready-to-run model on your own GPU, now including
+        AMD/ROCm</strong> — and powers the AI in <strong>your other
         apps</strong> over an OpenAI-compatible endpoint.
       </p>
       <div class="hero-ctas">
@@ -400,6 +403,7 @@ footer a:hover { color: var(--local); }
     <span>ONE-WIZARD WORKER SETUP <span class="dot"></span></span>
     <span>BATCH FAN-OUT · 20 JOBS, ONE CALL <span class="dot"></span></span>
     <span>DROP A WHOLE PROJECT IN <span class="dot"></span></span>
+    <span>ONE-CLICK LOCAL FINE-TUNING <span class="dot"></span></span>
     <span>RUNS WELL ON CPU <span class="dot"></span></span>
     <!-- duplicate for seamless loop -->
     <span>RUNS ON YOUR HARDWARE <span class="dot"></span></span>
@@ -420,6 +424,7 @@ footer a:hover { color: var(--local); }
     <span>ONE-WIZARD WORKER SETUP <span class="dot"></span></span>
     <span>BATCH FAN-OUT · 20 JOBS, ONE CALL <span class="dot"></span></span>
     <span>DROP A WHOLE PROJECT IN <span class="dot"></span></span>
+    <span>ONE-CLICK LOCAL FINE-TUNING <span class="dot"></span></span>
     <span>RUNS WELL ON CPU <span class="dot"></span></span>
   </div>
 </div>
@@ -478,6 +483,7 @@ footer a:hover { color: var(--local); }
         <tr><td class="feature">Many independent jobs at once</td><td class="yes">One /api/batch call — concurrent, in-order results, budgets per item</td><td class="maybe">One message at a time; batch is API-only, queued, per-token</td></tr>
         <tr><td class="feature">Feed it a whole codebase</td><td class="yes">Drop a .zip/folder — structure kept, real-path citations, RAG over the project</td><td class="maybe">Paste files into a big context, per-token, by hand</td></tr>
         <tr><td class="feature">Let the model use tools (files, web, git)</td><td class="yes">MCP servers the console installs in one click — every call you confirm (Starter)</td><td class="maybe">Built-in tools, but on their servers, their rules</td></tr>
+        <tr><td class="feature">Make the local model better at your work</td><td class="yes">One-click local fine-tuning — trains on its own cloud-escalations, on your GPU (CUDA &amp; ROCm) (Starter)</td><td class="no">You can't fine-tune their model</td></tr>
         <tr><td class="feature">Telemetry / phone-home</td><td class="yes">None</td><td class="maybe">Varies — usually yes</td></tr>
         <tr><td class="feature">Powers your other apps</td><td class="yes">OpenAI-compatible /v1 endpoint</td><td class="maybe">Yes, metered per token</td></tr>
         <tr><td class="feature">Runtime weight</td><td class="yes">Stdlib-only single binary</td><td class="no">N/A (it's a website)</td></tr>
@@ -567,8 +573,8 @@ footer a:hover { color: var(--local); }
     <h2 class="section-title">A whole AI stack.<br>On one machine.</h2>
     <p class="section-lede">
       Projects with saved chats, smart hardware-aware model selection, a curated catalog,
-      local-first routing with a budget, scheduled tasks &amp; automation, RAG, optional
-      fine-tuning, a web console, and secure multi-user access — all stdlib-only.
+      local-first routing with a budget, scheduled tasks &amp; automation, RAG, one-click
+      local fine-tuning (CUDA &amp; ROCm), a web console, and secure multi-user access — all stdlib-only.
     </p>
 
     <div class="feature-grid">
@@ -632,15 +638,15 @@ footer a:hover { color: var(--local); }
         <h3>RAG Knowledge Base</h3>
         <p>The <code>learn</code> pipeline researches a topic on the web, builds a corpus, and indexes it for retrieval. Retrieved chunks can be injected into the local prompt before answering.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card dark">
         <span class="feature-icon">🎯</span>
-        <h3>Optional QLoRA Fine-Tuning</h3>
-        <p>Turn escalation logs into a training set and QLoRA/LoRA-tune the local model on the tasks it missed. Backend-aware: CUDA, ROCm, Apple MPS, or CPU.</p>
+        <h3>One-click local fine-tuning</h3>
+        <p>A guided <strong>Set up</strong> provisions a training venv that <strong>reuses your existing torch</strong> — it never downgrades a working ROCm/CUDA build — turns your logged cloud-escalations into a dataset, and runs <strong>4-bit QLoRA via bitsandbytes on CUDA <em>and</em> ROCm</strong>. A <strong>Merge adapter</strong> button runs prep → train → merge and folds the LoRA into a standalone model ready for GGUF + Ollama (GGUF export stays guided). Until now fine-tuning was guided/manual and effectively CUDA-only; this is one-click and <strong>proven end-to-end on a Radeon RX 7900 XTX</strong>. (Set up / train / merge: Starter.)</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🔁</span>
         <h3>Scheduled Self-Improvement (Pro)</h3>
-        <p>Set the Fine-tune panel to a schedule — <strong>daily</strong> or <strong>weekly</strong> — and AJJ³ Brain quietly refreshes its training set from your logged cloud escalations and auto-trains where supported (CUDA + source present), or preps the dataset otherwise. It defers while another job is running. Your local model gets better at <em>your</em> work, on its own.</p>
+        <p>Set the Fine-tune panel to a schedule — <strong>daily</strong> or <strong>weekly</strong> — and AJJ³ Brain quietly refreshes its training set from your logged cloud escalations and auto-trains where supported — now on <strong>CUDA <em>and</em> ROCm</strong> — or preps the dataset otherwise. It defers while another job is running. Your local model gets better at <em>your</em> work, on its own.</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🖥️</span>
@@ -702,6 +708,11 @@ footer a:hover { color: var(--local); }
         <h3>Windows (macOS &amp; Linux Coming Soon)</h3>
         <p>Windows now; macOS &amp; Linux coming soon. Inference acceleration via Ollama auto-detects CPU / NVIDIA CUDA / AMD ROCm / Apple Metal. llama.cpp is wired in as an alternative runtime.</p>
       </div>
+      <div class="feature-card">
+        <span class="feature-icon">⚡</span>
+        <h3>Automatic llama.cpp Speed Tuning</h3>
+        <p>On the llama.cpp runtime, AJJ³ Brain reads your hardware and sets the five llama-server flags for you — MoE expert offload (<code>--n-cpu-moe</code>), GPU layers, KV-cache quant, mmap/mlock, and threads — so big <strong>MoE models run on small VRAM</strong> without hand-tuning. Opt-in; Ollama is unchanged. Part of GPU optimization (Starter+).</p>
+      </div>
     </div>
   </div>
 </section>
@@ -726,7 +737,9 @@ footer a:hover { color: var(--local); }
           <li>One-wizard worker setup (VPN included) with live per-node health and tok/s monitoring (Pro)</li>
           <li>Batch fan-out — one /api/batch call runs a list of independent jobs concurrently, in-order results, budgets per item (every tier; multiplies across FLEET nodes)</li>
           <li>Drop a whole project in — zip/drag a codebase; folder structure kept, real-path citations + a layout map; RAG over the project (every tier)</li>
-          <li>Vision pass-through, RAG, and optional QLoRA fine-tuning</li>
+          <li>Vision pass-through and a RAG knowledge base</li>
+          <li>One-click local fine-tuning — Set up provisions a QLoRA venv reusing your existing torch, trains on your logged cloud-escalations, and Merge adapter folds the LoRA into a ready-to-run model; runs on CUDA and AMD/ROCm, proven on a Radeon RX 7900 XTX (Starter; needs a capable GPU)</li>
+          <li>Automatic llama.cpp speed tuning — sets the five llama-server flags from your hardware so big MoE models fit small VRAM; opt-in, Ollama unchanged (Starter+)</li>
           <li>MCP tools &amp; one-click setup — the model uses files, web search, git and fetch through servers the console installs and wires up for you, every call you confirm (tool use is Starter; installing the free runtimes stays free)</li>
           <li>An embeddable chat widget for your own sites</li>
           <li>One-click guided setup and one-click backup &amp; restore</li>
@@ -862,6 +875,10 @@ footer a:hover { color: var(--local); }
       <div class="faq-item">
         <h3>Can I feed it a whole code project?</h3>
         <p>Yes — zip the project (or use <strong>Add folder</strong> / drag-and-drop) and ingest it, or drop the <code>.zip</code> straight onto the chat. It expands with its <strong>folder structure intact</strong>: citations name the real path (<code>src/utils/foo.py</code>), and a generated <code>_STRUCTURE.md</code> map lets you ask how it's organized. Junk dirs (<code>.git</code>, <code>node_modules</code>), binaries, and zip bombs are skipped automatically. Honest caveat: it answers by <strong>retrieval over the project</strong>, so ask about specific parts — a local model can't hold an entire repo in context the way a 200K-token cloud assistant can.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Can it fine-tune on my AMD GPU?</h3>
+        <p>Yes. <strong>One-click local fine-tuning</strong> runs 4-bit QLoRA via bitsandbytes on <strong>both CUDA and AMD/ROCm</strong> — we've proven the full prep → train → merge flow end-to-end on a <strong>Radeon RX 7900 XTX</strong>. The guided <strong>Set up</strong> builds a training venv that <strong>reuses your existing torch</strong>, so it won't downgrade a working ROCm (or CUDA) build, then turns your logged cloud-escalations into a dataset; <strong>Merge adapter</strong> folds the LoRA into a standalone model ready for GGUF + Ollama (GGUF export stays guided). Set up / train / merge is Starter; the scheduled auto-retrain on a timer is Pro and now runs on ROCm too. Honest caveat: fine-tuning wants a capable GPU — on a CPU-only box it's there but slow.</p>
       </div>
       <div class="faq-item">
         <h3>Is it really free to run?</h3>
