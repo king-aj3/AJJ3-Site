@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AJJ³ Brain — Your own private AI. On your hardware. One price, no subscription.</title>
-<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Smart hardware-aware model selection (MoE-savvy, even on CPU). Smart context &amp; compaction: the context window auto-sizes to fit your GPU and long chats compress instead of silently forgetting. FLEET multi-machine dispatch (Pro): your other computers become workers — each request runs where that model is already warm, with automatic local fallback; setting a worker up is one wizard (VPN included) with live per-machine health and tok/s on the hub. Batch fan-out (every tier): one /api/batch call runs a list of independent jobs concurrently across the fleet — in-order results, one failed item never kills the rest, budgets per item. Drop a whole project in (every tier): zip or drag a codebase into chat and it ingests with its folder structure intact — path-true citations and a layout map, RAG retrieval over the project (not whole-repo-in-context). MCP tools &amp; one-click setup: your local model can use tools — files, web search, git, fetch — through MCP servers the console installs and wires up for you in one click (no terminal), every tool call gated by your confirmation; a detect → recommend → install → verify registry sets up the free runtimes it needs (Ollama, SearXNG, Node, uv) from one Set up button (tool use is Starter-tier; installing the free runtimes stays free). Scheduled tasks &amp; automation (Pro) run recurring prompts on a timer to power your other apps. One-click local fine-tuning: a guided Set up provisions a QLoRA training venv that reuses your existing torch (never downgrades a working ROCm/CUDA build), turns logged cloud-escalations into a dataset, runs 4-bit QLoRA via bitsandbytes on CUDA AND ROCm, then merges the LoRA into a standalone model ready for GGUF + Ollama (Set up + Merge adapter buttons; Starter) — proven end-to-end on a Radeon RX 7900 XTX, with scheduled auto-retrain now on ROCm too (Pro). Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint. $0 Demo / $29 Starter / $59 Pro one-time.">
+<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Smart hardware-aware model selection (MoE-savvy, even on CPU). Smart context &amp; compaction: the context window auto-sizes to fit your GPU and long chats compress instead of silently forgetting. FLEET multi-machine dispatch (Pro): your other computers become workers — each request runs where that model is already warm, with automatic local fallback; setting a worker up is one wizard (VPN included) with live per-machine health and tok/s on the hub. Batch fan-out (every tier): one /api/batch call runs a list of independent jobs concurrently across the fleet — in-order results, one failed item never kills the rest, budgets per item. Drop a whole project in (every tier): zip or drag a codebase into chat and it ingests with its folder structure intact — path-true citations and a layout map, RAG retrieval over the project (not whole-repo-in-context). MCP tools &amp; one-click setup: your local model can use tools — files, web search, git, fetch — through MCP servers the console installs and wires up for you in one click (no terminal), every tool call gated by your confirmation; a detect → recommend → install → verify registry sets up the free runtimes it needs (Ollama, SearXNG, Node, uv) from one Set up button (tool use is Starter-tier; installing the free runtimes stays free). Scheduled tasks &amp; automation (Pro) run recurring prompts on a timer to power your other apps. One-click local fine-tuning: a guided Set up provisions a QLoRA training venv that reuses your existing torch (never downgrades a working ROCm/CUDA build), turns logged cloud-escalations into a dataset, runs 4-bit QLoRA via bitsandbytes on CUDA AND ROCm, then merges the LoRA into a standalone model ready for GGUF + Ollama (Set up + Merge adapter buttons; Starter) — proven end-to-end on a Radeon RX 7900 XTX, with scheduled auto-retrain now on ROCm too (Pro). Appearance customisation (every tier): make the console yours with built-in Light / Dark / High-Contrast themes, ~11 semantic colour pickers (one Accent pick recolours every button, tab and highlight at once), per-element text colour + bold toggles, a UI-scale slider, a wide-layout toggle, drag-resizable chat panes, and save-your-own named themes — built on CSS custom properties, 100% client-side in localStorage, applied pre-paint so there's no flash, zero telemetry. Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint. $0 Demo / $29 Starter / $59 Pro one-time.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -346,7 +346,10 @@ footer a:hover { color: var(--local); }
         confirmation), can <strong>teach itself from its own misses</strong> — one click
         turns the answers it had to escalate to the cloud into a QLoRA training set and
         <strong>merges the result into a ready-to-run model on your own GPU, now including
-        AMD/ROCm</strong> — and powers the AI in <strong>your other
+        AMD/ROCm</strong>, lets you <strong>make the console truly yours</strong> with
+        Appearance customisation (built-in Light / Dark / High-Contrast themes, a colour
+        picker for every widget, adjustable text size &amp; boldness, and a drag-resizable
+        chat — all saved per device), and powers the AI in <strong>your other
         apps</strong> over an OpenAI-compatible endpoint.
       </p>
       <div class="hero-ctas">
@@ -405,6 +408,7 @@ footer a:hover { color: var(--local); }
     <span>DROP A WHOLE PROJECT IN <span class="dot"></span></span>
     <span>ONE-CLICK LOCAL FINE-TUNING <span class="dot"></span></span>
     <span>RUNS WELL ON CPU <span class="dot"></span></span>
+    <span>APPEARANCE CUSTOMISATION · THEMES &amp; COLOURS <span class="dot"></span></span>
     <!-- duplicate for seamless loop -->
     <span>RUNS ON YOUR HARDWARE <span class="dot"></span></span>
     <span>NO SUBSCRIPTION <span class="dot"></span></span>
@@ -426,6 +430,7 @@ footer a:hover { color: var(--local); }
     <span>DROP A WHOLE PROJECT IN <span class="dot"></span></span>
     <span>ONE-CLICK LOCAL FINE-TUNING <span class="dot"></span></span>
     <span>RUNS WELL ON CPU <span class="dot"></span></span>
+    <span>APPEARANCE CUSTOMISATION · THEMES &amp; COLOURS <span class="dot"></span></span>
   </div>
 </div>
 
@@ -484,6 +489,7 @@ footer a:hover { color: var(--local); }
         <tr><td class="feature">Feed it a whole codebase</td><td class="yes">Drop a .zip/folder — structure kept, real-path citations, RAG over the project</td><td class="maybe">Paste files into a big context, per-token, by hand</td></tr>
         <tr><td class="feature">Let the model use tools (files, web, git)</td><td class="yes">MCP servers the console installs in one click — every call you confirm (Starter)</td><td class="maybe">Built-in tools, but on their servers, their rules</td></tr>
         <tr><td class="feature">Make the local model better at your work</td><td class="yes">One-click local fine-tuning — trains on its own cloud-escalations, on your GPU (CUDA &amp; ROCm) (Starter)</td><td class="no">You can't fine-tune their model</td></tr>
+        <tr><td class="feature">Customise the look</td><td class="yes">Themes, ~11 colour pickers, text size/bold, resizable chat — saved locally (every tier)</td><td class="maybe">A light/dark toggle, maybe an accent</td></tr>
         <tr><td class="feature">Telemetry / phone-home</td><td class="yes">None</td><td class="maybe">Varies — usually yes</td></tr>
         <tr><td class="feature">Powers your other apps</td><td class="yes">OpenAI-compatible /v1 endpoint</td><td class="maybe">Yes, metered per token</td></tr>
         <tr><td class="feature">Runtime weight</td><td class="yes">Stdlib-only single binary</td><td class="no">N/A (it's a website)</td></tr>
@@ -693,6 +699,11 @@ footer a:hover { color: var(--local); }
         <h3>Scheduled Tasks &amp; Automation (Pro)</h3>
         <p>Let your private AI work on a timer. Add a named task with a prompt and a schedule — <strong>hourly, daily, or weekly</strong> at a time you pick — then enable it. The console runs the prompt on your local model and saves each result to <code>data/scheduled/&lt;id&gt;.txt</code> (and <code>.json</code>) where your other apps can read it: a daily market brief for <strong>WealthBuilder</strong>, a “what’s selling” summary for <strong>Thrift</strong>, anything you script. Run now, Edit, Enable/Disable, Delete — all from the Dashboard.</p>
       </div>
+      <div class="feature-card dark">
+        <span class="feature-icon">🎨</span>
+        <h3>Appearance Customisation</h3>
+        <p>Make the console <strong>truly yours</strong>. An ⚙ Appearance panel built on CSS custom properties ships <strong>4 presets</strong> — High-Contrast (default), Amber Industrial, Light, Cool Slate — plus <strong>~11 semantic colour pickers</strong> where one <strong>Accent</strong> pick recolours every button, tab and highlight at once. Set per-element <strong>text colour + bold toggles</strong>, scale the whole UI with a slider, switch on a <strong>wide layout</strong>, and <strong>drag-resize the chat panes</strong>. Save your own <strong>named themes</strong>. It's <strong>100% client-side in localStorage</strong>, applied pre-paint so there's <strong>no flash</strong>, with zero telemetry — and it's core UI on <strong>every tier</strong>.</p>
+      </div>
       <div class="feature-card">
         <span class="feature-icon">⚡</span>
         <h3>Live Streaming Replies</h3>
@@ -742,6 +753,7 @@ footer a:hover { color: var(--local); }
           <li>Automatic llama.cpp speed tuning — sets the five llama-server flags from your hardware so big MoE models fit small VRAM; opt-in, Ollama unchanged (Starter+)</li>
           <li>MCP tools &amp; one-click setup — the model uses files, web search, git and fetch through servers the console installs and wires up for you, every call you confirm (tool use is Starter; installing the free runtimes stays free)</li>
           <li>An embeddable chat widget for your own sites</li>
+          <li>Appearance customisation — Light/Dark/High-Contrast themes, ~11 colour pickers, text size &amp; bold, a UI-scale slider, and drag-resizable chat, saved per device (every tier)</li>
           <li>One-click guided setup and one-click backup &amp; restore</li>
           <li>Secure remote multi-user access over VPN/TLS (Pro)</li>
           <li>A single stdlib-only binary for Windows (macOS &amp; Linux coming soon)</li>
@@ -899,6 +911,10 @@ footer a:hover { color: var(--local); }
       <div class="faq-item">
         <h3>Can I put a chat box on my own website?</h3>
         <p>Yes. Embed a one-line <code>&lt;script src=".../widget.js"&gt;</code> and a floating chat panel appears, wired to your hub's <code>/v1</code>. It's style-isolated (shadow DOM) and configurable; a demo page is included. Use a budgeted, IP-allow-listed key for anything public.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Can I customise the look?</h3>
+        <p>Yes — the ⚙ <strong>Appearance</strong> panel makes the console yours, on <strong>every tier</strong>. Pick a built-in theme (High-Contrast, Amber Industrial, Light, or Cool Slate), then fine-tune ~11 semantic colours — one <strong>Accent</strong> pick recolours every button, tab and highlight at once — set per-element text colour and bold, scale the whole UI with a slider, turn on a wide layout, and <strong>drag-resize the chat panes</strong>. Save your own named themes. It's all CSS custom properties stored <strong>client-side in your browser's localStorage</strong> and applied before paint, so there's no flash and nothing leaves your machine.</p>
       </div>
       <div class="faq-item">
         <h3>One-time purchase — what about updates?</h3>
