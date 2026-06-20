@@ -47,6 +47,21 @@
       font-size: 72px;
       font-weight: 500;
       color: #FFFFFF;
+      text-shadow: .03em .03em 0 #143b5e, .055em .055em 0 #0d2c47, .085em .085em 0 #0a2540, .11em .13em .11em rgba(0,0,0,.5);
+    }
+    /* the number 3: dark glyph carved into the light accent face, extruded sides;
+       its pronounced cast shadow sweeps in sync with the 18s spin. */
+    .ajj3-num {
+      color: #0A2540;
+      text-shadow: .03em .03em 0 #06192a, .06em .06em 0 #03101a, .085em .085em 0 #020a12, 0 .16em .16em rgba(0,0,0,.55);
+      animation: ajj3-num-sweep 18s linear infinite;
+    }
+    @keyframes ajj3-num-sweep {
+      0%   { text-shadow: .03em .03em 0 #06192a, .06em .06em 0 #03101a, .085em .085em 0 #020a12, -.22em .11em .16em rgba(0,0,0,.55); }
+      25%  { text-shadow: .03em .03em 0 #06192a, .06em .06em 0 #03101a, .085em .085em 0 #020a12,    0 .22em .20em rgba(0,0,0,.62); }
+      50%  { text-shadow: .03em .03em 0 #06192a, .06em .06em 0 #03101a, .085em .085em 0 #020a12,  .22em .11em .16em rgba(0,0,0,.55); }
+      75%  { text-shadow: .03em .03em 0 #06192a, .06em .06em 0 #03101a, .085em .085em 0 #020a12,    0 .22em .20em rgba(0,0,0,.62); }
+      100% { text-shadow: .03em .03em 0 #06192a, .06em .06em 0 #03101a, .085em .085em 0 #020a12, -.22em .11em .16em rgba(0,0,0,.55); }
     }
     .hero__visual {
       display: flex;
@@ -138,11 +153,11 @@
           <div class="hero__cube-block">
             <div class="ajj3-stage">
               <div class="ajj3-cube">
-                <div class="ajj3-face" style="background:#2D8CFF; transform:rotateY(0deg) translateZ(90px);">A</div>
+                <div class="ajj3-face" style="background:#1F5894; transform:rotateY(0deg) translateZ(90px);">A</div>
                 <div class="ajj3-face" style="background:#1F5894; transform:rotateY(90deg) translateZ(90px);">J</div>
-                <div class="ajj3-face" style="background:#0A2540; transform:rotateY(180deg) translateZ(90px); border:1px solid #1F5894;">J</div>
-                <div class="ajj3-face" style="background:#1F5894; transform:rotateY(-90deg) translateZ(90px);">3</div>
-                <div class="ajj3-face" style="background:#4DA8FF; transform:rotateX(90deg) translateZ(90px);"></div>
+                <div class="ajj3-face" style="background:#1F5894; transform:rotateY(180deg) translateZ(90px);">J</div>
+                <div class="ajj3-face ajj3-num" style="background:#4DA8FF; transform:rotateY(-90deg) translateZ(90px);">3</div>
+                <div class="ajj3-face" style="background:#2D8CFF; transform:rotateX(90deg) translateZ(90px);"></div>
                 <div class="ajj3-face" style="background:#0A2540; transform:rotateX(-90deg) translateZ(90px); border:1px solid #1F5894;"></div>
               </div>
             </div>
