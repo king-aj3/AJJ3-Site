@@ -140,6 +140,10 @@ code, .mono { font-family: var(--font-mono); }
 .cta-button.secondary { background: transparent; color: var(--ink); border-color: var(--line); }
 .cta-button.secondary:hover { border-color: var(--local); color: var(--local); }
 .hero-microcopy { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); margin-top: 18px; }
+/* the new rotating-brain logo, embedded as a self-contained iframe (CDN WebGL) */
+.hero-logo { width: 100%; aspect-ratio: 1 / 1; border: 0; display: block;
+  border-radius: 16px; background: #0c0f16;
+  box-shadow: 0 0 0 1px var(--line), 0 24px 60px -24px rgba(0,0,0,.6); }
 
 /* TERMINAL CARD (hero visual) */
 .term {
@@ -369,28 +373,7 @@ footer a:hover { color: var(--local); }
         Windows · macOS &amp; Linux coming soon · Free Demo · One-time purchase · No tokens · No telemetry · No monthly bill
       </p>
     </div>
-    <div class="term">
-      <div class="term-bar">
-        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-        <span class="title">AJJ³ Brain — local-first router</span>
-      </div>
-      <div class="term-body">
-        <div><span class="pr">$</span> ajj3-brain run</div>
-        <div class="cm"># probe → smart-select → fetch → launch</div>
-        <div><span class="ok">✓</span> hardware: i5 · 32 GB · CPU-only</div>
-        <div><span class="ok">✓</span> picked <span class="hl">gemma4:26b</span> <span class="cm">(MoE ~4B active)</span></div>
-        <div><span class="ok">✓</span> fits RAM · stays responsive on CPU</div>
-        <div>&nbsp;</div>
-        <div><span class="pr">$</span> ajj3-brain route "reverse a string in rust"</div>
-        <div><span class="ok">local</span> answered · <span class="hl">est_cost $0.00</span></div>
-        <div class="cm"># hard task? escalates to cloud —</div>
-        <div class="cm"># only if you set a key + budget</div>
-        <div><span class="am">budget</span> daily cap $1.00 · spend $0.00</div>
-        <div>&nbsp;</div>
-        <div class="cm"># scheduled · powers your other apps:</div>
-        <div><span class="ok">daily 07:00</span> market-brief → <span class="hl">data/scheduled/sp1.txt</span></div>
-      </div>
-    </div>
+    <iframe class="hero-logo" src="ajj3-brain-logo.html" title="AJJ³ Brain — animated 3D brain logo" loading="lazy" scrolling="no"></iframe>
   </div>
 </section>
 

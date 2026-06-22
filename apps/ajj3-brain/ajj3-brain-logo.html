@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AJJ³ Brain — animated logo</title>
+<style>
+  html,body{margin:0;height:100%;background:transparent;overflow:hidden}
+  #scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+  /* offline/no-JS fallback shown if the module never runs */
+  #fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    color:#7fd6ec;font:13px/1.5 system-ui,sans-serif;opacity:.6;text-align:center;padding:0 18px}
+</style>
+</head>
+<body>
+<div id="fallback">AJJ³ Brain</div>
+<canvas id="scene"></canvas>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {FontLoader} from 'three/addons/loaders/FontLoader.js';
+import {TTFLoader} from 'three/addons/loaders/TTFLoader.js';
+import {TextGeometry} from 'three/addons/geometries/TextGeometry.js';
+const fb=document.getElementById('fallback');
+try{
+  const PERIOD=22, FRONT=Math.PI/2, WIDEN=1.12*31/32, K=2;
+  const FONT='https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/iceland/Iceland-Regular.ttf';
+  const cv=document.getElementById('scene');
+  const renderer=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  const scene=new THREE.Scene();
+  const cam=new THREE.PerspectiveCamera(30,1,0.1,100); cam.position.set(0,1.15,5.4); cam.lookAt(0,-0.02,0);
+  scene.add(new THREE.AmbientLight(0xffffff,0.6));
+  const d1=new THREE.DirectionalLight(0xffffff,1.0); d1.position.set(2.5,5,4); scene.add(d1);
+  const d2=new THREE.DirectionalLight(0x9fc4ff,0.4); d2.position.set(-3,2,-2); scene.add(d2);
+  function resize(){ const w=cv.clientWidth||440,h=cv.clientHeight||440; renderer.setSize(w,h,false); cam.aspect=w/h; cam.updateProjectionMatrix(); }
+  resize(); window.addEventListener('resize',resize);
+
+  const worldRoot=new THREE.Group(); worldRoot.scale.setScalar(1.5); scene.add(worldRoot);
+  const BY=0.42;
+  const brainPivot=new THREE.Group(); brainPivot.position.y=BY; brainPivot.rotation.x=0.04; worldRoot.add(brainPivot);
+  const brainMat=new THREE.LineBasicMaterial({color:0x2f9cbf,transparent:true,opacity:0.22,blending:THREE.AdditiveBlending,depthWrite:false});
+  new GLTFLoader().load('https://cdn.jsdelivr.net/gh/Justin0Brien/Brain@main/models/brain.glb',(g)=>{
+    fb.style.display='none';
+    g.scene.updateMatrixWorld(true);
+    const raw=[]; g.scene.traverse(o=>{if(o.isMesh&&o.geometry){const gm=o.geometry.clone();gm.applyMatrix4(o.matrixWorld);raw.push(gm);}});
+    const box=new THREE.Box3(); raw.forEach(gm=>{gm.computeBoundingBox();box.union(gm.boundingBox);});
+    const size=new THREE.Vector3(),ctr=new THREE.Vector3(); box.getSize(size); box.getCenter(ctr);
+    const M=Math.max(size.x,size.y,size.z)/2, yBreak=ctr.y-0.136*M;
+    raw.forEach(gm=>{const ar=gm.attributes.position.array;for(let i=1;i<ar.length;i+=3){if(ar[i]<yBreak)ar[i]=yBreak+(ar[i]-yBreak)/3;}gm.attributes.position.needsUpdate=true;});
+    const inner=new THREE.Group(); raw.forEach(gm=>{inner.add(new THREE.LineSegments(new THREE.EdgesGeometry(gm,24),brainMat));});
+    const b2=new THREE.Box3().setFromObject(inner),c2=b2.getCenter(new THREE.Vector3()),s2=b2.getSize(new THREE.Vector3());
+    inner.position.sub(c2); brainPivot.add(inner); brainPivot.scale.setScalar(1.32/(Math.max(s2.x,s2.y,s2.z)||1));
+  },undefined,()=>{fb.textContent='AJJ³ Brain';});
+
+  function gearShape(teeth,pitchR,holeR,nholes){
+    const m=2*pitchR/teeth, outerR=pitchR+0.9*m, rootR=Math.max(pitchR*0.4,pitchR-1.0*m), tp=2*Math.PI/teeth, pts=[];
+    for(let i=0;i<teeth;i++){const a=i*tp; [[rootR,0.0],[outerR,0.22],[outerR,0.36],[rootR,0.55],[rootR,1.0]].forEach(([r,f])=>{const ang=a+f*tp; pts.push([r*Math.cos(ang),r*Math.sin(ang)]);});}
+    const sh=new THREE.Shape(); sh.moveTo(pts[0][0],pts[0][1]); for(let i=1;i<pts.length;i++) sh.lineTo(pts[i][0],pts[i][1]); sh.closePath();
+    const hole=new THREE.Path(); hole.absarc(0,0,holeR,0,Math.PI*2,true); sh.holes.push(hole);
+    if(nholes){const rr=(pitchR+holeR)*0.52; for(let i=0;i<nholes;i++){const a=i*2*Math.PI/nholes; const h=new THREE.Path(); h.absarc(rr*Math.cos(a),rr*Math.sin(a),pitchR*0.15,0,Math.PI*2,true); sh.holes.push(h);} }
+    return sh;
+  }
+  function gearMesh(teeth,pitchR,color,nholes){
+    const g=new THREE.ExtrudeGeometry(gearShape(teeth,pitchR,pitchR*0.22,nholes),{depth:pitchR*0.16,bevelEnabled:false}); g.center();
+    const mesh=new THREE.Mesh(g,new THREE.MeshStandardMaterial({color,metalness:0.85,roughness:0.4,emissive:0x0b0803})); mesh.rotation.x=-Math.PI/2; return mesh;
+  }
+  const CY=new THREE.Color(0x2f9cbf);
+  function jag(A,B,seg,amp,jz){const out=[],dir=B.clone().sub(A),len=dir.length(),perp=new THREE.Vector3(-dir.y,dir.x,0).normalize();
+    for(let s=0;s<seg;s++){const t=s/seg,p=A.clone().lerp(B,t); if(s>0){p.add(perp.clone().multiplyScalar((Math.random()-0.5)*len*amp)); p.z+=(Math.random()-0.5)*(jz||0.1);} out.push(p);} return out;}
+
+  const stacks=[]; const spin=[]; let letterPos=[]; const arcs=[]; const strikes=[];
+  const deckRoot=new THREE.Group(); deckRoot.position.y=-0.46; worldRoot.add(deckRoot);
+  new TTFLoader().load(FONT,(json)=>{
+    const font=new FontLoader().parse(json);
+    const specs=[['A',0xA84A3E,0x2a0d0a],['J',0xD4D6D0,0x1c1e20],['J',0x47628C,0x0c1424],['3',0xBE8A36,0x2a1c08]];
+    const built=[]; let total=0; const gap=0.12;
+    specs.forEach(sp=>{
+      const geo=new TextGeometry(sp[0],{font,size:0.5,height:0.11,curveSegments:8,bevelEnabled:true,bevelThickness:0.012,bevelSize:0.012,bevelSegments:2});
+      geo.computeBoundingBox(); const bb=geo.boundingBox; const c=bb.getCenter(new THREE.Vector3());
+      const w=(bb.max.x-bb.min.x)*WIDEN, h=bb.max.y-bb.min.y; geo.translate(-c.x,-c.y,-c.z);
+      if(sp[0]==='J'){ geo.computeBoundingBox(); const b2=geo.boundingBox; const stemX=b2.max.x, hh=b2.max.y-b2.min.y, topY=b2.max.y-0.22*hh; const ar=geo.attributes.position.array; for(let i=0;i<ar.length;i+=3){ if(ar[i+1]>topY) ar[i]=stemX+(ar[i]-stemX)*0.6; } geo.attributes.position.needsUpdate=true; }
+      built.push({geo,w,h,col:sp[1],em:sp[2]}); total+=w;
+    });
+    total+=gap*(built.length-1); let cursor=-total/2; const cxs=[];
+    const S=1.24/total; deckRoot.scale.setScalar(S);
+    const hRep=built.reduce((s,b)=>s+b.h,0)/built.length;
+    worldRoot.position.y = -1.25*hRep*S*1.5;
+    const avgSp=total/built.length; const Rb=avgSp*0.40, Rs=Rb*0.5, zF=Rb+Rs;
+    built.forEach(b=>{
+      const cx=cursor+b.w/2; cursor+=b.w+gap; cxs.push(cx);
+      const stack=new THREE.Group(); stack.position.set(cx,0,0); deckRoot.add(stack);
+      stack.add(gearMesh(22,Rb,0xC79A4A,5));
+      const mat=new THREE.MeshStandardMaterial({color:b.col,emissive:b.em,emissiveIntensity:0.20,metalness:0.12,roughness:0.65});
+      const mesh=new THREE.Mesh(b.geo,mat); mesh.scale.x=WIDEN; mesh.position.y=b.h/2+0.02; stack.add(mesh);
+      stacks.push({stack,mat,baseEm:0.20});
+      const sg=new THREE.Group(); sg.position.set(cx,0,zF); deckRoot.add(sg); sg.add(gearMesh(11,Rs,0x8C7A52,0)); sg.rotation.y=Math.PI/11; spin.push({g:sg,r:-2*K});
+    });
+    for(let i=0;i<cxs.length-1;i++){ const mid=(cxs[i]+cxs[i+1])/2; const Ri=Math.max(Rs*0.6,(cxs[i+1]-cxs[i])/2-Rs);
+      const ig=new THREE.Group(); ig.position.set(mid,0,zF); deckRoot.add(ig); ig.add(gearMesh(Math.max(8,Math.round(Ri/Rs*11)),Ri,0xA98C55,Ri>Rs*1.3?4:0)); spin.push({g:ig,r:(Rs/Ri)*2*K}); }
+    letterPos=cxs.map((cx,i)=>new THREE.Vector3(cx*S, deckRoot.position.y+(built[i].h/2+0.10)*S, 0.06));
+    for(let i=0;i<letterPos.length-1;i++){ for(let j=0;j<3;j++){ const g=new THREE.BufferGeometry().setFromPoints([letterPos[i],letterPos[i+1]]); const m=new THREE.LineBasicMaterial({color:0x9fe0ff,transparent:true,opacity:0.12,blending:THREE.AdditiveBlending,depthTest:false,depthWrite:false}); worldRoot.add(new THREE.Line(g,m)); arcs.push({geo:g,mat:m,a:i}); } }
+  },undefined,()=>{fb.textContent='AJJ³ Brain';});
+
+  function addLine(grp,pts,colorOrVerts,lines){ const g=new THREE.BufferGeometry().setFromPoints(pts); let m;
+    if(Array.isArray(colorOrVerts)){ g.setAttribute('color',new THREE.Float32BufferAttribute(colorOrVerts.flatMap(c=>[c.r,c.g,c.b]),3)); m=new THREE.LineBasicMaterial({vertexColors:true,transparent:true,opacity:1,blending:THREE.AdditiveBlending,depthTest:false,depthWrite:false}); }
+    else { m=new THREE.LineBasicMaterial({color:colorOrVerts,transparent:true,opacity:0.85,blending:THREE.AdditiveBlending,depthTest:false,depthWrite:false}); }
+    grp.add(new THREE.Line(g,m)); lines.push({g,m}); }
+  function spawnStrike(now){
+    if(!letterPos.length) return; strikeFlashT=now;
+    const grp=new THREE.Group(); worldRoot.add(grp); const lines=[];
+    const ends=[letterPos[0].clone().add(new THREE.Vector3(-0.12,0.05,0.05)), letterPos[letterPos.length-1].clone().add(new THREE.Vector3(0.12,0.05,0.05))];
+    [-1,1].forEach((side,si)=>{ const anchor=ends[si];
+      for(let b=0;b<3;b++){ const target=new THREE.Vector3(side*(0.28+Math.random()*0.20), BY-0.10+(Math.random()-0.5)*0.55, (Math.random()-0.5)*0.30);
+        const pts=jag(anchor,target,9,0.30,0.18); pts.push(target);
+        const cols=pts.map((p,i)=>CY.clone().lerp(new THREE.Color(0xffffff),(i/(pts.length-1))*0.7)); addLine(grp,pts,cols,lines);
+        for(let k=0;k<6;k++){ const dir=new THREE.Vector3((Math.random()-0.5),(Math.random()-0.5),(Math.random()-0.5)).normalize(); const e=target.clone().add(dir.multiplyScalar(0.06+Math.random()*0.18)); const tp=jag(target,e,4,0.6,0.2); tp.push(e); addLine(grp,tp,0xbfe9ff,lines);
+          if(Math.random()<0.6){ const d2=new THREE.Vector3((Math.random()-0.5),(Math.random()-0.5),(Math.random()-0.5)).normalize(); const e2=e.clone().add(d2.multiplyScalar(0.04+Math.random()*0.12)); const tp2=jag(e,e2,3,0.7,0.18); tp2.push(e2); addLine(grp,tp2,0xa9dcff,lines); } } } });
+    strikes.push({grp,lines,born:now,life:0.72});
+  }
+
+  let lastCycle=0, firstFired=false, strikeFlashT=-9999;
+  (function loop(now){
+    requestAnimationFrame(loop); const t=(now||0)/1000; const a=t*(2*Math.PI/PERIOD); const nowm=now||0;
+    brainPivot.rotation.y=a+FRONT;
+    const phase=((a%(2*Math.PI))+2*Math.PI)%(2*Math.PI); const charge=Math.pow(1-phase/(2*Math.PI),1.3);
+    const sf=Math.max(0,1-(nowm-strikeFlashT)/320);
+    brainMat.opacity=0.085+0.16*charge+0.10*sf;
+    stacks.forEach(s=>{ s.stack.rotation.y=K*a; });
+    spin.forEach(s=>{ s.g.rotation.y=s.r*a; });
+    if(!firstFired && letterPos.length){ firstFired=true; spawnStrike(nowm); }
+    const cycle=Math.floor(a/(2*Math.PI)); if(cycle!==lastCycle){ lastCycle=cycle; spawnStrike(nowm); }
+    const align=Math.pow(Math.max(0,Math.cos(a)),2);
+    arcs.forEach(arc=>{ const A=letterPos[arc.a],B=letterPos[arc.a+1]; const p=jag(A,B,7,0.18,0.10); p.push(B.clone()); arc.geo.setFromPoints(p); arc.mat.opacity=0.10+0.7*align; });
+    stacks.forEach(s=>{ s.mat.emissiveIntensity=s.baseEm+0.5*align+0.8*sf; });
+    for(let i=strikes.length-1;i>=0;i--){ const st=strikes[i]; const age=(nowm-st.born)/1000; const op=age<0.12?1:Math.max(0,1-(age-0.12)/(st.life-0.12));
+      st.lines.forEach(l=>{ l.m.opacity=op*(0.55+0.45*Math.random()); }); if(age>st.life){ worldRoot.remove(st.grp); st.lines.forEach(l=>{l.g.dispose();l.m.dispose();}); strikes.splice(i,1);} }
+    renderer.render(scene,cam);
+  })(0);
+}catch(e){ fb.textContent='AJJ³ Brain'; }
+</script>
+</body>
+</html>
