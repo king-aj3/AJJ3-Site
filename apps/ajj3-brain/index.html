@@ -6,6 +6,14 @@
 <title>AJJ³ Brain — Your own private AI. On your hardware. One price, no subscription.</title>
 <meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Smart hardware-aware model selection (MoE-savvy, even on CPU). Smart context &amp; compaction: the context window auto-sizes to fit your GPU and long chats compress instead of silently forgetting. FLEET multi-machine dispatch (Pro): your other computers become workers — each request runs where that model is already warm, with automatic local fallback; setting a worker up is one wizard (VPN included) with live per-machine health and tok/s on the hub. Batch fan-out (every tier): one /api/batch call runs a list of independent jobs concurrently across the fleet — in-order results, one failed item never kills the rest, budgets per item. Drop a whole project in (every tier): zip or drag a codebase into chat and it ingests with its folder structure intact — path-true citations and a layout map, RAG retrieval over the project (not whole-repo-in-context). MCP tools &amp; one-click setup: your local model can use tools — files, web search, git, fetch — through MCP servers the console installs and wires up for you in one click (no terminal), every tool call gated by your confirmation; a detect → recommend → install → verify registry sets up the free runtimes it needs (Ollama, SearXNG, Node, uv) from one Set up button (tool use is Starter-tier; installing the free runtimes stays free). Scheduled tasks &amp; automation (Pro) run recurring prompts on a timer to power your other apps. One-click local fine-tuning: a guided Set up provisions a QLoRA training venv that reuses your existing torch (never downgrades a working ROCm/CUDA build), turns logged cloud-escalations into a dataset, runs 4-bit QLoRA via bitsandbytes on CUDA AND ROCm, then merges the LoRA into a standalone model ready for GGUF + Ollama (Set up + Merge adapter buttons; Starter) — proven end-to-end on a Radeon RX 7900 XTX, with scheduled auto-retrain now on ROCm too (Pro). Appearance customisation (every tier): make the console yours with built-in Light / Dark / High-Contrast themes, ~11 semantic colour pickers (one Accent pick recolours every button, tab and highlight at once), per-element text colour + bold toggles, a UI-scale slider, a wide-layout toggle, drag-resizable chat panes, and save-your-own named themes — built on CSS custom properties, 100% client-side in localStorage, applied pre-paint so there's no flash, zero telemetry. Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint. $0 Demo / $29 Starter / $59 Pro one-time.">
 
+<!-- ajj3-brain product mark — the new brain (the AJJ³-Site brand stays the cube) -->
+<link rel="icon" type="image/png" sizes="32x32" href="/images/ajj3_brain_icon_32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/ajj3_brain_icon_16.png">
+<link rel="apple-touch-icon" sizes="256x256" href="/images/ajj3_brain_icon_256.png">
+<meta property="og:image" content="/images/ajj3_brain_logo_square_1024.png">
+<meta name="twitter:image" content="/images/ajj3_brain_logo_square_1024.png">
+<meta name="twitter:card" content="summary_large_image">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
@@ -82,15 +90,16 @@ code, .mono { font-family: var(--font-mono); }
   font-size: 20px; font-weight: 800;
   display: flex; align-items: center; gap: 10px;
   letter-spacing: -0.02em;
+  perspective: 150px;
 }
-.brand-mark {
-  display: inline-flex;
-  background: var(--local); color: var(--bg);
-  width: 34px; height: 34px; border-radius: 8px;
-  align-items: center; justify-content: center;
-  font-family: var(--font-mono); font-weight: 800; font-size: 18px;
+/* ajj3-brain product mark: the new brain, turning on its vertical axis */
+.brand-brain {
+  width: 34px; height: 34px; flex: none;
+  filter: drop-shadow(0 0 6px rgba(95,210,238,.4));
+  animation: brain-spin 7s linear infinite;
 }
-.brand-mark::after { content: "_"; animation: blink 1.1s step-end infinite; }
+@keyframes brain-spin { to { transform: rotateY(360deg); } }
+@media (prefers-reduced-motion: reduce) { .brand-brain { animation: none; } }
 @keyframes blink { 50% { opacity: 0; } }
 .topbar nav { display: flex; gap: 26px; font-family: var(--font-mono); font-size: 13px; }
 .topbar nav a { color: var(--ink-soft); }
@@ -302,7 +311,7 @@ footer a:hover { color: var(--local); }
 <div class="topbar">
   <div class="container topbar-inner">
     <div class="brand">
-      <span class="brand-mark">A</span>
+      <img class="brand-brain" src="/images/ajj3_brain_mark.png" alt="" width="34" height="34">
       <span>AJJ³ Brain</span>
     </div>
     <nav>
