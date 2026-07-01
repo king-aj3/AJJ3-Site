@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AJJ³ Brain — Your own private AI. On your hardware. One price, no subscription.</title>
-<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Smart hardware-aware model selection (MoE-savvy, even on CPU). Smart context &amp; compaction: the context window auto-sizes to fit your GPU and long chats compress instead of silently forgetting. FLEET multi-machine dispatch (Pro): your other computers become workers — each request runs where that model is already warm, with automatic local fallback; setting a worker up is one wizard (VPN included) with live per-machine health and tok/s on the hub. Batch fan-out (every tier): one /api/batch call runs a list of independent jobs concurrently across the fleet — in-order results, one failed item never kills the rest, budgets per item. Drop a whole project in (every tier): zip or drag a codebase into chat and it ingests with its folder structure intact — path-true citations and a layout map, RAG retrieval over the project (not whole-repo-in-context). MCP tools &amp; one-click setup: your local model can use tools — files, web search, git, fetch — through MCP servers the console installs and wires up for you in one click (no terminal), every tool call gated by your confirmation; a detect → recommend → install → verify registry sets up the free runtimes it needs (Ollama, SearXNG, Node, uv) from one Set up button (tool use is Starter-tier; installing the free runtimes stays free). Scheduled tasks &amp; automation (Pro) run recurring prompts on a timer to power your other apps. One-click local fine-tuning: a guided Set up provisions a QLoRA training venv that reuses your existing torch (never downgrades a working ROCm/CUDA build), turns logged cloud-escalations into a dataset, runs 4-bit QLoRA via bitsandbytes on CUDA AND ROCm, then merges the LoRA into a standalone model ready for GGUF + Ollama (Set up + Merge adapter buttons; Starter) — proven end-to-end on a Radeon RX 7900 XTX, with scheduled auto-retrain now on ROCm too (Pro). Appearance customisation (every tier): make the console yours with built-in Light / Dark / High-Contrast themes, ~11 semantic colour pickers (one Accent pick recolours every button, tab and highlight at once), per-element text colour + bold toggles, a UI-scale slider, a wide-layout toggle, drag-resizable chat panes, and save-your-own named themes — built on CSS custom properties, 100% client-side in localStorage, applied pre-paint so there's no flash, zero telemetry. Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint. $0 Demo / $29 Starter / $59 Pro one-time.">
+<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Smart hardware-aware model selection (MoE-savvy, even on CPU). Smart context &amp; compaction: the context window auto-sizes to fit your GPU and long chats compress instead of silently forgetting. FLEET multi-machine dispatch (Pro): your other computers become workers — each request runs where that model is already warm, with automatic local fallback; setting a worker up is one wizard (VPN included) with live per-machine health and tok/s on the hub. Batch fan-out (every tier): one /api/batch call runs a list of independent jobs concurrently across the fleet — in-order results, one failed item never kills the rest, budgets per item. Drop a whole project in (every tier): zip or drag a codebase into chat and it ingests with its folder structure intact — path-true citations and a layout map, RAG retrieval over the project (not whole-repo-in-context). MCP tools &amp; one-click setup: your local model can use tools — files, web search, git, fetch — through MCP servers the console installs and wires up for you in one click (no terminal), every tool call gated by your confirmation; a detect → recommend → install → verify registry sets up the free runtimes it needs (Ollama, SearXNG, Node, uv) from one Set up button (tool use is Starter-tier; installing the free runtimes stays free). Scheduled tasks &amp; automation (Pro) run recurring prompts on a timer to power your other apps. One-click local fine-tuning: a guided Set up provisions a QLoRA training venv that reuses your existing torch (never downgrades a working ROCm/CUDA build), turns logged cloud-escalations into a dataset, runs 4-bit QLoRA via bitsandbytes on CUDA AND ROCm, then merges the LoRA into a standalone model ready for GGUF + Ollama (Set up + Merge adapter buttons; Starter) — proven end-to-end on a Radeon RX 7900 XTX, with scheduled auto-retrain now on ROCm too (Pro). Appearance customisation (every tier): make the console yours with built-in Light / Dark / High-Contrast themes, ~11 semantic colour pickers (one Accent pick recolours every button, tab and highlight at once), per-element text colour + bold toggles, a UI-scale slider, a wide-layout toggle, drag-resizable chat panes, and save-your-own named themes — built on CSS custom properties, 100% client-side in localStorage, applied pre-paint so there's no flash, zero telemetry. One-click launch &amp; auto-start (new): the single stdlib-only binary starts the local server AND opens the console itself (login-free on 127.0.0.1) even when bound to your LAN — one 'ajj3-brain install' command registers a real OS launcher (Linux app-menu/Desktop, Windows Start-menu, macOS .app), and an admin toggle can auto-start the headless server at login so your private AI is online for every device on your network the moment you boot (off by default; proven on Linux, cross-platform). Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint. $0 Demo / $29 Starter / $59 Pro one-time.">
 
 <!-- ajj3-brain product mark — the new brain (the AJJ³-Site brand stays the cube) -->
 <link rel="icon" type="image/png" sizes="32x32" href="/images/ajj3_brain_icon_32.png">
@@ -362,7 +362,11 @@ footer a:hover { color: var(--local); }
         AMD/ROCm</strong>, lets you <strong>make the console truly yours</strong> with
         Appearance customisation (built-in Light / Dark / High-Contrast themes, a colour
         picker for every widget, adjustable text size &amp; boldness, and a drag-resizable
-        chat — all saved per device), and powers the AI in <strong>your other
+        chat — all saved per device), now <strong>runs like a real desktop
+        app</strong> — one file, one click starts the local server and opens
+        the console, and it can <strong>auto-start at login</strong> so your
+        private AI is online for every device on your network the moment you
+        boot — and powers the AI in <strong>your other
         apps</strong> over an OpenAI-compatible endpoint.
       </p>
       <div class="hero-ctas">
@@ -401,6 +405,7 @@ footer a:hover { color: var(--local); }
     <span>ONE-CLICK LOCAL FINE-TUNING <span class="dot"></span></span>
     <span>RUNS WELL ON CPU <span class="dot"></span></span>
     <span>APPEARANCE CUSTOMISATION · THEMES &amp; COLOURS <span class="dot"></span></span>
+    <span>ONE-CLICK LAUNCH &amp; AUTO-START <span class="dot"></span></span>
     <!-- duplicate for seamless loop -->
     <span>RUNS ON YOUR HARDWARE <span class="dot"></span></span>
     <span>NO SUBSCRIPTION <span class="dot"></span></span>
@@ -423,6 +428,7 @@ footer a:hover { color: var(--local); }
     <span>ONE-CLICK LOCAL FINE-TUNING <span class="dot"></span></span>
     <span>RUNS WELL ON CPU <span class="dot"></span></span>
     <span>APPEARANCE CUSTOMISATION · THEMES &amp; COLOURS <span class="dot"></span></span>
+    <span>ONE-CLICK LAUNCH &amp; AUTO-START <span class="dot"></span></span>
   </div>
 </div>
 
@@ -474,6 +480,7 @@ footer a:hover { color: var(--local); }
         <tr><td class="feature">Where your prompts go</td><td class="yes">Nowhere — stays local by default</td><td class="no">Uploaded every call</td></tr>
         <tr><td class="feature">Per-call cost</td><td class="yes">$0 local · capped cloud fallback</td><td class="no">Per-token / per-credit</td></tr>
         <tr><td class="feature">Works offline</td><td class="yes">Yes (after first model download)</td><td class="no">No</td></tr>
+        <tr><td class="feature">Launch &amp; auto-start</td><td class="yes">One click starts the server + opens the console; installs a real OS launcher; can auto-start headless at login (proven on Linux)</td><td class="maybe">Open a browser tab — but it's always someone else's server</td></tr>
         <tr><td class="feature">Long conversations</td><td class="yes">Auto-compressed, never silently cut</td><td class="maybe">Capped; old turns silently dropped</td></tr>
         <tr><td class="feature">Use several of your machines</td><td class="yes">FLEET: warm-model routing + background offload (Pro)</td><td class="no">N/A — it's their datacenter</td></tr>
         <tr><td class="feature">Setting a second machine up</td><td class="yes">One wizard — VPN install included; live health + tok/s per node</td><td class="no">N/A</td></tr>
@@ -576,6 +583,11 @@ footer a:hover { color: var(--local); }
     </p>
 
     <div class="feature-grid">
+      <div class="feature-card dark">
+        <span class="feature-icon">🚀</span>
+        <h3>One-click launch &amp; auto-start</h3>
+        <p>AJJ³ Brain now <strong>runs like a real desktop app</strong>. Launch the single binary and it starts the local server <strong>and opens the console itself</strong> — <strong>login-free on <code>127.0.0.1</code></strong> even when it's bound to your LAN (<code>0.0.0.0</code>); closing your local window never stops a LAN server for others, and a true headless host or <code>--no-ui</code> stays silent. One command — <code>ajj3-brain install</code> — registers a real clickable OS launcher (Linux app-menu + Desktop <code>.desktop</code>, Windows Start-menu shortcut, macOS <code>.app</code>), so you get a proper icon instead of a bare executable. A Setup toggle (<em>Server — startup &amp; system</em>) writes a per-OS login entry (XDG autostart / HKCU Run / LaunchAgent) that boots the <strong>headless</strong> server at login — your private AI is reachable to every device on your network the moment the machine boots. Off by default; implemented cross-platform, <strong>proven on Linux</strong>.</p>
+      </div>
       <div class="feature-card dark">
         <span class="feature-icon">🧭</span>
         <h3>Smart Model Selection</h3>
@@ -746,6 +758,7 @@ footer a:hover { color: var(--local); }
           <li>MCP tools &amp; one-click setup — the model uses files, web search, git and fetch through servers the console installs and wires up for you, every call you confirm (tool use is Starter; installing the free runtimes stays free)</li>
           <li>An embeddable chat widget for your own sites</li>
           <li>Appearance customisation — Light/Dark/High-Contrast themes, ~11 colour pickers, text size &amp; bold, a UI-scale slider, and drag-resizable chat, saved per device (every tier)</li>
+          <li>One-click launch &amp; auto-start — the binary starts the server and opens the console itself (login-free on 127.0.0.1), 'ajj3-brain install' adds a real OS launcher, and an admin toggle can boot the headless server at login (off by default; cross-platform, proven on Linux)</li>
           <li>One-click guided setup and one-click backup &amp; restore</li>
           <li>Secure remote multi-user access over VPN/TLS (Pro)</li>
           <li>A single stdlib-only binary for Windows (macOS &amp; Linux coming soon)</li>
@@ -891,6 +904,10 @@ footer a:hover { color: var(--local); }
       <div class="faq-item">
         <h3>What does "stdlib-only" mean for me?</h3>
         <p>The app itself has zero third-party Python dependencies. It compiles to one binary with no pip, no virtualenv, no DLL hell. Inference is handled by Ollama, which the wizard installs for you.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Do I have to run it from a terminal every time?</h3>
+        <p>No — that's the new <strong>one-click launch &amp; auto-start</strong>. Launching the single binary starts the local server <em>and</em> opens the console for you, login-free on <code>127.0.0.1</code>, even when it's bound to your LAN (<code>0.0.0.0</code>) for other devices — and closing your local window never stops the server for everyone else (a real headless host, or <code>--no-ui</code>, just stays quiet). Run <code>ajj3-brain install</code> once and you get a proper clickable launcher with an icon — an app-menu + Desktop entry on Linux, a Start-menu shortcut on Windows, a <code>.app</code> on macOS. And a Setup toggle (<em>Server — startup &amp; system</em>) can write a per-OS login entry (XDG autostart / HKCU Run / LaunchAgent) so the <strong>headless</strong> server boots at login and your private AI is online for every device on your network the moment the machine starts. It's off by default and implemented cross-platform, though so far it's <strong>proven mainly on Linux</strong>. (Windows today; macOS &amp; Linux coming soon.)</p>
       </div>
       <div class="faq-item">
         <h3>How do my other apps use it?</h3>
