@@ -16,6 +16,11 @@
   <link rel="icon" type="image/png" sizes="16x16"  href="images/AJJ3_cube_icon_16.png" />
   <link rel="stylesheet" href="styles.css" />
 
+  <!-- Iceland (SIL OFL) — the same display face ajj3-brain uses for its extruded AJJ³ mark -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Iceland&display=swap" rel="stylesheet">
+
 <style>
     @keyframes ajj3-spin {
       from { transform: rotateX(-15deg) rotateY(0deg); }
@@ -40,28 +45,63 @@
       position: absolute;
       width: 180px;
       height: 180px;
+      transform-style: preserve-3d;     /* let the extruded glyph protrude in real 3D */
+    }
+    /* Each lettered face carries a .ajj3-glyph, built by the extrusion script near the
+       end of <body>: a stack of translateZ'd copies of the character — a bright front
+       cap over progressively deeper side slices — so the letter physically stands off
+       the cube face and shows real depth/parallax as the cube spins. This mirrors the
+       extruded AJJ³ mark in ajj3-brain's WebGL logo, using the same Iceland (SIL OFL)
+       face. Per-face cap/side colours come from --cap / --side on each face element. */
+    .ajj3-glyph {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+      pointer-events: none;
+    }
+    .ajj3-layer {
+      position: absolute;
+      inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Inter', 'Helvetica Neue', sans-serif;
-      font-size: 72px;
-      font-weight: 500;
-      color: #FFFFFF;
-      text-shadow: .03em .03em 0 #143b5e, .055em .055em 0 #0d2c47, .085em .085em 0 #0a2540, .11em .13em .11em rgba(0,0,0,.5);
+      font-family: 'Iceland', 'Inter', sans-serif;
+      font-size: 104px;
+      font-weight: 400;
+      line-height: 1;
+      color: var(--side, #0E3358);      /* extruded side-wall colour */
+      -webkit-user-select: none;
+      user-select: none;
     }
-    /* the number 3: dark glyph carved into the light accent face, extruded sides;
-       its pronounced cast shadow sweeps in sync with the 18s spin. */
-    .ajj3-num {
-      color: #0A2540;
-      text-shadow: .03em .03em 0 #06192a, .06em .06em 0 #03101a, .085em .085em 0 #020a12, 0 .16em .16em rgba(0,0,0,.55);
-      animation: ajj3-num-sweep 18s linear infinite;
+    .ajj3-layer.ajj3-cap {
+      color: var(--cap, #FFFFFF);       /* bright front face of the letter */
+      text-shadow: 0 3px 7px rgba(0,0,0,.35);
     }
-    @keyframes ajj3-num-sweep {
-      0%   { text-shadow: .03em .03em 0 #06192a, .06em .06em 0 #03101a, .085em .085em 0 #020a12, -.22em .11em .16em rgba(0,0,0,.55); }
-      25%  { text-shadow: .03em .03em 0 #06192a, .06em .06em 0 #03101a, .085em .085em 0 #020a12,    0 .22em .20em rgba(0,0,0,.62); }
-      50%  { text-shadow: .03em .03em 0 #06192a, .06em .06em 0 #03101a, .085em .085em 0 #020a12,  .22em .11em .16em rgba(0,0,0,.55); }
-      75%  { text-shadow: .03em .03em 0 #06192a, .06em .06em 0 #03101a, .085em .085em 0 #020a12,    0 .22em .20em rgba(0,0,0,.62); }
-      100% { text-shadow: .03em .03em 0 #06192a, .06em .06em 0 #03101a, .085em .085em 0 #020a12, -.22em .11em .16em rgba(0,0,0,.55); }
+    /* Cast shadow: the raised letter drops a soft shadow onto its own face. The
+       offset sweeps horizontally (staying below the letter) as the cube spins, as
+       if lit by a fixed source slightly above and to the right. Per-face phase
+       (--sweep-delay = the face's own rotation) keeps every letter consistent with
+       that one light. Lives on the base slice (z = 0) so the shadow sits on the
+       face plane rather than floating out at the cap. */
+    .ajj3-layer.ajj3-base {
+      animation: ajj3-shadow-sweep 18s linear infinite;
+      animation-delay: var(--sweep-delay, 0s);
+    }
+    @keyframes ajj3-shadow-sweep {
+      0%   { text-shadow: -24px 15px 14px rgba(0,0,0,.72), -12px 9px 5px rgba(0,0,0,.6); }
+      25%  { text-shadow:    0  18px 14px rgba(0,0,0,.72),    0 10px 5px rgba(0,0,0,.6); }
+      50%  { text-shadow:  24px 15px 14px rgba(0,0,0,.72),  12px 9px 5px rgba(0,0,0,.6); }
+      75%  { text-shadow:    0  18px 14px rgba(0,0,0,.72),    0 10px 5px rgba(0,0,0,.6); }
+      100% { text-shadow: -24px 15px 14px rgba(0,0,0,.72), -12px 9px 5px rgba(0,0,0,.6); }
+    }
+    /* Iceland's J has its stem on the right and a top bar reaching left. Trim that
+       bar's free (left) end to ~75% length — the same shortening ajj3-brain applies
+       to its logo J. The notch (top-left corner, x < 79px) clips only the top-bar
+       band; the stem sits at x >= 98 and the bottom foot is well below y = 88, so
+       neither is touched. Applied identically to every slice, so the extruded bar
+       just ends shorter in 3D. Coords measured from the 104px glyph in a 180px face. */
+    .ajj3-face[data-glyph="J"] .ajj3-layer {
+      clip-path: polygon(79px 0, 180px 0, 180px 180px, 0 180px, 0 88px, 79px 88px);
     }
     .hero__visual {
       display: flex;
@@ -86,14 +126,14 @@
     .hero__cube-wordmark { text-align: center; }
     .hero__cube-wordmark .wm-name {
       color: #FFFFFF;
-      font-family: 'Inter', 'Helvetica Neue', sans-serif;
-      font-size: 36px;
-      letter-spacing: 4px;
-      font-weight: 500;
+      font-family: 'Iceland', 'Inter', sans-serif;
+      font-size: 46px;
+      letter-spacing: 6px;
+      font-weight: 400;
       line-height: 1;
     }
     .hero__cube-wordmark .wm-name sup {
-      color: #4DA8FF;
+      color: #BE8A36;   /* brass — matches the cube's extruded 3 and ajj3-brain's logo 3 */
       font-size: 22px;
       vertical-align: super;
     }
@@ -153,10 +193,10 @@
           <div class="hero__cube-block">
             <div class="ajj3-stage">
               <div class="ajj3-cube">
-                <div class="ajj3-face" style="background:#1F5894; transform:rotateY(0deg) translateZ(90px);">A</div>
-                <div class="ajj3-face" style="background:#1F5894; transform:rotateY(90deg) translateZ(90px);">J</div>
-                <div class="ajj3-face" style="background:#1F5894; transform:rotateY(180deg) translateZ(90px);">J</div>
-                <div class="ajj3-face ajj3-num" style="background:#4DA8FF; transform:rotateY(-90deg) translateZ(90px);">3</div>
+                <div class="ajj3-face" data-glyph="A" style="background:#1F5894; --cap:#FFFFFF; --side:#0E3358; --sweep-delay:0s;     transform:rotateY(0deg) translateZ(90px);"></div>
+                <div class="ajj3-face" data-glyph="J" style="background:#1F5894; --cap:#FFFFFF; --side:#0E3358; --sweep-delay:-4.5s;  transform:rotateY(90deg) translateZ(90px);"></div>
+                <div class="ajj3-face" data-glyph="J" style="background:#1F5894; --cap:#FFFFFF; --side:#0E3358; --sweep-delay:-9s;    transform:rotateY(180deg) translateZ(90px);"></div>
+                <div class="ajj3-face" data-glyph="3" style="background:#0A2540; --cap:#BE8A36; --side:#6E4E1C; --sweep-delay:-13.5s; transform:rotateY(-90deg) translateZ(90px);"></div>
                 <div class="ajj3-face" style="background:#2D8CFF; transform:rotateX(90deg) translateZ(90px);"></div>
                 <div class="ajj3-face" style="background:#0A2540; transform:rotateX(-90deg) translateZ(90px); border:1px solid #1F5894;"></div>
               </div>
@@ -221,6 +261,31 @@
       </div>
     </div>
   </footer>
+
+  <!-- Build the extruded cube letters: for each lettered face, stack LAYERS copies of
+       the glyph along +Z (outward from the face) — deeper slices are the side walls,
+       the frontmost is the bright cap — giving real 3D depth as the cube spins. -->
+  <script>
+    (function () {
+      var DEPTH = 13;   // px the letter stands off the face
+      var LAYERS = 20;  // slices making up the extruded body
+      document.querySelectorAll('.ajj3-face[data-glyph]').forEach(function (face) {
+        var ch = face.getAttribute('data-glyph');
+        var glyph = document.createElement('span');
+        glyph.className = 'ajj3-glyph';
+        for (var i = 0; i < LAYERS; i++) {
+          var layer = document.createElement('span');
+          var isCap = (i === LAYERS - 1);
+          var isBase = (i === 0);
+          layer.className = 'ajj3-layer' + (isCap ? ' ajj3-cap' : '') + (isBase ? ' ajj3-base' : '');
+          layer.textContent = ch;
+          layer.style.transform = 'translateZ(' + ((i / (LAYERS - 1)) * DEPTH).toFixed(2) + 'px)';
+          glyph.appendChild(layer);
+        }
+        face.appendChild(glyph);
+      });
+    })();
+  </script>
 
 </body>
 </html>
