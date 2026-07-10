@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AJJ³ Brain — Your own private AI. On your hardware. One price, no subscription.</title>
-<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Smart hardware-aware model selection (MoE-savvy, even on CPU). Smart context &amp; compaction: the context window auto-sizes to fit your GPU and long chats compress instead of silently forgetting. FLEET multi-machine dispatch (Pro): your other computers become workers — each request runs where that model is already warm, with automatic local fallback; setting a worker up is one wizard (VPN included) with live per-machine health and tok/s on the hub. Batch fan-out (every tier): one /api/batch call runs a list of independent jobs concurrently across the fleet — in-order results, one failed item never kills the rest, budgets per item. Drop a whole project in (every tier): zip or drag a codebase into chat and it ingests with its folder structure intact — path-true citations and a layout map, RAG retrieval over the project (not whole-repo-in-context). MCP tools &amp; one-click setup: your local model can use tools — files, web search, git, fetch — through MCP servers the console installs and wires up for you in one click (no terminal), every tool call gated by your confirmation; a detect → recommend → install → verify registry sets up the free runtimes it needs (Ollama, SearXNG, Node, uv) from one Set up button (tool use is Starter-tier; installing the free runtimes stays free). Scheduled tasks &amp; automation (Pro) run recurring prompts on a timer to power your other apps. One-click local fine-tuning: a guided Set up provisions a QLoRA training venv that reuses your existing torch (never downgrades a working ROCm/CUDA build), turns logged cloud-escalations into a dataset, runs 4-bit QLoRA via bitsandbytes on CUDA AND ROCm, then merges the LoRA into a standalone model ready for GGUF + Ollama (Set up + Merge adapter buttons; Starter) — proven end-to-end on a Radeon RX 7900 XTX, with scheduled auto-retrain now on ROCm too (Pro). Appearance customisation (every tier): make the console yours with built-in Light / Dark / High-Contrast themes, ~11 semantic colour pickers (one Accent pick recolours every button, tab and highlight at once), per-element text colour + bold toggles, a UI-scale slider, a wide-layout toggle, drag-resizable chat panes, and save-your-own named themes — built on CSS custom properties, 100% client-side in localStorage, applied pre-paint so there's no flash, zero telemetry. One-click launch &amp; auto-start (new): the single stdlib-only binary starts the local server AND opens the console itself (login-free on 127.0.0.1) even when bound to your LAN — one 'ajj3-brain install' command registers a real OS launcher (Linux app-menu/Desktop, Windows Start-menu, macOS .app), and an admin toggle can auto-start the headless server at login so your private AI is online for every device on your network the moment you boot (off by default; proven on Linux, cross-platform). Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint. $0 Demo / $29 Starter / $59 Pro one-time.">
+<meta name="description" content="Self-hosted local LLM runtime + router + console. Stdlib-only, single binary, runs on your hardware. Smart hardware-aware model selection (MoE-savvy, even on CPU). Smart context &amp; compaction: the context window auto-sizes to fit your GPU and long chats compress instead of silently forgetting. FLEET multi-machine dispatch (Pro): your other computers become workers — each request runs where that model is already warm, with automatic local fallback; setting a worker up is one wizard (VPN included) with live per-machine health and tok/s on the hub. Batch fan-out (every tier): one /api/batch call runs a list of independent jobs concurrently across the fleet — in-order results, one failed item never kills the rest, budgets per item. Drop a whole project in (every tier): zip or drag a codebase into chat and it ingests with its folder structure intact — path-true citations and a layout map, RAG retrieval over the project (not whole-repo-in-context). MCP tools &amp; one-click setup: your local model can use tools — files, web search, git, fetch — through MCP servers the console installs and wires up for you in one click (no terminal), every tool call gated by your confirmation; a detect → recommend → install → verify registry sets up the free runtimes it needs (Ollama, SearXNG, Node, uv) from one Set up button (tool use is Starter-tier; installing the free runtimes stays free). Scheduled tasks &amp; automation (Pro) run recurring prompts on a timer to power your other apps. One-click local fine-tuning: a guided Set up provisions a QLoRA training venv that reuses your existing torch (never downgrades a working ROCm/CUDA build), turns logged cloud-escalations into a dataset, runs 4-bit QLoRA via bitsandbytes on CUDA AND ROCm, then merges the LoRA into a standalone model ready for GGUF + Ollama (Set up + Merge adapter buttons; Starter) — proven end-to-end on a Radeon RX 7900 XTX, with scheduled auto-retrain now on ROCm too (Pro). Appearance customisation (every tier): make the console yours with built-in Light / Dark / High-Contrast themes, ~11 semantic colour pickers (one Accent pick recolours every button, tab and highlight at once), per-element text colour + bold toggles, a UI-scale slider, a wide-layout toggle, drag-resizable chat panes, and save-your-own named themes — built on CSS custom properties, 100% client-side in localStorage, applied pre-paint so there's no flash, zero telemetry. One-click launch &amp; auto-start (new): the single stdlib-only binary starts the local server AND opens the console itself (login-free on 127.0.0.1) even when bound to your LAN — one 'ajj3-brain install' command registers a real OS launcher (Linux app-menu/Desktop, Windows Start-menu, macOS .app), and an admin toggle can auto-start the headless server at login so your private AI is online for every device on your network the moment you boot (off by default; proven on Linux, cross-platform). One-click power runtime + auto-tuning: set up the high-performance llama.cpp engine with ONE CLICK (no compiling, no toolchain) — a Set-up button auto-downloads a prebuilt llama-server matching your OS+GPU (portable Vulkan build by default: runs on AMD/NVIDIA/Intel incl. AMD RDNA3 via Mesa RADV, no ROCm/compiler/sudo; native ROCm/CUDA optional) and a hardware-aware solver tunes the speed switches (flash attention, KV-cache precision, prompt-cache reuse, speculative decoding) to your GPU for you; Ollama stays the zero-config default (honest limit: Vulkan is somewhat slower than a native ROCm build, and live tok/s gains depend on model + context). Smart per-question routing: 25 keyword-classified domains (code, finance, medicine, RF, law, tax, creative, woodworking and more) swap in the right specialist model for that one question, then swap back — fires only on &gt;=2 distinct domain-term hits (most domains route to the strongest generalist; a few like health and finance have real local specialists). Runs on almost nothing: a new Edge profile runs a 1-bit/ternary BitNet model on CPU in about 1.2 GB of RAM with no GPU (honest limit: on a real GPU an ordinary 14-32B model is far better — edge is for tiny/headless/old hardware). 2026 model refresh + specialist profiles: a refreshed curated catalog (Gemma 4, Qwen 3.6, GLM-4.7-Flash, gpt-oss, Nemotron 3, Granite 4) with ready-made Creative-writing, Translation, and Health &amp; medical (informational only, NOT medical advice) profiles — ajj3-brain adds no content filter of its own. Rock-solid chat: a reply from one chat never bleeds into another and you can scroll up to re-read while a new answer streams in. Local-first with optional cloud fallback and a hard budget cap. OpenAI-compatible /v1 endpoint. $0 Demo / $29 Starter / $59 Pro one-time.">
 
 <!-- ajj3-brain product mark — the new brain (the AJJ³-Site brand stays the cube) -->
 <link rel="icon" type="image/png" sizes="32x32" href="/images/ajj3_brain_icon_32.png">
@@ -366,7 +366,7 @@ footer a:hover { color: var(--local); }
         app</strong> — one file, one click starts the local server and opens
         the console, and it can <strong>auto-start at login</strong> so your
         private AI is online for every device on your network the moment you
-        boot — and powers the AI in <strong>your other
+        boot; it can now <strong>stand up the high-performance llama.cpp runtime in one click</strong> (no compiling, no toolchain) and <strong>auto-tune the speed switches to your GPU</strong> while Ollama stays the zero-config default, <strong>route each question to the right specialist model</strong> across 25 domains and back, and even run a real LLM on <strong>almost nothing — a 1-bit Edge model in about 1.2 GB of RAM, no GPU</strong> — and powers the AI in <strong>your other
         apps</strong> over an OpenAI-compatible endpoint.
       </p>
       <div class="hero-ctas">
@@ -406,6 +406,9 @@ footer a:hover { color: var(--local); }
     <span>RUNS WELL ON CPU <span class="dot"></span></span>
     <span>APPEARANCE CUSTOMISATION · THEMES &amp; COLOURS <span class="dot"></span></span>
     <span>ONE-CLICK LAUNCH &amp; AUTO-START <span class="dot"></span></span>
+    <span>ONE-CLICK POWER RUNTIME · AUTO-TUNED <span class="dot"></span></span>
+    <span>SMART PER-QUESTION ROUTING · 25 DOMAINS <span class="dot"></span></span>
+    <span>RUNS ON ALMOST NOTHING · 1-BIT EDGE <span class="dot"></span></span>
     <!-- duplicate for seamless loop -->
     <span>RUNS ON YOUR HARDWARE <span class="dot"></span></span>
     <span>NO SUBSCRIPTION <span class="dot"></span></span>
@@ -429,6 +432,9 @@ footer a:hover { color: var(--local); }
     <span>RUNS WELL ON CPU <span class="dot"></span></span>
     <span>APPEARANCE CUSTOMISATION · THEMES &amp; COLOURS <span class="dot"></span></span>
     <span>ONE-CLICK LAUNCH &amp; AUTO-START <span class="dot"></span></span>
+    <span>ONE-CLICK POWER RUNTIME · AUTO-TUNED <span class="dot"></span></span>
+    <span>SMART PER-QUESTION ROUTING · 25 DOMAINS <span class="dot"></span></span>
+    <span>RUNS ON ALMOST NOTHING · 1-BIT EDGE <span class="dot"></span></span>
   </div>
 </div>
 
@@ -492,6 +498,9 @@ footer a:hover { color: var(--local); }
         <tr><td class="feature">Telemetry / phone-home</td><td class="yes">None</td><td class="maybe">Varies — usually yes</td></tr>
         <tr><td class="feature">Powers your other apps</td><td class="yes">OpenAI-compatible /v1 endpoint</td><td class="maybe">Yes, metered per token</td></tr>
         <tr><td class="feature">Runtime weight</td><td class="yes">Stdlib-only single binary</td><td class="no">N/A (it's a website)</td></tr>
+        <tr><td class="feature">High-performance runtime setup</td><td class="yes">One click — auto-downloads a prebuilt llama.cpp for your OS+GPU (portable Vulkan, no ROCm/compiler/sudo) and auto-tunes the speed flags</td><td class="no">N/A — it’s their server</td></tr>
+        <tr><td class="feature">Right model per question</td><td class="yes">Per-question routing across 25 domains — swaps in a specialist, then back</td><td class="maybe">One model answers everything</td></tr>
+        <tr><td class="feature">Runs on almost nothing</td><td class="yes">1-bit Edge profile — a real LLM in ~1.2 GB RAM, no GPU</td><td class="no">N/A — needs their datacenter</td></tr>
         <tr><td class="feature">Model choice</td><td class="yes">Curated 2026 catalog, you pick</td><td class="no">Whatever they offer</td></tr>
         <tr><td class="feature">Top-tier frontier model quality</td><td class="maybe">Via your own cloud key, on demand</td><td class="yes">Built in</td></tr>
       </tbody>
@@ -621,7 +630,7 @@ footer a:hover { color: var(--local); }
       <div class="feature-card">
         <span class="feature-icon">📚</span>
         <h3>Catalog + Model Manager</h3>
-        <p>A curated 2026 catalog — coding, general, reasoning, vision, fast, finance — with capability scores, sizes, and context. Browse your installed models, the full Ollama library, or <strong>Hugging Face</strong> — including the <strong>LM Studio, Jan/Cortex, Unsloth and Bartowski</strong> libraries (all just curated Hugging Face orgs) and the uncensored / “heretic” fine-tunes. Search by name, filter by capability and what your hardware runs, then add / edit / reorder in a click. No JSON.</p>
+        <p>A curated 2026 catalog — coding, general, reasoning, vision, fast, finance — with capability scores, sizes, and context. The <strong>2026 refresh</strong> adds Gemma 4 (Apache-2.0, up to 31B), Qwen 3.6 (27B), GLM-4.7-Flash, OpenAI gpt-oss, Nemotron 3, and IBM Granite 4, plus <strong>ready-made specialist profiles</strong> — Creative writing, Translation (TranslateGemma / Hunyuan-MT), Finance (DianJin-R1 / Fin-o1), and <strong>Health &amp; medical</strong> (Baichuan-M2 / MedGemma / II-Medical, <strong>informational only, NOT medical advice</strong>); AJJ³ Brain adds no content filter of its own, so any refusal comes from the model you run. Browse your installed models, the full Ollama library, or <strong>Hugging Face</strong> — including the <strong>LM Studio, Jan/Cortex, Unsloth and Bartowski</strong> libraries (all just curated Hugging Face orgs) and the uncensored / “heretic” fine-tunes. Search by name, filter by capability and what your hardware runs, then add / edit / reorder in a click. No JSON.</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🔀</span>
@@ -711,7 +720,7 @@ footer a:hover { color: var(--local); }
       <div class="feature-card">
         <span class="feature-icon">⚡</span>
         <h3>Live Streaming Replies</h3>
-        <p>Local answers stream in token-by-token in the built-in Chat, so you see the reply form in real time — with the model and tokens/sec shown in the footer.</p>
+        <p>Local answers stream in token-by-token in the built-in Chat, so you see the reply form in real time — with the model and tokens/sec shown in the footer. Chat is <strong>rock-solid</strong>, too: a reply from one conversation never bleeds into another (in-flight replies are generation-fenced and abortable), and the transcript is stick-to-bottom — you can <strong>scroll up to re-read while a new answer streams in</strong>, and it only auto-follows when you’re already at the bottom.</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">📦</span>
@@ -723,10 +732,20 @@ footer a:hover { color: var(--local); }
         <h3>Windows (macOS &amp; Linux Coming Soon)</h3>
         <p>Windows now; macOS &amp; Linux coming soon. Inference acceleration via Ollama auto-detects CPU / NVIDIA CUDA / AMD ROCm / Apple Metal. llama.cpp is wired in as an alternative runtime.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card dark">
         <span class="feature-icon">⚡</span>
-        <h3>Automatic llama.cpp Speed Tuning</h3>
-        <p>On the llama.cpp runtime, AJJ³ Brain reads your hardware and sets the five llama-server flags for you — MoE expert offload (<code>--n-cpu-moe</code>), GPU layers, KV-cache quant, mmap/mlock, and threads — so big <strong>MoE models run on small VRAM</strong> without hand-tuning. Opt-in; Ollama is unchanged. Part of GPU optimization (Starter+).</p>
+        <h3>One-Click Power Runtime + Auto-Tuning</h3>
+        <p>Set up the high-performance <strong>llama.cpp</strong> engine with <strong>one click</strong> — no compiling, no toolchain. A <strong>Set-up</strong> button auto-downloads a prebuilt <code>llama-server</code> matching your OS + GPU — a <strong>portable Vulkan build by default</strong> that runs on AMD / NVIDIA / Intel (incl. AMD <strong>RDNA3 via Mesa RADV</strong>) with <strong>no ROCm, no compiler, no sudo</strong> (native ROCm / CUDA optional) — then a hardware-aware solver <strong>tunes the speed switches to your GPU for you</strong>: flash attention, KV-cache precision, prompt-cache reuse, speculative decoding. A <strong>Speed &amp; performance</strong> panel exposes every flag in plain English with its consequence. <strong>Ollama stays the zero-config default</strong> — llama.cpp is the optional power/edge runtime (same ggml engine, so this is reach + flags, not a faster engine). Honest limit: Vulkan is somewhat slower than a native ROCm build, and live tok/s gains depend on your model &amp; context. (Starter+.)</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎯</span>
+        <h3>Smart Per-Question Routing</h3>
+        <p>Ask about anything — code, finance, medicine, RF, law, creative writing, tax, woodworking… — and AJJ³ Brain <strong>swaps in the right specialist model for that one question</strong>, automatically, then swaps back. <strong>25 keyword-classified domains</strong> (coding / reasoning / vision plus translation, creative, finance, health, tax, rf, electrical, engineering, physics, science, music, video, image-creation, woodworking, blacksmithing, gunsmithing, energy, resale, fishing, survival, legal). It fires <strong>only on ≥2 distinct domain-term hits</strong>, so a passing mention never swaps the model, and every signal is re-pointable or disable-able in config. Honest note: most domains route to the strongest generalist — a few (health, finance) have real local specialists.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🪶</span>
+        <h3>Runs on Almost Nothing (1-bit / Edge)</h3>
+        <p>Run a real LLM on a machine with <strong>almost nothing</strong> — about <strong>1.2 GB of RAM and no GPU</strong>. A new <strong>Edge profile</strong> runs a <strong>1-bit / ternary BitNet</strong> model (b1.58, TQ2_0) on CPU via the llama.cpp runtime — the “runs on a Pi / old laptop / USB-stick deploy” tier. Honest limit: on a real GPU an ordinary 14-32B model is far better — Edge is for tiny, headless, or old hardware (CPU-only on AMD).</p>
       </div>
     </div>
   </div>
@@ -754,7 +773,11 @@ footer a:hover { color: var(--local); }
           <li>Drop a whole project in — zip/drag a codebase; folder structure kept, real-path citations + a layout map; RAG over the project (every tier)</li>
           <li>Vision pass-through and a RAG knowledge base</li>
           <li>One-click local fine-tuning — Set up provisions a QLoRA venv reusing your existing torch, trains on your logged cloud-escalations, and Merge adapter folds the LoRA into a ready-to-run model; runs on CUDA and AMD/ROCm, proven on a Radeon RX 7900 XTX (Starter; needs a capable GPU)</li>
-          <li>Automatic llama.cpp speed tuning — sets the five llama-server flags from your hardware so big MoE models fit small VRAM; opt-in, Ollama unchanged (Starter+)</li>
+          <li>One-click power runtime + auto-tuning — set up the high-performance llama.cpp engine in one click (no compiling), a prebuilt Vulkan/ROCm/CUDA llama-server for your OS+GPU downloads itself, then AJJ³ Brain tunes flash attention, KV-cache precision, prompt-cache reuse &amp; speculative decoding to your GPU; Ollama stays the zero-config default (honest limit: Vulkan is a bit slower than native ROCm; tok/s gains depend on model + context) (Starter+)</li>
+          <li>Smart per-question routing — 25 keyword-classified domains swap in the right specialist model for that one question, then back; fires only on ≥2 domain-term hits, every signal re-pointable in config (most domains use the strongest generalist; health &amp; finance have real local specialists)</li>
+          <li>Runs on almost nothing — a 1-bit/ternary BitNet Edge profile runs a real LLM on CPU in about 1.2 GB of RAM, no GPU (honest limit: a real GPU with an ordinary 14-32B model is far better — Edge is for tiny/headless/old hardware)</li>
+          <li>2026 model refresh + specialist profiles — a refreshed curated catalog (Gemma 4, Qwen 3.6, GLM-4.7-Flash, gpt-oss, Nemotron 3, Granite 4) with ready-made Creative-writing, Translation, and Health &amp; medical (informational only, NOT medical advice) profiles; AJJ³ Brain adds no content filter of its own</li>
+          <li>Rock-solid chat — a reply from one chat never bleeds into another (generation-fenced, abortable) and you can scroll up to re-read while a new answer streams in (stick-to-bottom only when you’re already at the bottom)</li>
           <li>MCP tools &amp; one-click setup — the model uses files, web search, git and fetch through servers the console installs and wires up for you, every call you confirm (tool use is Starter; installing the free runtimes stays free)</li>
           <li>An embeddable chat widget for your own sites</li>
           <li>Appearance customisation — Light/Dark/High-Contrast themes, ~11 colour pickers, text size &amp; bold, a UI-scale slider, and drag-resizable chat, saved per device (every tier)</li>
@@ -773,6 +796,8 @@ footer a:hover { color: var(--local); }
           <li>The wizard installs Ollama and pulls models — the first download needs internet and disk space</li>
           <li>It's a backend + console, not a polished consumer chat app with a mobile client</li>
           <li>Fine-tuning needs a capable GPU; on a CPU box it's there but slow</li>
+          <li>The one-click power runtime defaults to a portable Vulkan build — somewhat slower than a native ROCm build, and live tok/s gains depend on your model and context</li>
+          <li>The 1-bit Edge tier is for tiny/headless/old hardware — on a real GPU an ordinary 14-32B model is far better</li>
         </ul>
         <p style="margin-top: 24px; font-style: italic; color: var(--ink-soft);">
           If you want a managed cloud chatbot, keep your subscription. If you want to <em>own</em> your AI,
@@ -872,6 +897,18 @@ footer a:hover { color: var(--local); }
       <div class="faq-item">
         <h3>Do I need a GPU?</h3>
         <p>No. Smart model selection reads your hardware and picks the best model that fits. Even on a CPU-only or low-VRAM box it doesn't just grab the smallest model — it chooses a capable Mixture-of-Experts model whose <em>active</em> params are small (≤6B/token) so it stays responsive, sized to fit your RAM. If you have an NVIDIA, AMD, Intel, or Apple GPU, Ollama uses it automatically for faster inference.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Can I get faster inference than Ollama?</h3>
+        <p>Yes — the new <strong>one-click power runtime</strong>. A single <strong>Set-up</strong> button installs the high-performance <strong>llama.cpp</strong> engine — <strong>no compiling, no toolchain</strong> — by auto-downloading a prebuilt <code>llama-server</code> that matches your OS and GPU. The default is a <strong>portable Vulkan build</strong> that runs on AMD, NVIDIA, and Intel (including AMD RDNA3 via Mesa RADV) with <strong>no ROCm, no compiler, and no sudo</strong>; a native ROCm or CUDA build is optional. AJJ³ Brain then <strong>auto-tunes the speed switches to your GPU</strong> — flash attention, KV-cache precision, prompt-cache reuse, speculative decoding — and a Speed &amp; performance panel explains each one. Ollama stays the zero-config default; llama.cpp is the optional power/edge runtime. Honest caveat: it’s the same ggml engine, so this is extra reach and flags rather than a magically faster core — Vulkan is somewhat slower than a native ROCm build, and real tok/s gains depend on your model and context.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Does it pick a different model per question?</h3>
+        <p>Yes — <strong>smart per-question routing</strong>. Across <strong>25 keyword-classified domains</strong> — code, reasoning, vision, translation, creative, finance, health, tax, RF, electrical, engineering, physics, science, music, video, image-creation, woodworking, blacksmithing, gunsmithing, energy, resale, fishing, survival, legal — it swaps in the right specialist model for <em>that one question</em>, then swaps back. It only fires on <strong>≥2 distinct domain-term hits</strong>, so a passing mention never changes your model, and every signal is re-pointable or can be disabled in config. Honest note: most domains route to the strongest generalist; a few (health, finance) have real local specialists.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Can it run on a Raspberry Pi or an old laptop?</h3>
+        <p>Yes — that’s the <strong>Edge profile</strong>. It runs a <strong>1-bit / ternary BitNet</strong> model (b1.58, TQ2_0) on CPU via the llama.cpp runtime, so a real LLM fits in about <strong>1.2 GB of RAM with no GPU</strong> — a Pi, an old laptop, or a USB-stick deploy. Honest limit: on a real GPU an ordinary 14-32B model is far better, so Edge is for tiny, headless, or old hardware (CPU-only on AMD).</p>
       </div>
       <div class="faq-item">
         <h3>What happens when a chat gets really long?</h3>
