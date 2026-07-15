@@ -6,7 +6,7 @@
 ## Stack & layout
 - Plain HTML5 + a shared `styles.css`; page-specific CSS lives inline in `<style>` blocks. No JS framework or build step (the only script anywhere is a small inline vanilla `<script>` at the end of `index.html`'s `<body>` that builds the hero cube's 3D-extruded letters).
 - Top-level brand pages: `index.html` (home), `antenna.html`, `junction.html`, `joinery.html`, `contact.html`; plus `ajj3_animated_logo.html`.
-- `apps/` — product landing pages, one folder each: `ajj3-brain/`, `WealthBuilder/`, `thrift/`, `my_llm/` (a redirect stub → `apps/ajj3-brain/`).
+- `apps/` — product landing pages, one folder each: `ajj3-brain/`, `WealthBuilder/`, `thrift/`, `my_llm/` (a redirect stub → `apps/ajj3-brain/`). `ajj3-brain/` also has `vs-local-ai.html` — a neutral "vs the local-AI apps" comparison (Ollama/LM Studio/Open WebUI/AnythingLLM/Odysseus), linked from its index nav + footer, reusing the product page's inline design.
 - `images/` — brand logos and cube favicons (PNG, multiple sizes).
 - No entry point / no Python — open the `.html` files directly. Build/dist: files are served as-is (static hosting).
 
